@@ -38,7 +38,7 @@ class CreateCommand extends BaseCommand {
         $name_migration = $this->getMigrationName($this->fromCamelCase(__METHOD__));
         $this->saveTemplate($name_migration,
             $this->setTemplate(
-                __METHOD__,
+                $name_migration,
                 $this->setTemplateMethod(strtolower($args[0]),$up_data),
                 $this->setTemplateMethod(strtolower($args[0]),$down_data,"down")
         ));
