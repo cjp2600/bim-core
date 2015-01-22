@@ -107,7 +107,8 @@ class BaseCommand extends Command {
         $newFile = fopen($save_file, 'w');
         fwrite($newFile, $template);
         fclose($newFile);
-        $this->writeln("Create new migration file: ").$this->success($save_file);
+        $this->writeln("Create new migration file: ");
+        $this->success($save_file);
     }
 
     /**
