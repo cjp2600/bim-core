@@ -98,7 +98,7 @@ class BaseCommand extends Command {
      */
     public function saveTemplate($filename,$template)
     {
-        $conf = new \Noodlehaus\Config(__DIR__."/config/bim.json");
+        $conf = new \Noodlehaus\Config(__DIR__."/../config/bim.json");
         $migration_path = $conf->get("migration_path");
         if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/")){
             mkdir($_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/", 0777);
