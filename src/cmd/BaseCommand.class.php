@@ -68,7 +68,7 @@ class BaseCommand extends Command {
      */
     public function setTemplateMethod($name, $data = array(),$type = "up")
     {
-        $template = file_get_contents('../db/template/'.$name.'/'.$type.'.txt');
+        $template = file_get_contents(__DIR__.'/../db/template/'.$name.'/'.$type.'.txt');
         if (!empty($data)) {
             foreach ($data as $key => $val) {
                 $template = str_replace("#".$key."#", $val, $template);
@@ -86,7 +86,7 @@ class BaseCommand extends Command {
      */
     public function setTemplate($class_name, $up_content, $down_content)
     {
-        $template = file_get_contents('../db/template/main.txt');
+        $template = file_get_contents(__DIR__.'/../db/template/main.txt');
         $template = str_replace(array("#CLASS_NAME#", "#UP_CONTENT#", "#DOWN_CONTENT#"), array($class_name, $up_content, $down_content), $template);
         return $template;
     }
@@ -98,9 +98,16 @@ class BaseCommand extends Command {
      */
     public function saveTemplate($filename,$template)
     {
-        $newFile = fopen($_SERVER["DOCUMENT_ROOT"] . "migrations/".$filename.'.php', 'w');
+        $conf = new \Noodlehaus\Config(__DIR__."/config/bim.json");
+        $migration_path = $conf->get("migration_path");
+        if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/")){
+            mkdir($_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/", 0777);
+        }
+        $save_file = $_SERVER["DOCUMENT_ROOT"] . "/migrations/".$filename.'.php';
+        $newFile = fopen($save_file, 'w');
         fwrite($newFile, $template);
         fclose($newFile);
+        $this->writeln("Create new migration file: ").$this->success($save_file);
     }
 
     /**
