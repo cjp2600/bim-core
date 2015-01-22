@@ -20,7 +20,7 @@ class InfoCommand extends BaseCommand {
         $site_name = \Bitrix\Main\Config\Option::get("main", "site_name");
 
         $this->info("Information about the current bitrix project:");
-        $this->padding("Site Name: ".$site_name);
+        $this->padding(Colors::colorize('Site Name:', Colors::YELLOW)." ".$site_name);
 
     }
 
