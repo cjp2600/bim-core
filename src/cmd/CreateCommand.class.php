@@ -2,7 +2,11 @@
 
 
 /**
- * Class CreateCommand
+ * Main class of creating migration is required for the generation of migration files.
+ *
+ * The following commands create:
+ *   - Iblock # Create a migration of information blocks
+ *
  */
 class CreateCommand extends BaseCommand {
 
@@ -16,7 +20,7 @@ class CreateCommand extends BaseCommand {
                 throw new Exception("Missing command, see help Example: php help create");
             }
         } else {
-            throw new Exception("Required command is empty.");
+            throw new Exception("Required command is empty, see help Example: php help create");
         }
     }
 
