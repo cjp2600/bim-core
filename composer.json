@@ -24,9 +24,9 @@
 	},
 	"autoload": {
 		"classmap": [
-		  	"lib",
-			"lib/db",
-			"lib/cmd"
+		  	"src",
+			"src/db",
+			"src/cmd"
 		]
 	},
 	"scripts": {
