@@ -20,9 +20,15 @@
 	},
 	"autoload": {
 		"classmap": [
+		  	"lib",
 			"lib/db",
 			"lib/cmd"
 		]
+	},
+	"scripts": {
+	  "post-install-cmd": [
+		"php -r 'file_put_contents(\"bim\", \"#!/usr/bin/php \n<?php \n include __DIR__ . \"/vendor/autoload.php\"; \n Bim/Migration::init(); \", FILE_APPEND | LOCK_EX);'"
+	  ]
 	},
 	"config": {
 		"preferred-install": "dist"
