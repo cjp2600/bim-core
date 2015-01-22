@@ -14,7 +14,7 @@ use ConsoleKit\Console,
     ConsoleKit\Widgets\Dialog,
     ConsoleKit\Widgets\ProgressBar;
 
-class StartCommand extends Command {
+class InitCommand extends Command {
 
     public function execute(array $args, array $options = array())
     {
