@@ -50,4 +50,13 @@ class BaseCommand extends Command {
         $this->writeln('');
     }
 
+    /**
+     * info
+     * @param $text
+     */
+    public function error($text)
+    {
+        $this->writeln($text, Colors::RED);
+    }
+
 }
