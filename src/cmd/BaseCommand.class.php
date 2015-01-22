@@ -87,7 +87,7 @@ class BaseCommand extends Command {
     public function setTemplate($class_name, $up_content, $down_content)
     {
         $template = file_get_contents(__DIR__.'/../db/template/main.txt');
-        $template = str_replace(array("#CLASS_NAME#", "#UP_CONTENT#", "#DOWN_CONTENT#"), array($class_name, $up_content, $down_content), $template);
+        $template = str_replace(array("#CLASS_NAME#", "#UP_CONTENT#", "#DOWN_CONTENT#"), array($this->camelCase($class_name), $up_content, $down_content), $template);
         return $template;
     }
 
@@ -132,6 +132,27 @@ class BaseCommand extends Command {
             $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
         }
         return implode('_', $ret);
+    }
+
+    /**
+     * camelCase
+     * @param $str
+     * @param array $noStrip
+     * @return mixed|string
+     */
+    public function camelCase($str, array $noStrip = [])
+    {
+        // non-alpha and non-numeric characters become spaces
+        $str = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $str);
+        $str = trim($str);
+        // uppercase the first character of each word
+        $str = ucwords($str);
+        $str = str_replace(" ", "", $str);
+        $str = str_replace(":", "", $str);
+
+        $str = lcfirst($str);
+
+        return $str;
     }
 
 }
