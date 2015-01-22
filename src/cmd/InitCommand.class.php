@@ -8,17 +8,12 @@
  * @date: 21.01.2015
  * @time: 22:42
  */
-use ConsoleKit\Console,
-    ConsoleKit\Command,
-    ConsoleKit\Colors,
-    ConsoleKit\Widgets\Dialog,
-    ConsoleKit\Widgets\ProgressBar;
 
-class InitCommand extends Command {
+class InitCommand extends BaseCommand {
 
     public function execute(array $args, array $options = array())
     {
-        $this->writeln('Привет это я',Colors::GREEN);
+       $this->success("Initialize the project - completed");
     }
 
 }

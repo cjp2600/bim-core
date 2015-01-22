@@ -8,24 +8,19 @@
  * @date: 21.01.2015
  * @time: 22:42
  */
-use ConsoleKit\Console,
-    ConsoleKit\Command,
-    ConsoleKit\Colors,
-    ConsoleKit\Widgets\Dialog,
-    ConsoleKit\Widgets\ProgressBar;
 
 /**
  * Getting information about the project
  */
-class InfoCommand extends Command {
+class InfoCommand extends BaseCommand {
 
     public function execute(array $args, array $options = array())
     {
+        # get site name
         $site_name = \Bitrix\Main\Config\Option::get("main", "site_name");
-        $this->writeln('Getting information about the project:', Colors::YELLOW);
-        $box = new ConsoleKit\Widgets\Box($this->console, $site_name, '');
-        $box->write();
-        $this->writeln('');
+
+        $this->info("Information about the current bitrix project:");
+        $this->padding("Site Name: ".$site_name);
 
     }
 
