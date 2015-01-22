@@ -117,7 +117,7 @@ class BaseCommand extends Command {
      */
     public function getMigrationName($name)
     {
-        return date("YmdGis")."_".$name;
+        return date("YmdGis")."_".get_current_user()."_".$name;
     }
 
     /**
@@ -149,7 +149,7 @@ class BaseCommand extends Command {
         $str = ucwords($str);
         $str = str_replace(" ", "", $str);
         $str = str_replace(":", "", $str);
-
+        $str = preg_replace('/[0-9]+/', '', $str);
         $str = lcfirst($str);
 
         return $str;
