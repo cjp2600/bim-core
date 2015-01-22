@@ -1,5 +1,6 @@
 {
   "commands": {
-    "init" : "InitCommand"
+    "init" : "InitCommand",
+    "info" : "InfoCommand"
   }
 }
