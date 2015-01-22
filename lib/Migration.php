@@ -17,7 +17,7 @@ class Migration {
 
     public static function init()
     {
-        $conf = new \Noodlehaus\Config(__DIR__."/conf.json");
+        $conf = new \Noodlehaus\Config(__DIR__."/config/commands.json");
         $console = new Console($conf->get("commands"));
         $console->run();
     }
