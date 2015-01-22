@@ -59,4 +59,72 @@ class BaseCommand extends Command {
         $this->writeln($text, Colors::RED);
     }
 
+    /**
+     * setTemplate
+     * @param $name of create
+     * @param array $data
+     * @param string $type up|down
+     * @return mixed|string
+     */
+    public function setTemplateMethod($name, $data = array(),$type = "up")
+    {
+        $template = file_get_contents('../db/template/'.$name.'/'.$type.'.txt');
+        if (!empty($data)) {
+            foreach ($data as $key => $val) {
+                $template = str_replace("#".$key."#", $val, $template);
+            }
+        }
+        return $template;
+    }
+
+    /**
+     * setTemplate
+     * @param $class_name
+     * @param $up_content
+     * @param $down_content
+     * @return mixed|string
+     */
+    public function setTemplate($class_name, $up_content, $down_content)
+    {
+        $template = file_get_contents('../db/template/main.txt');
+        $template = str_replace(array("#CLASS_NAME#", "#UP_CONTENT#", "#DOWN_CONTENT#"), array($class_name, $up_content, $down_content), $template);
+        return $template;
+    }
+
+    /**
+     * saveTemplate
+     * @param $filename
+     * @param $template
+     */
+    public function saveTemplate($filename,$template)
+    {
+        $newFile = fopen($_SERVER["DOCUMENT_ROOT"] . "migrations/".$filename.'.php', 'w');
+        fwrite($newFile, $template);
+        fclose($newFile);
+    }
+
+    /**
+     * getMigrationName
+     * @param $name
+     * @return string
+     */
+    public function getMigrationName($name)
+    {
+        return date("YmdGis")."_".$name;
+    }
+
+    /**
+     * fromCamelCase
+     * @param $input
+     * @return string
+     */
+    public function fromCamelCase($input) {
+        preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);
+        $ret = $matches[0];
+        foreach ($ret as &$match) {
+            $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+        }
+        return implode('_', $ret);
+    }
+
 }
