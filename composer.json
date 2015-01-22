@@ -4,17 +4,21 @@
 	"keywords": ["bitrix", "db", "migration"],
 	"license": "MIT",
  	"authors": [
-	{
-		"name": "Stanislav Semenov",
-		"email": "icjp2600@gmail.com"
-	},
-	{
-		"name": "Sergey Ansupov",
-		"email": "sanstupov@indigo-trg.com"
-	}
+	  {
+		  "name": "Stanislav Semenov",
+		  "email": "cjp2600@ya.com"
+	  },
+	  {
+		  "name": "Sergey Ansupov",
+		  "email": "sanstupov@indigo-trg.com"
+	  },
+	  {
+		  "name": "Andrey Verevkin",
+		  "email": "averevkin@indigo-trg.com"
+	  }
 	],
 	"require": {
-		"maximebf/consolekit": ">=1.0.0",
+			"maximebf/consolekit": ">=1.0.0",
         	"wp-cli/php-cli-tools":"*",
         	"noodlehaus/config":"*"
 	},
@@ -27,7 +31,7 @@
 	},
 	"scripts": {
 	  "post-install-cmd": [
-		"php -r 'file_put_contents(\"bim\", \"#!/usr/bin/php \n<?php \n include __DIR__ . \"/vendor/autoload.php\"; \n Bim/Migration::init(); \", FILE_APPEND | LOCK_EX);'"
+		"php bim init"
 	  ]
 	},
 	"config": {
