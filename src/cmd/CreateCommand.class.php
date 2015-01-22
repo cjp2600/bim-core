@@ -8,10 +8,15 @@ class CreateCommand extends BaseCommand {
 
     public function execute(array $args, array $options = array())
     {
-        try{
-            $this->{"create".ucfirst($args[0])}($args,$options);
-        }catch (Exception $e) {
-            throw new Exception("missing command, see help Example: php help create");
+        if (isset($args[0])) {
+            $method = "create" . ucfirst($args[0]);
+            if (method_exists($this,$method)) {
+                $this->{$method}($args, $options);
+            } else {
+                throw new Exception("Missing command, see help Example: php help create");
+            }
+        } else {
+            throw new Exception("Required command is empty.");
         }
     }
 
