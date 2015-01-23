@@ -24,20 +24,23 @@ class ListCommand extends BaseCommand {
             $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $row) {
                 $progress->incr();
+
                 $table->addRow(array(
                     $i,
-                    $this->$this->camelCase($id),
+                    $this->camelCase($id),
                     $row,
                     ""
                 ));
+
                 $table->addRow(array('','','',''));
+
             $i++;}
             $progress->stop();
             $table->display();
 
         } else {
             $this->writeln('');
-            $this->writeln('Пусто',Colors::YELLOW);
+            $this->info('Пусто');
             $this->writeln('');
         }
 
