@@ -1,5 +1,7 @@
 <?php
 
+use ConsoleKit\Widgets\ProgressBar;
+
 class ListCommand extends BaseCommand {
 
     public function execute(array $args, array $options = array())
