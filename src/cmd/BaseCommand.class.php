@@ -191,4 +191,14 @@ class BaseCommand extends Command {
         return $dir_array;
     }
 
+    /**
+     * green
+     * @param $text
+     * @return string
+     */
+    public function color($text,$color)
+    {
+        return Colors::colorize($text, $color);
+    }
+
 }

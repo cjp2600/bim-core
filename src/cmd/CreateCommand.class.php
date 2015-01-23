@@ -17,10 +17,10 @@ class CreateCommand extends BaseCommand {
             if (method_exists($this,$method)) {
                 $this->{$method}($args, $options);
             } else {
-                throw new Exception("Missing command, see help Example: php help create");
+                throw new Exception("Missing command, see help Example: php bim help create");
             }
         } else {
-            throw new Exception("Required command is empty, see help Example: php help create");
+            throw new Exception("Required command is empty, see help Example: php bim help create");
         }
     }
 

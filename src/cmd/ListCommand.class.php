@@ -12,6 +12,7 @@ class ListCommand extends BaseCommand {
 
             $headers = array(
                 '№',
+                'Author',
                 'Date',
                 'Class',
                 'File',
@@ -33,14 +34,17 @@ class ListCommand extends BaseCommand {
                 }
 
                 $class_name = $this->camelCase($id);
-                include "".$this->getMigrationPath() . $row."";
+                include_once "".$this->getMigrationPath() . $row."";
+
+                $color = ConsoleKit\Colors::GREEN;
 
                 $table->addRow(array(
-                    $i,
-                    date("d.m.y G:h:i",$format),
-                    $class_name,
-                    $row,
-                    $class_name::getDescription(),
+                    $this->color($i,$color),
+                    (method_exists($class_name,"getAuthor")) ? $this->color($class_name::getAuthor(),$color) : "",
+                    $this->color(date("d.m.y G:h:i",$format),$color),
+                    $this->color($class_name,$color),
+                    $this->color($row,$color),
+                    (method_exists($class_name,"getDescription")) ? $this->color($class_name::getDescription(),$color) : "",
                     ""
                 ));
 
