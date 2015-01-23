@@ -37,6 +37,7 @@ class ListCommand extends BaseCommand {
                 include_once "".$this->getMigrationPath() . $row."";
 
                 $color = ConsoleKit\Colors::GREEN;
+                $status = "Apply";
 
                 $table->addRow(array(
                     $this->color($i,$color),
@@ -45,7 +46,7 @@ class ListCommand extends BaseCommand {
                     $this->color($class_name,$color),
                     $this->color($row,$color),
                     (method_exists($class_name,"getDescription")) ? $this->color($class_name::getDescription(),$color) : "",
-                    ""
+                    $status
                 ));
 
                 //$table->addRow(array('','','',''));
