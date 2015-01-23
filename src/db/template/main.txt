@@ -2,7 +2,7 @@
 
 class #CLASS_NAME# extends Bim\Revision {
 
-    private $description = "#DESC_CONTENT#";
+    public $description = "#DESC_CONTENT#";
 
 
     public static function up()
