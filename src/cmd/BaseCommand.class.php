@@ -84,10 +84,10 @@ class BaseCommand extends Command {
      * @param $down_content
      * @return mixed|string
      */
-    public function setTemplate($class_name, $up_content, $down_content, $desc_content = "")
+    public function setTemplate($class_name, $up_content, $down_content, $desc_content = "",$author = "")
     {
         $template = file_get_contents(__DIR__.'/../db/template/main.txt');
-        $template = str_replace(array("#CLASS_NAME#", "#UP_CONTENT#", "#DOWN_CONTENT#","#DESC_CONTENT#"), array($this->camelCase($class_name), $up_content, $down_content,$desc_content), $template);
+        $template = str_replace(array("#CLASS_NAME#", "#UP_CONTENT#", "#DOWN_CONTENT#","#DESC_CONTENT#","#AUTHOR_CONTENT#"), array($this->camelCase($class_name), $up_content, $down_content,$desc_content,$author), $template);
         return $template;
     }
 
@@ -130,7 +130,10 @@ class BaseCommand extends Command {
      */
     public function getMigrationName($name)
     {
-        return time()."_".get_current_user()."_".$name;
+        return time()."_".randString(7, array(
+            "abcdefghijklnmopqrstuvwxyz",
+            "ABCDEFGHIJKLNMOPQRSTUVWX",
+        ))."_".$name;
     }
 
     /**
