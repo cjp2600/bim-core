@@ -98,17 +98,29 @@ class BaseCommand extends Command {
      */
     public function saveTemplate($filename,$template)
     {
-        $conf = new \Noodlehaus\Config(__DIR__."/../config/bim.json");
-        $migration_path = $conf->get("migration_path");
-        if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/")){
-            mkdir($_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/", 0777);
+        $migration_path = $this->getMigrationPath();
+        if (!file_exists($migration_path)){
+            mkdir($migration_path, 0777);
         }
-        $save_file = $_SERVER["DOCUMENT_ROOT"] . "/migrations/".$filename.'.php';
+        $save_file = $migration_path.$filename.'.php';
         $newFile = fopen($save_file, 'w');
         fwrite($newFile, $template);
         fclose($newFile);
+        # output
         $this->writeln("Create new migration file: ");
         $this->success($save_file);
+    }
+
+    /**
+     * getMigrationPath
+     * @param bool $full
+     * @return mixed|string
+     */
+    public function getMigrationPath($full = true)
+    {
+        $conf = new \Noodlehaus\Config(__DIR__."/../config/bim.json");
+        $migration_path = $conf->get("migration_path");
+        return ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/" : $migration_path;
     }
 
     /**
@@ -154,6 +166,26 @@ class BaseCommand extends Command {
         $str = lcfirst($str);
 
         return $str;
+    }
+
+    /**
+     * getDirectoryTree
+     * @param $outerDir
+     * @param $x
+     * @return array
+     */
+    public function getDirectoryTree( $outerDir , $x){
+        $dirs = array_diff( scandir( $outerDir ), Array( ".", ".." ) );
+        $dir_array = Array();
+        foreach( $dirs as $d ){
+            if( is_dir($outerDir."/".$d)  ){
+                $dir_array[ $d ] = $this->getDirectoryTree( $outerDir."/".$d , $x);
+            }else{
+                if (($x)?ereg($x.'$',$d):1)
+                    $dir_array[ $d ] = $d;
+            }
+        }
+        return $dir_array;
     }
 
 }

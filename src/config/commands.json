@@ -1,5 +1,6 @@
 {
   "commands": {
+    "ls"  : "ListCommand",
     "create" : "CreateCommand",
     "init" : "InitCommand",
     "info" : "InfoCommand"
