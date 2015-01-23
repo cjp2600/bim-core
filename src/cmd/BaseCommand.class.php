@@ -182,7 +182,7 @@ class BaseCommand extends Command {
                 $dir_array[ $d ] = $this->getDirectoryTree( $outerDir."/".$d , $x);
             }else{
                 if (($x)?ereg($x.'$',$d):1)
-                    $dir_array[ $d ] = $d;
+                    $dir_array[ str_replace(".".$x,"",$d) ] = $d;
             }
         }
         return $dir_array;
