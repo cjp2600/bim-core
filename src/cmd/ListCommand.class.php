@@ -12,6 +12,7 @@ class ListCommand extends BaseCommand {
 
             $headers = array(
                 '№',
+                'Date',
                 'Class',
                 'File',
                 'Status'
@@ -25,14 +26,20 @@ class ListCommand extends BaseCommand {
             foreach ($list as $id => $row) {
                 $progress->incr();
 
+                $date = explode("_",$id);
+                if (isset($date[0])){
+                    $format = strtotime($date[0]);
+                }
+
                 $table->addRow(array(
                     $i,
+                    date("d.m.y G:h:i",$format),
                     $this->camelCase($id),
                     $row,
                     ""
                 ));
 
-                $table->addRow(array('','','',''));
+                //$table->addRow(array('','','',''));
 
             $i++;}
             $progress->stop();
