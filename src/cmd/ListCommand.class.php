@@ -15,6 +15,7 @@ class ListCommand extends BaseCommand {
                 'Date',
                 'Class',
                 'File',
+                'Description',
                 'Status'
             );
 
@@ -28,14 +29,18 @@ class ListCommand extends BaseCommand {
 
                 $date = explode("_",$id);
                 if (isset($date[0])){
-                    $format = strtotime($date[0]);
+                    $format = $date[0];
                 }
+
+                $class_name = $this->camelCase($id);
+                include "".$this->getMigrationPath() . $row."";
 
                 $table->addRow(array(
                     $i,
                     date("d.m.y G:h:i",$format),
-                    $this->camelCase($id),
+                    $class_name,
                     $row,
+                    $class_name::getDescription(),
                     ""
                 ));
 

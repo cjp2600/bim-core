@@ -2,6 +2,9 @@
 
 class #CLASS_NAME# extends Bim\Revision {
 
+    private $description = "#DESC_CONTENT#";
+
+
     public static function up()
     {
         #UP_CONTENT#
@@ -11,6 +14,12 @@ class #CLASS_NAME# extends Bim\Revision {
     public static function down()
     {
         #DOWN_CONTENT#
+    }
+
+
+    public static function getDescription()
+    {
+        return $this->description;
     }
 
 }

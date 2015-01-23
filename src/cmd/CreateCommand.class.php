@@ -31,6 +31,9 @@ class CreateCommand extends BaseCommand {
      */
     public function createIblock(array $args, array $options = array())
     {
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+
         $up_data = array();
         $down_data = array();
 
@@ -40,7 +43,8 @@ class CreateCommand extends BaseCommand {
             $this->setTemplate(
                 $name_migration,
                 $this->setTemplateMethod(strtolower($args[0]),$up_data),
-                $this->setTemplateMethod(strtolower($args[0]),$down_data,"down")
+                $this->setTemplateMethod(strtolower($args[0]),$down_data,"down"),
+                $desc
         ));
 
     }
