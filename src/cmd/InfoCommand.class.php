@@ -37,6 +37,25 @@ class InfoCommand extends BaseCommand {
         # edition
         $return[] = Colors::colorize('Edition:', Colors::YELLOW)." ".$this->checkRedaction();
 
+        $this->padding("
+        BBBBBBBBBBBBBBBBB   IIIIIIIIIIMMMMMMMM               MMMMMMMM
+        B::::::::::::::::B  I::::::::IM:::::::M             M:::::::M
+        B::::::BBBBBB:::::B I::::::::IM::::::::M           M::::::::M
+        BB:::::B     B:::::BII::::::IIM:::::::::M         M:::::::::M
+          B::::B     B:::::B  I::::I  M::::::::::M       M::::::::::M
+          B::::B     B:::::B  I::::I  M:::::::::::M     M:::::::::::M
+          B::::BBBBBB:::::B   I::::I  M:::::::M::::M   M::::M:::::::M
+          B:::::::::::::BB    I::::I  M::::::M M::::M M::::M M::::::M
+          B::::BBBBBB:::::B   I::::I  M::::::M  M::::M::::M  M::::::M
+          B::::B     B:::::B  I::::I  M::::::M   M:::::::M   M::::::M
+          B::::B     B:::::B  I::::I  M::::::M    M:::::M    M::::::M
+          B::::B     B:::::B  I::::I  M::::::M     MMMMM     M::::::M
+        BB:::::BBBBBB::::::BII::::::IIM::::::M               M::::::M
+        B:::::::::::::::::B I::::::::IM::::::M               M::::::M
+        B::::::::::::::::B  I::::::::IM::::::M               M::::::M
+        BBBBBBBBBBBBBBBBB   IIIIIIIIIIMMMMMMMM               MMMMMMMM
+        ");
+
         # display
         $this->padding(implode(PHP_EOL,$return));
     }
