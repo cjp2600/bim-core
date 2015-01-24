@@ -96,6 +96,7 @@ class ListCommand extends BaseCommand {
             # count info
             $return[] = Colors::colorize('New:', Colors::RED)." ".$new;
             $return[] = Colors::colorize('Applied:', Colors::GREEN)." ".$applied;
+            $return[] = "Count: ".$count;
 
             # display
             $this->padding(implode(PHP_EOL,$return));
