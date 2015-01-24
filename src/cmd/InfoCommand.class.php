@@ -25,7 +25,7 @@ class InfoCommand extends BaseCommand {
         $this->info("Information about the current bitrix project:");
 
         # get site name
-        $return[] = Colors::colorize('Site Name:', Colors::YELLOW)." ".$site_name;
+        $return[] = Colors::colorize('Site:', Colors::YELLOW)." ".$site_name;
 
         # get bitrix version
         $MESS = array();
