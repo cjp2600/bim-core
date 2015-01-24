@@ -57,7 +57,7 @@ class ListCommand extends BaseCommand {
                 $id = (isset($date[1])) ? $date[1] : "";
 
                 $table->addRow(array(
-                    $i,
+                    ConsoleKit\Colors::colorize($i,$color),
                     $id,
                     (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
                     date("d.m.y G:h:i",$format),
@@ -67,7 +67,7 @@ class ListCommand extends BaseCommand {
                     $status
                 ));
 
-                //$table->addRow(array('','','',''));
+                $table->addRow(array('','','','','','','',''));
 
             $i++;}
             $progress->stop();
