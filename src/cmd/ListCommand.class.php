@@ -1,6 +1,6 @@
 <?php
 
-use ConsoleKit\Widgets\ProgressBar;
+use ConsoleKit\Widgets\ProgressBar,ConsoleKit\Colors;
 
 class ListCommand extends BaseCommand {
 
@@ -39,6 +39,10 @@ class ListCommand extends BaseCommand {
                 $color = ConsoleKit\Colors::GREEN;
                 $status = "Apply";
 
+                if ($i == 3){
+                    $color = ConsoleKit\Colors::RED;
+                }
+
                 $table->addRow(array(
                     $this->color($i,$color),
                     (method_exists($class_name,"getAuthor")) ? $this->color($class_name::getAuthor(),$color) : "",
@@ -54,6 +58,13 @@ class ListCommand extends BaseCommand {
             $i++;}
             $progress->stop();
             $table->display();
+
+            # count info
+            $return[] = Colors::colorize('New:', Colors::RED)." 1";
+            $return[] = Colors::colorize('Applied:', Colors::GREEN)." 10";
+
+            # display
+            $this->padding(implode(PHP_EOL,$return));
 
         } else {
             $this->writeln('');
