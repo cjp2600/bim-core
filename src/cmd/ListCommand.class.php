@@ -37,10 +37,11 @@ class ListCommand extends BaseCommand {
                 include_once "".$this->getMigrationPath() . $row."";
 
                 $color = ConsoleKit\Colors::GREEN;
-                $status = "Apply";
+                $status = ConsoleKit\Colors::colorize('apply', Colors::GREEN);
 
                 if ($i == 3){
                     $color = ConsoleKit\Colors::RED;
+                    $status = ConsoleKit\Colors::colorize('new', Colors::RED);
                 }
 
                 $table->addRow(array(
