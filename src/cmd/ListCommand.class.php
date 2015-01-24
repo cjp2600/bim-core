@@ -18,9 +18,6 @@ class ListCommand extends BaseCommand {
                 'id',
                 'Author',
                 'Date',
-                'File',
-                'Description',
-                'Status'
             );
 
             if ($file) {
