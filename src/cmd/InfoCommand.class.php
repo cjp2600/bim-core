@@ -36,6 +36,8 @@ class InfoCommand extends BaseCommand {
         $return[] = Colors::colorize('Edition:', Colors::YELLOW)." ".$this->checkRedaction();
 
         $this->info("About bim:");
+
+        # for fun :)
         $this->padding('
               ___                       ___
              /\  \          ___        /\__\
@@ -50,6 +52,7 @@ class InfoCommand extends BaseCommand {
              ~~                        \/__/
 
          Bitrix migration manager v.0.0.1
+         https://github.com/cjp2600/bim-core.git
         ');
 
         $this->info("About bitrix project:");
