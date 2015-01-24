@@ -31,6 +31,7 @@ class ListCommand extends BaseCommand {
             $applied = 0;
             $new = 0;
             $i = 1;
+
             $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $data) {
                 $progress->incr();
@@ -38,11 +39,6 @@ class ListCommand extends BaseCommand {
 
                 $row = $data['file'];
                 $name = $data['name'];
-
-                $date = explode("_",$name);
-                if (isset($date[0])){
-                    $format = $date[0];
-                }
 
                 $class_name = $this->camelCase($name);
                 include_once "".$this->getMigrationPath() . $row."";
@@ -52,53 +48,32 @@ class ListCommand extends BaseCommand {
 
                 # проверка на установку
                 if ($i == 3 || $i == count($list)){
-                    if ($filter_apply){
-                        continue;
-                    }
-
                     $new++;
                     $color = ConsoleKit\Colors::RED;
                     $status = ConsoleKit\Colors::colorize('new', Colors::RED);
-
-                    $rowArray = array(
-                        ConsoleKit\Colors::colorize($i,$color),
-                        ConsoleKit\Colors::colorize($id,$color),
-                        (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
-                        date("d.m.y G:h",$format)
-                    );
-                    if ($file) {
-                        $rowArray[] = $row;
-                    }
-                    $rowArray[] = (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "";
-                    $rowArray[] = $status;
-
-                    $table->addRow($rowArray);
-
                 } else {
-                    if ($filter_new) {
-                        continue;
-                    }
-
                     $applied++;
-
-                    $rowArray = array(
-                        ConsoleKit\Colors::colorize($i,$color),
-                        ConsoleKit\Colors::colorize($id,$color),
-                        (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
-                        date("d.m.y G:h",$format)
-                    );
-                    if ($file) {
-                        $rowArray[] = $row;
-                    }
-                    $rowArray[] = (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "";
-                    $rowArray[] = $status;
-
-                    $table->addRow($rowArray);
                 }
 
-                //$table->addRow(array('','','','','','',''));
+                $rowArray = array(
+                    ConsoleKit\Colors::colorize($i,$color),
+                    ConsoleKit\Colors::colorize($id,$color),
+                    (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
+                    date("d.m.y G:h",$data['date'])
+                );
+                if ($file) {
+                    $rowArray[] = $row;
+                }
+                $rowArray[] = (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "";
+                $rowArray[] = $status;
 
-            $i++;}
+                $table->addRow($rowArray);
+
+            $i++;
+            }
+
+            $table->sort("Status");
+
             $progress->stop();
             $table->display();
 
@@ -111,12 +86,8 @@ class ListCommand extends BaseCommand {
             $this->padding(implode(PHP_EOL,$return));
 
         } else {
-            $this->writeln('');
-            $this->info('Пусто');
-            $this->writeln('');
+            $this->info('Empty list');
         }
-
-        
     }
 
 }

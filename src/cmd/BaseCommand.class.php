@@ -194,7 +194,8 @@ class BaseCommand extends Command {
             if (isset($date[1])){
                 $return[$date[1]] = array(
                     "name" => $key,
-                    "file" => $val
+                    "file" => $val,
+                    "date" => $date[0]
                 );
             }
         }
