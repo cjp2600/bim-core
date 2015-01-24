@@ -61,13 +61,12 @@ class ListCommand extends BaseCommand {
                     $id,
                     (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
                     date("d.m.y G:h:i",$format),
-                    $class_name,
                     $row,
                     (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "",
                     $status
                 ));
 
-                $table->addRow(array('','','','','','','',''));
+                $table->addRow(array('','','','','','',''));
 
             $i++;}
             $progress->stop();
