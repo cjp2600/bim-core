@@ -15,7 +15,6 @@ class ListCommand extends BaseCommand {
                 'id',
                 'Author',
                 'Date',
-                'Class',
                 'File',
                 'Description',
                 'Status'
