@@ -188,7 +188,17 @@ class BaseCommand extends Command {
                     $dir_array[ str_replace(".".$x,"",$d) ] = $d;
             }
         }
-        return $dir_array;
+        $return = array();
+        foreach ($dir_array as $key => $val){
+            $date = explode("_",$key);
+            if (isset($date[1])){
+                $return[$date[1]] = array(
+                    "name" => $key,
+                    "file" => $val
+                );
+            }
+        }
+        return $return;
     }
 
     /**

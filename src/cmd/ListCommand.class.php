@@ -28,16 +28,19 @@ class ListCommand extends BaseCommand {
             $new = 0;
             $i = 1;
             $progress = new ProgressBar($this->console, count($list));
-            foreach ($list as $id => $row) {
+            foreach ($list as $id => $data) {
                 $progress->incr();
                 $count ++;
 
-                $date = explode("_",$id);
+                $row = $data['file'];
+                $name = $data['name'];
+
+                $date = explode("_",$name);
                 if (isset($date[0])){
                     $format = $date[0];
                 }
 
-                $class_name = $this->camelCase($id);
+                $class_name = $this->camelCase($name);
                 include_once "".$this->getMigrationPath() . $row."";
 
                 $color = ConsoleKit\Colors::GREEN;
@@ -51,9 +54,6 @@ class ListCommand extends BaseCommand {
                 } else {
                     $applied ++;
                 }
-
-                #id
-                $id = (isset($date[1])) ? $date[1] : "";
 
                 $table->addRow(array(
                     ConsoleKit\Colors::colorize($i,$color),
