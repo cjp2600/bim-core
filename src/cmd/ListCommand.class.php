@@ -11,7 +11,8 @@ class ListCommand extends BaseCommand {
         # get filename
         $file = (isset($options['f'])) ? true : false;
 
-        $filter = (isset($options['show'])) ? $options['show'] : false;
+        $filter_apply = (isset($options['a'])) ? $options['a'] : false;
+        $filter_new = (isset($options['n'])) ? $options['n'] : false;
 
         if (!empty($list)) {
 
@@ -57,20 +58,20 @@ class ListCommand extends BaseCommand {
 
                 # проверка на установку
                 if ($i == 3 || $i == count($list)){
+                    if ($filter_apply){
+                        continue;
+                    }
+
                     $new ++;
                     $color = ConsoleKit\Colors::RED;
                     $status = ConsoleKit\Colors::colorize('new', Colors::RED);
 
-                    if ($filter && $filter == "apply"){
-                        continue;
-                    }
-
                 } else {
-                    $applied++;
-
-                    if ($filter && $filter == "new") {
+                    if ($filter_new) {
                         continue;
                     }
+
+                    $applied++;
                 }
 
                 $rowArray = array(
