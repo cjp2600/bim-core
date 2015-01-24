@@ -11,6 +11,8 @@ class ListCommand extends BaseCommand {
         # get filename
         $file = (isset($options['f'])) ? true : false;
 
+        $filter = (isset($options['show'])) ? $options['show'] : false;
+
         if (!empty($list)) {
 
             $headers = array(
@@ -58,8 +60,17 @@ class ListCommand extends BaseCommand {
                     $new ++;
                     $color = ConsoleKit\Colors::RED;
                     $status = ConsoleKit\Colors::colorize('new', Colors::RED);
+
+                    if ($filter && $filter == "apply"){
+                        break;
+                    }
+
                 } else {
-                    $applied ++;
+                    $applied++;
+
+                    if ($filter && $filter == "new") {
+                        break;
+                    }
                 }
 
                 $rowArray = array(
