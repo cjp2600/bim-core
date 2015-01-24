@@ -12,6 +12,7 @@ class ListCommand extends BaseCommand {
 
             $headers = array(
                 '№',
+                'id',
                 'Author',
                 'Date',
                 'Class',
@@ -52,13 +53,17 @@ class ListCommand extends BaseCommand {
                     $applied ++;
                 }
 
+                #id
+                $id = (isset($date[1])) ? $date[1] : "";
+
                 $table->addRow(array(
-                    $this->color($i,$color),
-                    (method_exists($class_name,"getAuthor")) ? $this->color($class_name::getAuthor(),$color) : "",
-                    $this->color(date("d.m.y G:h:i",$format),$color),
-                    $this->color($class_name,$color),
-                    $this->color($row,$color),
-                    (method_exists($class_name,"getDescription")) ? $this->color($class_name::getDescription(),$color) : "",
+                    $i,
+                    $id,
+                    (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
+                    date("d.m.y G:h:i",$format),
+                    $class_name,
+                    $row,
+                    (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "",
                     $status
                 ));
 
