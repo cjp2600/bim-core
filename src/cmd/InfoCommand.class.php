@@ -34,17 +34,41 @@ class InfoCommand extends BaseCommand {
         $info_text = $MESS["EPILOG_ADMIN_SM_".$vendor]." (".SM_VERSION.")";
         $return[] = Colors::colorize('Version:', Colors::YELLOW)." ".$info_text;
 
-        echo "<pre>";
-        print_r($this->getModules());
-        echo "</pre>";
+        # edition
+        $return[] = Colors::colorize('Edition:', Colors::YELLOW)." ".$this->checkRedaction();
 
         # display
         $this->padding(implode(PHP_EOL,$return));
     }
 
+    /**
+     * checkRedaction
+     * @return int|string
+     */
     public function checkRedaction()
     {
-        
+        $bitrix_modules = $this->getModules();
+        $redactions = array(
+            'Первый сайт' => array("main","main"),
+            'Старт'   => array("main","search"),
+            'Стандарт'=> array("main","photogallery"),
+            'Эксперт' => array("main","advertising"),
+            'Малый бизнес' => array("main","sale"),
+            'Бизнес' => array("main","workflow","report")
+        );
+        $current_redaction = "не определено";
+        foreach ($redactions as $module => $ids ) {
+            foreach ($ids as $id){
+                $check = true;
+                if (!isset($bitrix_modules[$id])){
+                    $check = false;
+                }
+                if ($check){
+                    $current_redaction = $module;
+                }
+            }
+        }
+        return $current_redaction;
     }
 
     /**
