@@ -8,6 +8,9 @@ class ListCommand extends BaseCommand {
     {
         $list = $this->getDirectoryTree( $this->getMigrationPath(), "php" );
 
+        # get filename
+        $file = (isset($options['f'])) ? true : false;
+
         if (!empty($list)) {
 
             $headers = array(
@@ -19,6 +22,13 @@ class ListCommand extends BaseCommand {
                 'Description',
                 'Status'
             );
+
+            if ($file) {
+                $headers[] = 'File';
+            }
+
+            $headers[] = 'Description';
+            $headers[] = 'Status';
 
             $table = new \cli\Table();
             $table->setHeaders($headers);
@@ -55,17 +65,21 @@ class ListCommand extends BaseCommand {
                     $applied ++;
                 }
 
-                $table->addRow(array(
+                $rowArray = array(
                     ConsoleKit\Colors::colorize($i,$color),
                     ConsoleKit\Colors::colorize($id,$color),
                     (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
-                    date("d.m.y G:h",$format),
-                    $row,
-                    (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "",
-                    $status
-                ));
+                    date("d.m.y G:h",$format)
+                );
+                if ($file) {
+                    $rowArray[] = $row;
+                }
+                $rowArray[] = (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "";
+                $rowArray[] = $status;
 
-                $table->addRow(array('','','','','','',''));
+                $table->addRow($rowArray);
+
+                //$table->addRow(array('','','','','','',''));
 
             $i++;}
             $progress->stop();
