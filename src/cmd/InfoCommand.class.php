@@ -21,14 +21,15 @@ class InfoCommand extends BaseCommand {
         $site_name = \Bitrix\Main\Config\Option::get("main", "site_name");
 
         $this->info("Information about the current bitrix project:");
-        $this->padding(Colors::colorize('Site Name:', Colors::YELLOW)." ".$site_name);
+        $site_name = Colors::colorize('Site Name:', Colors::YELLOW)." ".$site_name;
 
         $MESS = array();
         include_once $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/lang/ru/interface/epilog_main_admin.php";
         $vendor = COption::GetOptionString("main", "vendor", "1c_bitrix");
         $info_text = $MESS["EPILOG_ADMIN_SM_".$vendor]." (".SM_VERSION.")";
+        $version = Colors::colorize('Version:', Colors::YELLOW)." ".$info_text;
 
-        $this->padding(Colors::colorize('Version:', Colors::YELLOW)." ".$info_text);
+        $this->padding($site_name.PHP_EOL.$version);
 
     }
 
