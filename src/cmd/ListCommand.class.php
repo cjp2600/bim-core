@@ -16,13 +16,7 @@ class ListCommand extends BaseCommand {
 
         if (!empty($list)) {
 
-            $headers = array(
-                '№',
-                'id',
-                'Author',
-                'Date',
-            );
-
+            $headers = array('№','id','Author','Date');
             if ($file) {
                 $headers[] = 'File';
             }
@@ -40,7 +34,7 @@ class ListCommand extends BaseCommand {
             $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $data) {
                 $progress->incr();
-                $count ++;
+                $count++;
 
                 $row = $data['file'];
                 $name = $data['name'];
@@ -62,9 +56,23 @@ class ListCommand extends BaseCommand {
                         continue;
                     }
 
-                    $new ++;
+                    $new++;
                     $color = ConsoleKit\Colors::RED;
                     $status = ConsoleKit\Colors::colorize('new', Colors::RED);
+
+                    $rowArray = array(
+                        ConsoleKit\Colors::colorize($i,$color),
+                        ConsoleKit\Colors::colorize($id,$color),
+                        (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
+                        date("d.m.y G:h",$format)
+                    );
+                    if ($file) {
+                        $rowArray[] = $row;
+                    }
+                    $rowArray[] = (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "";
+                    $rowArray[] = $status;
+
+                    $table->addRow($rowArray);
 
                 } else {
                     if ($filter_new) {
@@ -72,21 +80,21 @@ class ListCommand extends BaseCommand {
                     }
 
                     $applied++;
-                }
 
-                $rowArray = array(
-                    ConsoleKit\Colors::colorize($i,$color),
-                    ConsoleKit\Colors::colorize($id,$color),
-                    (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
-                    date("d.m.y G:h",$format)
-                );
-                if ($file) {
-                    $rowArray[] = $row;
-                }
-                $rowArray[] = (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "";
-                $rowArray[] = $status;
+                    $rowArray = array(
+                        ConsoleKit\Colors::colorize($i,$color),
+                        ConsoleKit\Colors::colorize($id,$color),
+                        (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
+                        date("d.m.y G:h",$format)
+                    );
+                    if ($file) {
+                        $rowArray[] = $row;
+                    }
+                    $rowArray[] = (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "";
+                    $rowArray[] = $status;
 
-                $table->addRow($rowArray);
+                    $table->addRow($rowArray);
+                }
 
                 //$table->addRow(array('','','','','','',''));
 
