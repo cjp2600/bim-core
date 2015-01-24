@@ -62,14 +62,14 @@ class ListCommand extends BaseCommand {
                     $status = ConsoleKit\Colors::colorize('new', Colors::RED);
 
                     if ($filter && $filter == "apply"){
-                        break;
+                        continue;
                     }
 
                 } else {
                     $applied++;
 
                     if ($filter && $filter == "new") {
-                        break;
+                        continue;
                     }
                 }
 
