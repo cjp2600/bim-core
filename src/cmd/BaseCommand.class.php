@@ -132,6 +132,7 @@ class BaseCommand extends Command {
     {
         return time()."_".randString(7, array(
             "abcdefghijklnmopqrstuvwxyz",
+            "1234567890"
         ))."_".$name;
     }
 
