@@ -23,16 +23,69 @@ class InfoCommand extends BaseCommand {
         $site_name = \Bitrix\Main\Config\Option::get("main", "site_name");
 
         $this->info("Information about the current bitrix project:");
+
+        # get site name
         $return[] = Colors::colorize('Site Name:', Colors::YELLOW)." ".$site_name;
 
+        # get bitrix version
         $MESS = array();
         include_once $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/lang/ru/interface/epilog_main_admin.php";
         $vendor = COption::GetOptionString("main", "vendor", "1c_bitrix");
         $info_text = $MESS["EPILOG_ADMIN_SM_".$vendor]." (".SM_VERSION.")";
         $return[] = Colors::colorize('Version:', Colors::YELLOW)." ".$info_text;
 
+        echo "<pre>";
+        print_r($this->getModules());
+        echo "</pre>";
+
         # display
         $this->padding(implode(PHP_EOL,$return));
+    }
+
+    public function checkRedaction()
+    {
+        
+    }
+
+    /**
+     * getModules
+     * @return mixed
+     */
+    public function getModules()
+    {
+        $folders = array(
+            "/local/modules",
+            "/bitrix/modules",
+        );
+        foreach($folders as $folder)
+        {
+            $handle = @opendir($_SERVER["DOCUMENT_ROOT"].$folder);
+            if($handle)
+            {
+                while (false !== ($dir = readdir($handle)))
+                {
+                    if(!isset($arModules[$dir]) && is_dir($_SERVER["DOCUMENT_ROOT"].$folder."/".$dir) && $dir!="." && $dir!=".." && $dir!="main" && strpos($dir, ".") === false)
+                    {
+                        $module_dir = $_SERVER["DOCUMENT_ROOT"].$folder."/".$dir;
+                        if($info = CModule::CreateModuleObject($dir))
+                        {
+                            $arModules[$dir]["MODULE_ID"] = $info->MODULE_ID;
+                            $arModules[$dir]["MODULE_NAME"] = $info->MODULE_NAME;
+                            $arModules[$dir]["MODULE_DESCRIPTION"] = $info->MODULE_DESCRIPTION;
+                            $arModules[$dir]["MODULE_VERSION"] = $info->MODULE_VERSION;
+                            $arModules[$dir]["MODULE_VERSION_DATE"] = $info->MODULE_VERSION_DATE;
+                            $arModules[$dir]["MODULE_SORT"] = $info->MODULE_SORT;
+                            $arModules[$dir]["MODULE_PARTNER"] = (strpos($dir, ".") !== false) ? $info->PARTNER_NAME : "";
+                            $arModules[$dir]["MODULE_PARTNER_URI"] = (strpos($dir, ".") !== false) ? $info->PARTNER_URI : "";
+                            $arModules[$dir]["IsInstalled"] = $info->IsInstalled();
+                        }
+                    }
+                }
+                closedir($handle);
+            }
+        }
+        uasort($arModules, create_function('$a, $b', 'if($a["MODULE_SORT"] == $b["MODULE_SORT"]) return strcasecmp($a["MODULE_NAME"], $b["MODULE_NAME"]); return ($a["MODULE_SORT"] < $b["MODULE_SORT"])? -1 : 1;'));
+        return $arModules;
     }
 
 }
