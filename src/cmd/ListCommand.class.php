@@ -44,7 +44,7 @@ class ListCommand extends BaseCommand {
                 $status = ConsoleKit\Colors::colorize('apply', Colors::GREEN);
 
                 # проверка на установку
-                if ($i == 3){
+                if ($i == 3 || $i == count($list)){
                     $new ++;
                     $color = ConsoleKit\Colors::RED;
                     $status = ConsoleKit\Colors::colorize('new', Colors::RED);
@@ -69,8 +69,8 @@ class ListCommand extends BaseCommand {
             $table->display();
 
             # count info
-            $return[] = Colors::colorize('New:', Colors::RED)." 1";
-            $return[] = Colors::colorize('Applied:', Colors::GREEN)." 10";
+            $return[] = Colors::colorize('New:', Colors::RED)." ".$new;
+            $return[] = Colors::colorize('Applied:', Colors::GREEN)." ".$applied;
 
             # display
             $this->padding(implode(PHP_EOL,$return));
