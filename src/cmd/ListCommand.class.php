@@ -23,10 +23,14 @@ class ListCommand extends BaseCommand {
             $table = new \cli\Table();
             $table->setHeaders($headers);
 
+            $count = 0;
+            $applied = 0;
+            $new = 0;
             $i = 1;
             $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $row) {
                 $progress->incr();
+                $count ++;
 
                 $date = explode("_",$id);
                 if (isset($date[0])){
@@ -39,9 +43,13 @@ class ListCommand extends BaseCommand {
                 $color = ConsoleKit\Colors::GREEN;
                 $status = ConsoleKit\Colors::colorize('apply', Colors::GREEN);
 
+                # проверка на установку
                 if ($i == 3){
+                    $new ++;
                     $color = ConsoleKit\Colors::RED;
                     $status = ConsoleKit\Colors::colorize('new', Colors::RED);
+                } else {
+                    $applied ++;
                 }
 
                 $table->addRow(array(
