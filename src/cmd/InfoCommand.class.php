@@ -11,7 +11,7 @@
 
 use ConsoleKit\Colors;
 /**
- * Getting information about the project
+ * Getting information about the project.
  */
 class InfoCommand extends BaseCommand {
 
