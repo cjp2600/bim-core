@@ -34,6 +34,7 @@ class CreateCommand extends BaseCommand {
     {
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
+        $desc = is_string($desc) ? $desc : "";
 
         $up_data = array();
         $down_data = array();
@@ -61,6 +62,7 @@ class CreateCommand extends BaseCommand {
     {
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
+        $desc = is_string($desc) ? $desc : "";
 
         $up_data = array();
         $down_data = array();
