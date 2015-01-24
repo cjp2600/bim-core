@@ -22,8 +22,6 @@ class InfoCommand extends BaseCommand {
         # get site name
         $site_name = \Bitrix\Main\Config\Option::get("main", "site_name");
 
-        $this->info("Information about the current bitrix project:");
-
         # get site name
         $return[] = Colors::colorize('Site:', Colors::YELLOW)." ".$site_name;
 
@@ -37,24 +35,24 @@ class InfoCommand extends BaseCommand {
         # edition
         $return[] = Colors::colorize('Edition:', Colors::YELLOW)." ".$this->checkRedaction();
 
-        $this->padding("
-        BBBBBBBBBBBBBBBBB   IIIIIIIIIIMMMMMMMM               MMMMMMMM
-        B::::::::::::::::B  I::::::::IM:::::::M             M:::::::M
-        B::::::BBBBBB:::::B I::::::::IM::::::::M           M::::::::M
-        BB:::::B     B:::::BII::::::IIM:::::::::M         M:::::::::M
-          B::::B     B:::::B  I::::I  M::::::::::M       M::::::::::M
-          B::::B     B:::::B  I::::I  M:::::::::::M     M:::::::::::M
-          B::::BBBBBB:::::B   I::::I  M:::::::M::::M   M::::M:::::::M
-          B:::::::::::::BB    I::::I  M::::::M M::::M M::::M M::::::M
-          B::::BBBBBB:::::B   I::::I  M::::::M  M::::M::::M  M::::::M
-          B::::B     B:::::B  I::::I  M::::::M   M:::::::M   M::::::M
-          B::::B     B:::::B  I::::I  M::::::M    M:::::M    M::::::M
-          B::::B     B:::::B  I::::I  M::::::M     MMMMM     M::::::M
-        BB:::::BBBBBB::::::BII::::::IIM::::::M               M::::::M
-        B:::::::::::::::::B I::::::::IM::::::M               M::::::M
-        B::::::::::::::::B  I::::::::IM::::::M               M::::::M
-        BBBBBBBBBBBBBBBBB   IIIIIIIIIIMMMMMMMM               MMMMMMMM
-        ");
+        $this->info("About bim:");
+        $this->padding('
+              ___                       ___
+             /\  \          ___        /\__\
+            /::\  \        /\  \      /::|  |
+           /:/\:\  \       \:\  \    /:|:|  |
+          /::\~\:\__\      /::\__\  /:/|:|__|__
+         /:/\:\ \:|__|  __/:/\/__/ /:/ |::::\__\
+         \:\~\:\/:/  / /\/:/  /    \/__/~~/:/  /
+          \:\ \::/  /  \::/__/           /:/  /
+           \:\/:/  /    \:\__\          /:/  /
+            \::/__/      \/__/         /:/  /
+             ~~                        \/__/
+
+         Bitrix migration manager v.0.0.1
+        ');
+
+        $this->info("About bitrix project:");
 
         # display
         $this->padding(implode(PHP_EOL,$return));
