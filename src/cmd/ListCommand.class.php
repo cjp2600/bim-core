@@ -59,7 +59,7 @@ class ListCommand extends BaseCommand {
                     ConsoleKit\Colors::colorize($i,$color),
                     ConsoleKit\Colors::colorize($id,$color),
                     (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
-                    date("d.m.y ".PHP_EOL." G:h:i",$format),
+                    date("d.m.y G:h",$format),
                     $row,
                     (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "",
                     $status
