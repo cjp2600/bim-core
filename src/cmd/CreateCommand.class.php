@@ -34,7 +34,11 @@ class CreateCommand extends BaseCommand {
     {
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        $desc = is_string($desc) ? $desc : "";
+        if (!is_string($desc)) {
+            $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+            $desc = $dialog->ask('Description:', '',false);
+        }
+
 
         $up_data = array();
         $down_data = array();
@@ -62,7 +66,10 @@ class CreateCommand extends BaseCommand {
     {
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        $desc = is_string($desc) ? $desc : "";
+        if (!is_string($desc)) {
+            $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+            $desc = $dialog->ask('Description:', '',false);
+        }
 
         $up_data = array();
         $down_data = array();
