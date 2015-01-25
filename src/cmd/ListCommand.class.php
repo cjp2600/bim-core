@@ -2,8 +2,8 @@
 
 use ConsoleKit\Widgets\ProgressBar,ConsoleKit\Colors;
 
-class ListCommand extends BaseCommand {
-
+class ListCommand extends BaseCommand
+{
     public function execute(array $args, array $options = array())
     {
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");

@@ -1,8 +1,9 @@
 {
   "commands": {
+    "up"  : "UpdateCommand",
     "ls"  : "ListCommand",
     "create" : "CreateCommand",
     "init" : "InitCommand",
     "info" : "InfoCommand"
   }
-}
+}S

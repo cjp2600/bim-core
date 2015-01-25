@@ -9,8 +9,8 @@
  * @time: 22:42
  */
 
-class InitCommand extends BaseCommand {
-
+class InitCommand extends BaseCommand
+{
     public function execute(array $args, array $options = array())
     {
         # init (create table)
@@ -41,5 +41,4 @@ class InitCommand extends BaseCommand {
         }
         return true;
     }
-
 }
