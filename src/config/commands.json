@@ -1,6 +1,7 @@
 {
   "commands": {
     "up"  : "UpdateCommand",
+    "down"  : "DownCommand",
     "ls"  : "ListCommand",
     "create" : "CreateCommand",
     "init" : "InitCommand",
