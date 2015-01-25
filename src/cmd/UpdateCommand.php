@@ -30,8 +30,12 @@ class UpdateCommand extends BaseCommand
                 if (is_string($options['id'])) {
                     $f_id = $options['id'];
                 } else {
-                    $dialog = new Dialog($this->console);
+                    $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
                     $f_id  = $dialog->ask('Type migration id:', $f_id);
+                }
+            } else if (isset($args[0])){
+                if (is_string($args[0])) {
+                    $f_id  = $args[0];
                 }
             }
 
