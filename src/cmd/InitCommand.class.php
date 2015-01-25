@@ -16,6 +16,8 @@ class InitCommand extends BaseCommand {
         # init (create table)
         if ($this->createTable()){
             $this->padding("Create migrations table : ".$this->color(strtoupper("completed"),\ConsoleKit\Colors::GREEN));
+        } else {
+            $this->padding("Create migrations table : ".$this->color(strtoupper("exist"),\ConsoleKit\Colors::GREEN));
         }
 
     }
@@ -32,7 +34,6 @@ class InitCommand extends BaseCommand {
         if ( !$DB->Query("SELECT 'file' FROM bim_migrations", true) ) {
             $this->errors = $DB->RunSQLBatch(__DIR__.'/../db/install/install.sql');
         } else {
-            $this->info("Migration table all ready exists");
             return false;
         }
         if ($this->errors !== false ) {
