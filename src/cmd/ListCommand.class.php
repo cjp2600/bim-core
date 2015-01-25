@@ -6,17 +6,16 @@ class ListCommand extends BaseCommand {
 
     public function execute(array $args, array $options = array())
     {
-        $list = $this->getDirectoryTree( $this->getMigrationPath(), "php" );
+        $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
 
         # get filename
         $file = (isset($options['f'])) ? true : false;
-
         $filter_apply = (isset($options['a'])) ? $options['a'] : false;
         $filter_new = (isset($options['n'])) ? $options['n'] : false;
 
         if (!empty($list)) {
 
-            $headers = array('№','id','Author','Date');
+            $headers = array('№', 'id', 'Author', 'Date');
             if ($file) {
                 $headers[] = 'File';
             }
@@ -33,6 +32,7 @@ class ListCommand extends BaseCommand {
             $i = 1;
             $return_array_new = array();
             $return_array_apply = array();
+
             $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $data) {
                 $progress->incr();
@@ -41,16 +41,17 @@ class ListCommand extends BaseCommand {
                 $row = $data['file'];
                 $name = $data['name'];
 
+                # check in db
                 $is_new = ($i == 3 || $i == count($list));
 
                 $class_name = $this->camelCase($name);
-                include_once "".$this->getMigrationPath() . $row."";
+                include_once "" . $this->getMigrationPath() . $row . "";
 
                 $color = ConsoleKit\Colors::GREEN;
                 $status = ConsoleKit\Colors::colorize('apply', Colors::GREEN);
 
                 # проверка на установку
-                if ($is_new){
+                if ($is_new) {
                     $new++;
                     $color = ConsoleKit\Colors::RED;
                     $status = ConsoleKit\Colors::colorize('new', Colors::RED);
@@ -59,24 +60,24 @@ class ListCommand extends BaseCommand {
                 }
 
                 $rowArray = array(
-                    ConsoleKit\Colors::colorize($i,$color),
-                    ConsoleKit\Colors::colorize($id,$color),
-                    (method_exists($class_name,"getAuthor")) ? $class_name::getAuthor() : "",
-                    date("d.m.y G:h",$data['date'])
+                    ConsoleKit\Colors::colorize($i, $color),
+                    ConsoleKit\Colors::colorize($id, $color),
+                    (method_exists($class_name, "getAuthor")) ? $class_name::getAuthor() : "",
+                    date("d.m.y G:h", $data['date'])
                 );
                 if ($file) {
                     $rowArray[] = $row;
                 }
-                $rowArray[] = (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "";
+                $rowArray[] = (method_exists($class_name, "getDescription")) ? $class_name::getDescription() : "";
                 $rowArray[] = $status;
 
                 if ($is_new) {
                     $return_array_new[] = $rowArray;
-                } else{
+                } else {
                     $return_array_apply[] = $rowArray;
                 }
 
-            $i++;
+                $i++;
             }
 
             if ($filter_new) {
@@ -84,21 +85,19 @@ class ListCommand extends BaseCommand {
             } else if ($filter_apply) {
                 $table->setRows($return_array_apply);
             } else {
-                $table->setRows(array_merge($return_array_new,$return_array_apply));
+                $table->setRows(array_merge($return_array_apply,$return_array_new));
             }
-
-            $table->sort("Status");
 
             $progress->stop();
             $table->display();
 
             # count info
-            $return[] = Colors::colorize('New:', Colors::RED)." ".$new;
-            $return[] = Colors::colorize('Applied:', Colors::GREEN)." ".$applied;
-            $return[] = "Count: ".$count;
+            $return[] = Colors::colorize('New:', Colors::RED) . " " . $new;
+            $return[] = Colors::colorize('Applied:', Colors::GREEN) . " " . $applied;
+            $return[] = "Count: " . $count;
 
             # display
-            $this->padding(implode(PHP_EOL,$return));
+            $this->padding(implode(PHP_EOL, $return));
 
         } else {
             $this->info('Empty list');
