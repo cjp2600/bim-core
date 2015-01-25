@@ -17,7 +17,7 @@ class InitCommand extends BaseCommand {
         if ($this->createTable()){
             $this->padding("Create migrations table : ".$this->color(strtoupper("completed"),\ConsoleKit\Colors::GREEN));
         } else {
-            $this->padding("Create migrations table : ".$this->color(strtoupper("exist"),\ConsoleKit\Colors::GREEN));
+            $this->padding("Create migrations table : ".$this->color(strtoupper("already exist"),\ConsoleKit\Colors::YELLOW));
         }
 
     }
