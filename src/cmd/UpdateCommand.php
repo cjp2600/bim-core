@@ -25,6 +25,23 @@ class UpdateCommand extends BaseCommand
 
             $return = array();
             # filer
+            $f_id = false;
+            if ((isset($options['id']))) {
+                $f_id = (is_string($options['id'])) ? $options['id'] : false;
+            }
+
+            if ($f_id){
+                if (isset ($return_array_new[$f_id])) {
+                    $return_array_new = array($f_id => $return_array_new[$f_id]);
+                } else {
+                    if (isset ($return_array_apply[$f_id])) {
+                        throw new Exception($f_id . " - is already applied");
+                    } else {
+                        throw new Exception($f_id . " - is not found");
+                    }
+                }
+            }
+
             foreach ( $return_array_new as $id => $mig) {
                 include_once "" . $mig[1] . "";
                 if ((method_exists($mig[0], "up"))) {
