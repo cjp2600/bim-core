@@ -67,13 +67,14 @@ class CreateCommand extends BaseCommand {
         $up_data = array();
         $down_data = array();
 
+        $name_method = "create";
         # set
         $name_migration = $this->getMigrationName($this->fromCamelCase(__METHOD__));
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
-                $this->setTemplateMethod(strtolower($args[0]),$up_data),
-                $this->setTemplateMethod(strtolower($args[0]),$down_data,"down"),
+                $this->setTemplateMethod(strtolower($name_method),$up_data),
+                $this->setTemplateMethod(strtolower($name_method),$down_data,"down"),
                 $desc,
                 get_current_user()
             ));
