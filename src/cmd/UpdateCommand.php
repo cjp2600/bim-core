@@ -42,9 +42,9 @@ class UpdateCommand extends BaseCommand
                                     $return[] = $this->color("Applied : " . $mig[2], Colors::GREEN);
                                 }
                             }
-                        } else {
-                            $return[] = $this->color("Error : " . $mig[2], Colors::RED);
                         }
+                    } else {
+                        $return[] = $this->color("Error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW);
                     }
                 }
             }
