@@ -65,7 +65,7 @@ class UpdateCommand extends BaseCommand
                     }
                 }
             }
-            if (empty($return)) {
+            if (!empty($return)) {
                 $this->padding(implode(PHP_EOL, $return));
             } else {
                 $this->info("New migrations list is empty.");
