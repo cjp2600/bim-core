@@ -49,7 +49,15 @@ class DownCommand extends BaseCommand
                         throw new Exception("Migration ".$f_id . " - is not found");
                     }
                 }
+            } else {
+                $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+                $type  = $dialog->ask('Are you sure you want to remove all applied migration (yes/no)?:', 'yes');
+
+                if (strtolower($type) == "no" || strtolower($type) == "n"){
+                    return true;
+                }
             }
+
 
             foreach ( $return_array_apply as $id => $mig) {
                 include_once "" . $mig[1] . "";
