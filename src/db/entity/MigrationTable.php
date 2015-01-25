@@ -33,6 +33,7 @@ class MigrationsTable extends Entity\DataManager
     {
         return array(
             'id' => array(
+                'primary' => true,
                 'data_type' => 'string',
                 'required' => true,
                 'validation' => array(__CLASS__, 'validateId'),
