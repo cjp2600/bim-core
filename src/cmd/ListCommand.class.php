@@ -42,8 +42,7 @@ class ListCommand extends BaseCommand {
                 $name = $data['name'];
 
                 # check in db
-                $is_new = ($i == 3 || $i == count($list));
-
+                $is_new = (!$this->checkInDb($id));
                 $class_name = $this->camelCase($name);
                 include_once "" . $this->getMigrationPath() . $row . "";
 

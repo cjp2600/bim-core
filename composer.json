@@ -25,8 +25,9 @@
 	"autoload": {
 		"classmap": [
 		  	"src",
-			"src/db",
-			"src/cmd"
+		    "src/db",
+		    "src/db/entity",
+		    "src/cmd"
 		]
 	},
 	"scripts": {

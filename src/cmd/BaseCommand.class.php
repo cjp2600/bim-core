@@ -212,4 +212,37 @@ class BaseCommand extends Command {
         return Colors::colorize($text, $color);
     }
 
+    /**
+     * checkInDb
+     * @param $migration_id
+     * @return bool
+     */
+    public function checkInDb($migration_id)
+    {
+        # check migration table
+        $this->checkMigrationTable();
+        $obMigration = Bim\Db\Entity\MigrationsTable::getList(array(
+            "filter" => array(
+                "id" => $migration_id
+            )
+        ));
+        if ($arMigration = $obMigration->fetch()){
+            if ($arMigration['id'] == $migration_id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * checkMigrationTable
+     * @throws Exception
+     */
+    public function checkMigrationTable()
+    {
+        global $DB;
+        if ( !$DB->Query("SELECT 'file' FROM bim_migrations", true) ) {
+            throw new Exception("Migration table not found, run init command. Example: php bim init");
+        }
+    }
 }
