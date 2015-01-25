@@ -44,9 +44,9 @@ class DownCommand extends BaseCommand
                     $return_array_apply = array($f_id => $return_array_apply[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
-                        throw new Exception($f_id . " - is already applied");
+                        throw new Exception("Migration ".$f_id . " - is already applied");
                     } else {
-                        throw new Exception($f_id . " - is not found");
+                        throw new Exception("Migration ".$f_id . " - is not found");
                     }
                 }
             }
@@ -60,7 +60,7 @@ class DownCommand extends BaseCommand
                             if ($obSelect->fetch()) {
                                 $ob = Bim\Db\Entity\MigrationsTable::delete($id);
                                 if ($ob->isSuccess()) {
-                                    $return[] = $this->color("Revert migration : " . $mig[2], Colors::YELLOW);
+                                    $return[] = $this->color("Revert migration : " . $mig[2], Colors::GREEN);
                                 }
                             }
                         }

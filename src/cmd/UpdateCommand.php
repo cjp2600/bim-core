@@ -44,9 +44,9 @@ class UpdateCommand extends BaseCommand
                     $return_array_new = array($f_id => $return_array_new[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
-                        throw new Exception($f_id . " - is already applied");
+                        throw new Exception("Migration ".$f_id . " - is already applied");
                     } else {
-                        throw new Exception($f_id . " - is not found");
+                        throw new Exception("Migration ".$f_id . " - is not found");
                     }
                 }
             }
