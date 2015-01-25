@@ -35,7 +35,7 @@ class UpdateCommand extends BaseCommand
                                 $content = base64_encode(file_get_contents($mig[1]));
                                 $ob = Bim\Db\Entity\MigrationsTable::add(array(
                                     "id" => $id,
-                                    "file" => $mig[2],
+                                    "migration" => $mig[2],
                                     "content" => $content
                                 ));
                                 if ($ob->isSuccess()) {
