@@ -27,7 +27,12 @@ class UpdateCommand extends BaseCommand
             # filer
             $f_id = false;
             if ((isset($options['id']))) {
-                $f_id = (is_string($options['id'])) ? $options['id'] : false;
+                if (is_string($options['id'])) {
+                    $f_id = $options['id'];
+                } else {
+                    $dialog = new Dialog($this->console);
+                    $f_id  = $dialog->ask('Type migration id:', $f_id);
+                }
             }
 
             if ($f_id){
