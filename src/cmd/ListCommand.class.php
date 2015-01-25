@@ -31,7 +31,8 @@ class ListCommand extends BaseCommand {
             $applied = 0;
             $new = 0;
             $i = 1;
-
+            $return_array_new = array();
+            $return_array_apply = array();
             $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $data) {
                 $progress->incr();
@@ -40,6 +41,8 @@ class ListCommand extends BaseCommand {
                 $row = $data['file'];
                 $name = $data['name'];
 
+                $is_new = ($i == 3 || $i == count($list));
+
                 $class_name = $this->camelCase($name);
                 include_once "".$this->getMigrationPath() . $row."";
 
@@ -47,7 +50,7 @@ class ListCommand extends BaseCommand {
                 $status = ConsoleKit\Colors::colorize('apply', Colors::GREEN);
 
                 # проверка на установку
-                if ($i == 3 || $i == count($list)){
+                if ($is_new){
                     $new++;
                     $color = ConsoleKit\Colors::RED;
                     $status = ConsoleKit\Colors::colorize('new', Colors::RED);
@@ -67,9 +70,21 @@ class ListCommand extends BaseCommand {
                 $rowArray[] = (method_exists($class_name,"getDescription")) ? $class_name::getDescription() : "";
                 $rowArray[] = $status;
 
-                $table->addRow($rowArray);
+                if ($is_new) {
+                    $return_array_new[] = $rowArray;
+                } else{
+                    $return_array_apply[] = $rowArray;
+                }
 
             $i++;
+            }
+
+            if ($filter_new) {
+                $table->setRows($return_array_new);
+            } else if ($filter_apply) {
+                $table->setRows($return_array_apply);
+            } else {
+                $table->setRows(array_merge($return_array_new,$return_array_apply));
             }
 
             $table->sort("Status");
