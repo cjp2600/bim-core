@@ -85,7 +85,7 @@ class UpdateCommand extends BaseCommand
             $time_end = microtime(true);
             $time = $time_end - $time_start;
             $this->writeln('');
-            $this->info(" -> End applying ".round($time, 2)."s");
+            $this->info(" -> ".round($time, 2)."s");
         }
     }
 }
