@@ -14,7 +14,7 @@ namespace Bim;
 
 class Revision {
 
-    public function response($response)
+    public function response($response = false)
     {
         if (isset($response['type']) && $response['type'] == "success") {
             return true;
@@ -23,7 +23,7 @@ class Revision {
                 throw new Exception(str_replace("<br>",PHP_EOL,$response['error_text']));
             }
         }
-        return false;
+        return is_bool($response) ? $response : false;
     }
 
 }
