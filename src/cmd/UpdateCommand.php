@@ -68,19 +68,21 @@ class UpdateCommand extends BaseCommand
                                 ));
                                 if ($ob->isSuccess()) {
                                     $return[] = $this->color("Applied : " . $mig[2], Colors::GREEN);
+                                    $this->writeln($this->color("Applied : " . $mig[2], Colors::GREEN));
                                 }
                             }
                         }
                     } else {
                         $return[] = $this->color("Error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW);
+                        $this->writeln($this->color("Error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW));
                     }
                 }
             }
             $time_end = microtime(true);
             $time = $time_end - $time_start;
             if (!empty($return)) {
-                $this->padding(implode(PHP_EOL, $return));
-                $this->info("End time - ".$time."s");
+                //$this->padding(implode(PHP_EOL, $return));
+                $this->info("End applying ".round($time, 2)."s");
             } else {
                 $this->info("New migrations list is empty.");
             }
