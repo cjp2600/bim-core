@@ -73,12 +73,12 @@ class UpdateCommand extends BaseCommand
                                     "content" => $content
                                 ));
                                 if ($ob->isSuccess()) {
-                                    $this->writeln($this->color("       - applied : " . $mig[2], Colors::GREEN));
+                                    $this->writeln($this->color("     - applied : " . $mig[2], Colors::GREEN));
                                 }
                             }
                         }
                     } else {
-                        $this->writeln($this->color("       - error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW));
+                        $this->writeln($this->color("     - error : " . $mig[2], Colors::RED).PHP_EOL."       ".$this->color("Method Up return false",Colors::YELLOW));
                     }
                 }
             }
