@@ -87,7 +87,7 @@ class BaseCommand extends Command {
     public function setTemplate($class_name, $up_content, $down_content, $desc_content = "",$author = "")
     {
         $template = file_get_contents(__DIR__.'/../db/template/main.txt');
-        $template = str_replace(array("#CLASS_NAME#", "#UP_CONTENT#", "#DOWN_CONTENT#","#DESC_CONTENT#","#AUTHOR_CONTENT#"), array($this->camelCase($class_name), $up_content, $down_content,$desc_content,$author), $template);
+        $template = str_replace(array("#CLASS_NAME#", "#UP_CONTENT#", "#DOWN_CONTENT#","#DESC_CONTENT#","#AUTHOR_CONTENT#"), array($class_name, $up_content, $down_content,$desc_content,$author), $template);
         return $template;
     }
 
