@@ -49,7 +49,7 @@ class ListCommand extends BaseCommand
                 $color = ConsoleKit\Colors::GREEN;
                 $status = ConsoleKit\Colors::colorize('apply', Colors::GREEN);
 
-                # проверка на установку
+                # check in db
                 if ($is_new) {
                     $new++;
                     $color = ConsoleKit\Colors::RED;

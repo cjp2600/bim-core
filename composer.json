@@ -27,6 +27,8 @@
 		  	"src",
 		    "src/db",
 		    "src/db/entity",
+			"src/classes",
+			"src/classes/iblock",
 		    "src/cmd"
 		]
 	},

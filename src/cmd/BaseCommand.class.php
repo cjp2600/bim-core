@@ -141,7 +141,8 @@ class BaseCommand extends Command {
      * @param $input
      * @return string
      */
-    public function fromCamelCase($input) {
+    public function fromCamelCase($input)
+    {
         preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);
         $ret = $matches[0];
         foreach ($ret as &$match) {
@@ -177,7 +178,8 @@ class BaseCommand extends Command {
      * @param $x
      * @return array
      */
-    public function getDirectoryTree( $outerDir , $x){
+    public function getDirectoryTree( $outerDir , $x)
+    {
         $dirs = array_diff( scandir( $outerDir ), Array( ".", ".." ) );
         $dir_array = Array();
         foreach( $dirs as $d ){

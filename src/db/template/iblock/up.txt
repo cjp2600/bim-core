@@ -1,1 +1,14 @@
-return true;
+$iblock = new Bim\Db\Integrate\IblockIntegrate();
+$response = $iblock->Add(array(
+    "IBLOCK_TYPE_ID" => "#IBLOCK_TYPE_ID#",
+    "NAME" => "#NAME#",
+    "CODE" => "#CODE#",
+    "LID"  => array(
+       0 => "#SITE_ID#",
+       1 => "ru"
+    )
+);
+if (isset($response['type']) && $response['type'] == "success"){
+    return true;
+}
+return false;
