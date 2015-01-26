@@ -137,12 +137,9 @@ class BaseCommand extends Command {
      * @param $name
      * @return string
      */
-    public function getMigrationName($name)
+    public function getMigrationName()
     {
-        return time()."_".randString(7, array(
-            "abcdefghijklnmopqrstuvwxyz",
-            "1234567890"
-        ))."_".$name;
+        return time();
     }
 
     /**
@@ -201,14 +198,11 @@ class BaseCommand extends Command {
         }
         $return = array();
         foreach ($dir_array as $key => $val){
-            $date = explode("_",$key);
-            if (isset($date[1])){
-                $return[$date[1]] = array(
+                $return[$key] = array(
                     "name" => $key,
                     "file" => $val,
-                    "date" => $date[0]
+                    "date" => $key
                 );
-            }
         }
         return $return;
     }

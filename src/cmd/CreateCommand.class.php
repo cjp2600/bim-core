@@ -95,7 +95,7 @@ class CreateCommand extends BaseCommand {
 
         $name_method = "other";
         # set
-        $name_migration = $this->getMigrationName($this->fromCamelCase(__METHOD__));
+        $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
