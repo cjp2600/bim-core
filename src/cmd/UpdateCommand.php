@@ -51,6 +51,8 @@ class UpdateCommand extends BaseCommand
                 }
             }
 
+            $time_start = microtime(true);
+            $this->info("Start applying migration:");
             foreach ( $return_array_new as $id => $mig) {
                 include_once "" . $mig[1] . "";
                 if ((method_exists($mig[0], "up"))) {
@@ -74,8 +76,11 @@ class UpdateCommand extends BaseCommand
                     }
                 }
             }
+            $time_end = microtime(true);
+            $time = $time_end - $time_start;
             if (!empty($return)) {
                 $this->padding(implode(PHP_EOL, $return));
+                $this->info("End time - ".$time."s");
             } else {
                 $this->info("New migrations list is empty.");
             }
