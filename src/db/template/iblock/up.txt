@@ -5,4 +5,4 @@ $iblock = new Bim\Db\Iblock\IblockIntegrate();
             "CODE" => "#CODE#",
             "LID"  =>  "#LID#"
         ));
-        $this->response($response);
+        return self::response($response);
