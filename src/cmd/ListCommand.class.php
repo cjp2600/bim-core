@@ -43,7 +43,7 @@ class ListCommand extends BaseCommand
 
                 # check in db
                 $is_new = (!$this->checkInDb($id));
-                $class_name = $this->camelCase($name);
+                $class_name = "Migration".$id;
                 include_once "" . $this->getMigrationPath() . $row . "";
 
                 $color = ConsoleKit\Colors::GREEN;
