@@ -55,13 +55,8 @@ class CreateCommand extends BaseCommand {
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[CODE]:',\ConsoleKit\Colors::YELLOW), '',false);
         $up_data['CODE'] = $field_val;
 
-        $desk = "Сайты, к которым относится инфоблок - no default/required.
-        Пример:
-           array(
-               0 => 's1',
-               1 => 'en'
-           )";
-        $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[LID]:',\ConsoleKit\Colors::YELLOW), "array(0 => 's1',1 => 'en')");
+        $desk = "Сайты, к которым относится инфоблок - no default/required. Пример: s1";
+        $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[LID]:',\ConsoleKit\Colors::YELLOW), "s1");
         $up_data['LID'] = $field_val;
 
 
