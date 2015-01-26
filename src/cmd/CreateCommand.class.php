@@ -44,13 +44,25 @@ class CreateCommand extends BaseCommand {
         # Up Wizard
         $up_data = array();
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
-        $field_val = $dialog->ask('Type required field [IBLOCK_TYPE_ID]:', '',false);
+
+        $desk = "Тип инфоблока - no default/required";
+        $field_val = $dialog->ask($desk.PHP_EOL.$this->color('Type required field [IBLOCK_TYPE_ID]:',\ConsoleKit\Colors::YELLOW), '',false);
         $up_data['IBLOCK_TYPE_ID'] = $field_val;
-        $field_val = $dialog->ask('Type required field [NAME]:', '',false);
+
+        $desk = "Название инфоблока - no default/required";
+        $field_val = $dialog->ask($desk.PHP_EOL.$this->color('Type required field [NAME]:',\ConsoleKit\Colors::YELLOW), '',false);
         $up_data['NAME'] = $field_val;
-        $field_val = $dialog->ask('Type required field [CODE]:', '',false);
+
+        $desk = "Символьный код инфоблока - no default/required";
+        $field_val = $dialog->ask($desk.PHP_EOL.$this->color('Type required field [CODE]:',\ConsoleKit\Colors::YELLOW), '',false);
         $up_data['CODE'] = $field_val;
-        $field_val = $dialog->ask('Type required field [LID]:', "array(0 => 's1',1 => 'en');");
+
+        $desk = "Сайты, к которым относится инфоблок - no default/required. Пример:
+                   array(
+                       0 => 's1',
+                       1 => 'en'
+                   );";
+        $field_val = $dialog->ask($desk.PHP_EOL.$this->color('Type required field [LID]:',\ConsoleKit\Colors::YELLOW), "array(0 => 's1',1 => 'en')");
         $up_data['LID'] = $field_val;
 
         $down_data = array();
