@@ -134,8 +134,8 @@ class BaseCommand extends Command {
 
     /**
      * getMigrationName
-     * @param $name
      * @return string
+     * @internal param $name
      */
     public function getMigrationName()
     {

@@ -14,7 +14,7 @@ class DownCommand extends BaseCommand
 
                 # check in db
                 $is_new = (!$this->checkInDb($id));
-                $class_name = $this->camelCase($name);
+                $class_name = "Migration".$id;
 
                 if ($is_new) {
                     $return_array_new[$id] = array($class_name,"" . $this->getMigrationPath() . $row . "",$name);
