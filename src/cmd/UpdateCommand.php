@@ -68,7 +68,7 @@ class UpdateCommand extends BaseCommand
                                 ));
                                 if ($ob->isSuccess()) {
                                     $return[] = $this->color("*Applied : " . $mig[2], Colors::GREEN);
-                                    $this->writeln($this->color(str_pad(" * applied : " . $mig[2], 20, " ", STR_PAD_BOTH), Colors::GREEN));
+                                    $this->writeln($this->color(str_pad(" * applied : " . $mig[2], 20, "_", STR_PAD_BOTH), Colors::GREEN));
                                 }
                             }
                         }
