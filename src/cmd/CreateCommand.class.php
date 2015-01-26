@@ -40,7 +40,19 @@ class CreateCommand extends BaseCommand {
         }
 
 
+
+        # Up Wizard
         $up_data = array();
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $field_val = $dialog->ask('Type required field [IBLOCK_TYPE_ID]:', '',false);
+        $up_data['IBLOCK_TYPE_ID'] = $field_val;
+        $field_val = $dialog->ask('Type required field [NAME]:', '',false);
+        $up_data['NAME'] = $field_val;
+        $field_val = $dialog->ask('Type required field [CODE]:', '',false);
+        $up_data['CODE'] = $field_val;
+        $field_val = $dialog->ask('Type required field [LID]:', "array(0 => 's1',1 => 'en');");
+        $up_data['LID'] = $field_val;
+
         $down_data = array();
 
         # set
