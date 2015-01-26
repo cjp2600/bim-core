@@ -12,23 +12,27 @@
 namespace Bim;
 
 
+use ConsoleKit\Colors;
+use ConsoleKit\Console;
+
 class Revision {
 
     public function response($response = false)
     {
+        $console = new Console();
         $mig = str_replace("Migration","",get_called_class());
         if (isset($response['type']) && $response['type'] == "success") {
             return true;
         } else if ($response['type'] == "error"){
             if (isset($response['error_text'])){
                // throw new \Exception(str_replace("<br>",PHP_EOL,$response['error_text']));
-                $this->writeln($this->color("     - error : " . $mig, Colors::RED)." ".$this->color("(".str_replace("<br>",PHP_EOL,$response['error_text']).")",Colors::YELLOW));
+                $console->writeln(Colors::colorize("     - error : " . $mig, Colors::RED)." ".$this->color("(".str_replace("<br>",PHP_EOL,$response['error_text']).")",Colors::YELLOW));
                 return false;
             }
         }
 
         if (!$response) {
-            $this->writeln($this->color("     - error : " . $mig, Colors::RED)." ".$this->color("(Method Up return false)",Colors::YELLOW));
+            $console->writeln(Colors::colorize("     - error : " . $mig, Colors::RED)." ".$this->color("(Method Up return false)",Colors::YELLOW));
         }
 
         return is_bool($response) ? $response : false;
