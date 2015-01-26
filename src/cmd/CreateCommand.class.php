@@ -39,8 +39,6 @@ class CreateCommand extends BaseCommand {
             $desc = $dialog->ask('Description:', '',false);
         }
 
-
-
         # Up Wizard
         $up_data = array();
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
@@ -65,6 +63,8 @@ class CreateCommand extends BaseCommand {
            )";
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[LID]:',\ConsoleKit\Colors::YELLOW), "array(0 => 's1',1 => 'en')");
         $up_data['LID'] = $field_val;
+
+
 
         $down_data = array();
 

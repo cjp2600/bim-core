@@ -414,20 +414,21 @@ class IblockIntegrate
                 $arFields[$DefaultName] = $DefaultValue;
         }
 
-        $CIblock = new CIBlock();
+        $CIblock = new \CIBlock();
 
         $ID = $CIblock->Add($arFields);
 
         if ($ID)
         {
-            if (!$isRevert) {
-                $IblockRevert = new IblockRevertIntegrate();
-                if ($IblockRevert->Delete($arFields['CODE']))
-                    return $RESPONSE[] = array('type' => 'success', 'ID' => $ID);
-                else
-                    return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Cant create "iblock add revert" operation');
-            }
             return $RESPONSE[] = array('type' => 'success', 'ID' => $ID);
+//            if (!$isRevert) {
+//                $IblockRevert = new IblockRevertIntegrate();
+//                if ($IblockRevert->Delete($arFields['CODE']))
+//                    return $RESPONSE[] = array('type' => 'success', 'ID' => $ID);
+//                else
+//                    return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Cant create "iblock add revert" operation');
+//            }
+//            return $RESPONSE[] = array('type' => 'success', 'ID' => $ID);
         }
         else
             return $RESPONSE[] = array('type' => 'error', 'error_text' => $CIblock->LAST_ERROR);
@@ -797,7 +798,7 @@ class IblockIntegrate
                 $IblockRevert = new IblockRevertIntegrate();
                 if ($IblockRevert->Update($IblockCode))
                 {
-                    $Iblock = new CIBlock();
+                    $Iblock = new \CIBlock();
                     if ($Iblock->Update($NewArFields['ID'], $NewArFields))
                         return $RESPONSE[] = array('type' => 'success');
                     else
@@ -808,7 +809,7 @@ class IblockIntegrate
                 }
 
             } else {
-                $Iblock = new CIBlock();
+                $Iblock = new \CIBlock();
                 if ($Iblock->Update($NewArFields['ID'], $NewArFields))
                     return $RESPONSE[] = array('type' => 'success');
                 else
