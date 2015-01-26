@@ -1,6 +1,6 @@
 <?php
 
-namespace Bim\Db\Integrate;
+namespace Bim\Db\Iblock;
 
 class IblockIntegrate
 {

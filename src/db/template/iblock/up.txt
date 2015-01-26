@@ -1,4 +1,4 @@
-$iblock = new Bim\Db\Integrate\IblockIntegrate();
+$iblock = new Bim\Db\Iblock\IblockIntegrate();
 $response = $iblock->Add(array(
     "IBLOCK_TYPE_ID" => "#IBLOCK_TYPE_ID#",
     "NAME" => "#NAME#",
