@@ -402,7 +402,7 @@ class IblockIntegrate
             return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Not found iblock code');
         }
 
-        $iblockDbRes = CIBlock::GetList( array(), array('CODE' => $arFields['CODE'] ) );
+        $iblockDbRes = \CIBlock::GetList( array(), array('CODE' => $arFields['CODE'] ) );
         if ( $iblockDbRes !== false && $iblockDbRes->SelectedRowsCount() ) {
             return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Iblock with code = "' . $arFields['CODE'] .'" already exist.');
         }
@@ -784,7 +784,7 @@ class IblockIntegrate
         global $RESPONSE;
 
         unset($arFields['ID']);
-        $dbIblock = CIBlock::GetList(array(), array('CODE' => $IblockCode));
+        $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode));
         if ($arIblock = $dbIblock->Fetch())
         {
             $NewArFields = array_merge($arIblock, $arFields);
@@ -827,7 +827,7 @@ class IblockIntegrate
     public function Delete($IblockCode, $isRevert = false)
     {
         global $RESPONSE;
-        $dbIblock = CIBlock::GetList(array(), array('CODE' => $IblockCode));
+        $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode));
         if ($arIblock = $dbIblock->Fetch())
         {
             $iblockElDbRes = CIBlockElement::GetList( array(), array('IBLOCK_ID' => $arIblock['ID'] ) );
@@ -841,7 +841,7 @@ class IblockIntegrate
 
                 if ($IblockRevert->Add($IblockCode))
                 {
-                    if (CIBlock::Delete($arIblock['ID'])) {
+                    if (\CIBlock::Delete($arIblock['ID'])) {
                         return $RESPONSE[] = array('type' => 'success');
                     } else {
                         return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Iblock delete error!');
@@ -853,7 +853,7 @@ class IblockIntegrate
 
             } else {
 
-                if (CIBlock::Delete($arIblock['ID'])) {
+                if (\CIBlock::Delete($arIblock['ID'])) {
                     return $RESPONSE[] = array('type' => 'success');
                 } else {
                     return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Iblock delete error!');
