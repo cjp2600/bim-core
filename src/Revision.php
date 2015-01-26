@@ -20,7 +20,7 @@ class Revision {
             return true;
         } else if ($response['type'] == "error"){
             if (isset($response['error_text'])){
-                throw new Exception(str_replace("<br>",PHP_EOL,$response['error_text']));
+                throw new \Exception(str_replace("<br>",PHP_EOL,$response['error_text']));
             }
         }
         return is_bool($response) ? $response : false;
