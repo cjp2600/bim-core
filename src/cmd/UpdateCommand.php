@@ -58,6 +58,7 @@ class UpdateCommand extends BaseCommand
 
             $time_start = microtime(true);
             $this->info(" -> Start applying migration:");
+            $this->writeln('');
             foreach ( $return_array_new as $id => $mig) {
                 include_once "" . $mig[1] . "";
                 if ((method_exists($mig[0], "up"))) {
@@ -83,6 +84,7 @@ class UpdateCommand extends BaseCommand
             }
             $time_end = microtime(true);
             $time = $time_end - $time_start;
+            $this->writeln('');
             $this->info(" -> End applying ".round($time, 2)."s");
         }
     }
