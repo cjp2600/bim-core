@@ -58,7 +58,14 @@ class DownCommand extends BaseCommand
                 }
             }
 
+            if (empty($return_array_apply)){
+                $this->info("Applied migrations list is empty.");
+                return false;
+            }
 
+            $time_start = microtime(true);
+            $this->info(" <- Start revert migration:");
+            $this->writeln('');
             foreach ( $return_array_apply as $id => $mig) {
                 include_once "" . $mig[1] . "";
                 if ((method_exists($mig[0], "down"))) {
@@ -68,20 +75,20 @@ class DownCommand extends BaseCommand
                             if ($obSelect->fetch()) {
                                 $ob = Bim\Db\Entity\MigrationsTable::delete($id);
                                 if ($ob->isSuccess()) {
-                                    $return[] = $this->color("Revert migration : " . $mig[2], Colors::GREEN);
+                                    $this->writeln($this->color("     - revert   : " . $mig[2], Colors::GREEN));
                                 }
                             }
                         }
                     } else {
-                        $return[] = $this->color("Error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Down return false",Colors::YELLOW);
+                        $this->writeln($this->color("     - error : " . $mig[2], Colors::RED)." ".$this->color("(Method Up return false)",Colors::YELLOW));
                     }
                 }
             }
-            if (!empty($return)) {
-                $this->padding(implode(PHP_EOL, $return));
-            } else {
-                $this->info("Applied migrations list is empty.");
-            }
+
+            $time_end = microtime(true);
+            $time = $time_end - $time_start;
+            $this->writeln('');
+            $this->info(" -> ".round($time, 2)."s");
         }
     }
 }

@@ -73,7 +73,7 @@ class UpdateCommand extends BaseCommand
                                     "content" => $content
                                 ));
                                 if ($ob->isSuccess()) {
-                                    $this->writeln($this->color("     - applied : " . $mig[2], Colors::GREEN));
+                                    $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
                                 }
                             }
                         }
