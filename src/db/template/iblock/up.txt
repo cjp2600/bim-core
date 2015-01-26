@@ -3,9 +3,13 @@ $iblock = new Bim\Db\Iblock\IblockIntegrate();
             "IBLOCK_TYPE_ID" => "#IBLOCK_TYPE_ID#",
             "NAME" => "#NAME#",
             "CODE" => "#CODE#",
-            "LID"  => #LID#
-        );
-        if (isset($response['type']) && $response['type'] == "success"){
+            "LID"  =>  #LID#
+        ));
+        if (isset($response['type']) && $response['type'] == "success") {
             return true;
+        } else if ($response['type'] == "error"){
+            if (isset($response['error_text'])){
+                throw new Exception($response['error_text']);
+            }
         }
         return false;
