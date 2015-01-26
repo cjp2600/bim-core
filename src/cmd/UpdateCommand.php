@@ -51,6 +51,11 @@ class UpdateCommand extends BaseCommand
                 }
             }
 
+            if (empty($return_array_new)){
+                $this->info("New migrations list is empty.");
+                return false;
+            }
+
             $time_start = microtime(true);
             $this->info(" -> Start applying migration:");
             foreach ( $return_array_new as $id => $mig) {
@@ -67,25 +72,18 @@ class UpdateCommand extends BaseCommand
                                     "content" => $content
                                 ));
                                 if ($ob->isSuccess()) {
-                                    $return[] = $this->color("*Applied : " . $mig[2], Colors::GREEN);
-                                    $this->writeln($this->color(str_pad(" * applied : " . $mig[2], 20, "_", STR_PAD_BOTH), Colors::GREEN));
+                                    $this->writeln($this->color("       - applied : " . $mig[2], Colors::GREEN));
                                 }
                             }
                         }
                     } else {
-                        $return[] = $this->color("error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW);
-                        $this->writeln(str_pad($this->color(" * error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW), " ", STR_PAD_BOTH));
+                        $this->writeln($this->color("       - error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW));
                     }
                 }
             }
             $time_end = microtime(true);
             $time = $time_end - $time_start;
-            if (!empty($return)) {
-                //$this->padding(implode(PHP_EOL, $return));
-                $this->info(" -> End applying ".round($time, 2)."s");
-            } else {
-                $this->info("New migrations list is empty.");
-            }
+            $this->info(" -> End applying ".round($time, 2)."s");
         }
     }
 }
