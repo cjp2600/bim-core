@@ -816,13 +816,13 @@ class IblockIntegrate
      * Delete() - метод удаления инфоблока
      * @param string $IblockCode - код инфоблока
      */
-    public function Delete($IblockCode, $isRevert = false)
+    public function Delete($IblockCode)
     {
         global $RESPONSE;
         $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode));
         if ($arIblock = $dbIblock->Fetch())
         {
-            $iblockElDbRes = CIBlockElement::GetList( array(), array('IBLOCK_ID' => $arIblock['ID'] ) );
+            $iblockElDbRes = \CIBlockElement::GetList( array(), array('IBLOCK_ID' => $arIblock['ID'] ) );
             if ( $iblockElDbRes !== false && $iblockElDbRes->SelectedRowsCount() ) {
                 return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Can not delete iblock id = ' . $arIblock['ID'] . ' have elements');
             }
