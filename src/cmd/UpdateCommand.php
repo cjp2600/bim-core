@@ -78,7 +78,7 @@ class UpdateCommand extends BaseCommand
                             }
                         }
                     } else {
-                        $this->writeln($this->color("     - error : " . $mig[2], Colors::RED).PHP_EOL."       ".$this->color("Method Up return false",Colors::YELLOW));
+                        $this->writeln($this->color("     - error : " . $mig[2], Colors::RED)." ".$this->color("(Method Up return false)",Colors::YELLOW));
                     }
                 }
             }
