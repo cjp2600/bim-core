@@ -54,14 +54,13 @@ class CreateCommand extends BaseCommand {
         $desk = "Символьный код инфоблока - no default/required";
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[CODE]:',\ConsoleKit\Colors::YELLOW), '',false);
         $up_data['CODE'] = $field_val;
+        # send down function var
+        $down_data['IBLOCK_CODE'] = $up_data['CODE'];
 
         $desk = "Сайты, к которым относится инфоблок - no default/required. Пример: s1";
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[LID]:',\ConsoleKit\Colors::YELLOW), "s1");
         $up_data['LID'] = $field_val;
 
-
-
-        $down_data = array();
 
         # set
         $name_migration = $this->getMigrationName($this->fromCamelCase(__METHOD__));
