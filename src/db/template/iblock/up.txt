@@ -5,11 +5,4 @@ $iblock = new Bim\Db\Iblock\IblockIntegrate();
             "CODE" => "#CODE#",
             "LID"  =>  "#LID#"
         ));
-        if (isset($response['type']) && $response['type'] == "success") {
-            return true;
-        } else if ($response['type'] == "error"){
-            if (isset($response['error_text'])){
-                throw new Exception(str_replace("<br>",PHP_EOL,$response['error_text']));
-            }
-        }
-        return false;
+        $this->response($response);

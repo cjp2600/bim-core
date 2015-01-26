@@ -14,6 +14,16 @@ namespace Bim;
 
 class Revision {
 
-    private $layout = false;
+    public function response($response)
+    {
+        if (isset($response['type']) && $response['type'] == "success") {
+            return true;
+        } else if ($response['type'] == "error"){
+            if (isset($response['error_text'])){
+                throw new Exception(str_replace("<br>",PHP_EOL,$response['error_text']));
+            }
+        }
+        return false;
+    }
 
 }
