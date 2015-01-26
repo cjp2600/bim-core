@@ -52,7 +52,7 @@ class UpdateCommand extends BaseCommand
             }
 
             $time_start = microtime(true);
-            $this->info("Start applying migration:");
+            $this->info(" -> Start applying migration:");
             foreach ( $return_array_new as $id => $mig) {
                 include_once "" . $mig[1] . "";
                 if ((method_exists($mig[0], "up"))) {
@@ -67,14 +67,14 @@ class UpdateCommand extends BaseCommand
                                     "content" => $content
                                 ));
                                 if ($ob->isSuccess()) {
-                                    $return[] = $this->color("Applied : " . $mig[2], Colors::GREEN);
-                                    $this->writeln($this->color("Applied : " . $mig[2], Colors::GREEN));
+                                    $return[] = $this->color("*Applied : " . $mig[2], Colors::GREEN);
+                                    $this->writeln($this->color(str_pad(" * applied : " . $mig[2], 20, " ", STR_PAD_BOTH), Colors::GREEN));
                                 }
                             }
                         }
                     } else {
-                        $return[] = $this->color("Error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW);
-                        $this->writeln($this->color("Error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW));
+                        $return[] = $this->color("error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW);
+                        $this->writeln(str_pad($this->color(" * error : " . $mig[2], Colors::RED).PHP_EOL.$this->color("Method Up return false",Colors::YELLOW), " ", STR_PAD_BOTH));
                     }
                 }
             }
@@ -82,7 +82,7 @@ class UpdateCommand extends BaseCommand
             $time = $time_end - $time_start;
             if (!empty($return)) {
                 //$this->padding(implode(PHP_EOL, $return));
-                $this->info("End applying ".round($time, 2)."s");
+                $this->info(" -> End applying ".round($time, 2)."s");
             } else {
                 $this->info("New migrations list is empty.");
             }
