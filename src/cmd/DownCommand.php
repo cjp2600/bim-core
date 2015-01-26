@@ -79,8 +79,6 @@ class DownCommand extends BaseCommand
                                 }
                             }
                         }
-                    } else {
-                        $this->writeln($this->color("     - error : " . $mig[2], Colors::RED)." ".$this->color("(Method Up return false)",Colors::YELLOW));
                     }
                 }
             }
