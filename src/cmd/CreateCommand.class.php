@@ -45,21 +45,21 @@ class CreateCommand extends BaseCommand {
 
         $desk = "Тип инфоблока - no default/required";
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[IBLOCK_TYPE_ID]:',\ConsoleKit\Colors::YELLOW), '',false);
-        $up_data['IBLOCK_TYPE_ID'] = $field_val;
+        $up_data['IBLOCK_TYPE_ID'] = $this->clear($field_val);
 
         $desk = "Название инфоблока - no default/required";
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[NAME]:',\ConsoleKit\Colors::YELLOW), '',false);
-        $up_data['NAME'] = $field_val;
+        $up_data['NAME'] =  $this->clear($field_val);
 
         $desk = "Символьный код инфоблока - no default/required";
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[CODE]:',\ConsoleKit\Colors::YELLOW), '',false);
-        $up_data['CODE'] = $field_val;
+        $up_data['CODE'] =  $this->clear($field_val);
         # send down function var
-        $down_data['IBLOCK_CODE'] = $up_data['CODE'];
+        $down_data['IBLOCK_CODE'] = $this->clear($up_data['CODE']);
 
         $desk = "Сайты, к которым относится инфоблок - no default/required. Пример: s1";
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[LID]:',\ConsoleKit\Colors::YELLOW), "s1");
-        $up_data['LID'] = $field_val;
+        $up_data['LID'] = $this->clear($field_val);
 
 
         # set

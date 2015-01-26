@@ -123,6 +123,15 @@ class BaseCommand extends Command {
         return ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/" : $migration_path;
     }
 
+
+    public function clear($text)
+    {
+        $text = str_replace("�"," ",$text);
+        $text = str_replace('"',"'",$text);
+        $text = str_replace('/',"",$text);
+        return $text;
+    }
+
     /**
      * getMigrationName
      * @param $name
