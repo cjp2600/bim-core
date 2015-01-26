@@ -26,7 +26,7 @@ class Revision {
         } else if ($response['type'] == "error"){
             if (isset($response['error_text'])){
                // throw new \Exception(str_replace("<br>",PHP_EOL,$response['error_text']));
-                $console->writeln(Colors::colorize("     - error : " . $mig, Colors::RED)." ".Colors::colorize("(".str_replace("<br>",PHP_EOL,$response['error_text']).")",Colors::YELLOW));
+                $console->writeln(Colors::colorize("     - error : " . $mig, Colors::RED)." ".Colors::colorize("(".str_replace("<br>",", ",$response['error_text']).")",Colors::YELLOW));
                 return false;
             }
         }
