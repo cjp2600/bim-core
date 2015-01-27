@@ -62,13 +62,14 @@ class BaseCommand extends Command {
     /**
      * setTemplate
      * @param $name of create
+     * @param $method
      * @param array $data
      * @param string $type up|down
      * @return mixed|string
      */
-    public function setTemplateMethod($name, $data = array(),$type = "up")
+    public function setTemplateMethod($name, $method, $data = array(),$type = "up")
     {
-        $template = file_get_contents(__DIR__.'/../db/template/'.$name.'/'.$type.'.txt');
+        $template = file_get_contents(__DIR__.'/../db/template/'.$name.'/'.$method.'/'.$type.'.txt');
         if (!empty($data)) {
             foreach ($data as $key => $val) {
                 $template = str_replace("#".$key."#", $val, $template);
