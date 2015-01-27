@@ -4,7 +4,7 @@ $iblock = new Bim\Db\Iblock\IblockIntegrate();
             "IBLOCK_TYPE_ID" => "#IBLOCK_TYPE_ID#",
             "NAME" => "#NAME#",
             "CODE" => "#CODE#",
-            "LID"  =>  "#LID#"
+            "LID"  =>  "#LID#",
             "ACTIVE" => "Y",
             "SORT" => "500",
             "LIST_PAGE_URL" => "#SITE_DIR#/services/index.php?ID=#IBLOCK_ID#",
@@ -40,7 +40,7 @@ $iblock = new Bim\Db\Iblock\IblockIntegrate();
             "ELEMENT_NAME" => "Элемент",
             "EXTERNAL_ID" => NULL,
             "LANG_DIR" => "/",
-            "SERVER_NAME" => "192.168.6.128",
+            "SERVER_NAME" => "",
             "FIELDS" =>
             array (
               "IBLOCK_SECTION" =>
