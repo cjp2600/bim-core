@@ -92,7 +92,7 @@ class CreateCommand extends BaseCommand {
 
         if (empty($desc)){
             $desk = "Type Description of migration file. Example: TASK-124";
-            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "s1");
+            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
 
         # set
