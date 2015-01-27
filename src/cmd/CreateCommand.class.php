@@ -90,6 +90,11 @@ class CreateCommand extends BaseCommand {
         $up_data['LID'] = $this->clear($field_val);
 
 
+        if (empty($desc)){
+            $desk = "Type Description of migration file. Example: TASK-124";
+            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "s1");
+        }
+
         # set
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
