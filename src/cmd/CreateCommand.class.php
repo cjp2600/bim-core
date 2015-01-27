@@ -51,9 +51,21 @@ class CreateCommand extends BaseCommand {
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[NAME]:',\ConsoleKit\Colors::YELLOW), '',false);
         $up_data['NAME'] =  $this->clear($field_val);
 
-        $desk = "Символьный код инфоблока - no default/required";
-        $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[CODE]:',\ConsoleKit\Colors::YELLOW), '',false);
-        $up_data['CODE'] =  $this->clear($field_val);
+        $do = true;
+        while ($do) {
+            $desk = "Символьный код инфоблока - no default/required";
+            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
+            $up_data['CODE'] = $this->clear($field_val);
+
+            #check on exist
+            $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $up_data['CODE']));
+            if (!$iblockDbRes || (!$iblockDbRes->SelectedRowsCount())) {
+                $do = false;
+            } else {
+                $this->error('Iblock with code = "' . $up_data['CODE'] .'" already exist.');
+            }
+        }
+
         # send down function var
         $down_data['IBLOCK_CODE'] = $this->clear($up_data['CODE']);
 
