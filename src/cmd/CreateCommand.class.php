@@ -97,6 +97,20 @@ class CreateCommand extends BaseCommand {
         $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[LID]:', \ConsoleKit\Colors::YELLOW), "s1");
         $up_data['LID'] = $this->clear($field_val);
 
+        if ($is_full){
+            $desk = "text description of the information block - default ''";
+            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[DESCRIPTION]:', \ConsoleKit\Colors::YELLOW), '', false);
+            $up_data['DESCRIPTION'] = $this->clear($field_val);
+
+            $desk = "Заголовок 'Разделы' - default 'Разделы'";
+            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[SECTIONS_NAME]:', \ConsoleKit\Colors::YELLOW), 'Разделы', true);
+            $up_data['SECTIONS_NAME'] = $this->clear($field_val);
+
+            $desk = "Заголовок 'Раздел' - default 'Раздел'";
+            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[SECTION_NAME]:', \ConsoleKit\Colors::YELLOW), 'Раздел', true);
+            $up_data['SECTION_NAME'] = $this->clear($field_val);
+        }
+
 
         if (empty($desc)) {
             $desk = "Type Description of migration file. Example: TASK-124";
