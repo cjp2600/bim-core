@@ -43,17 +43,33 @@ class CreateCommand extends BaseCommand {
         $up_data = array();
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
 
-        $desk = "Тип инфоблока - no default/required";
-        $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[IBLOCK_TYPE_ID]:',\ConsoleKit\Colors::YELLOW), '',false);
-        $up_data['IBLOCK_TYPE_ID'] = $this->clear($field_val);
+        $do = true;
+        while ($do) {
+            $desk = "Information block type - no default/required";
+            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+            $up_data['IBLOCK_TYPE_ID'] = $this->clear($field_val);
 
-        $desk = "Название инфоблока - no default/required";
+            $iblockTypeDbRes = CIBlockType::GetByID($up_data['IBLOCK_TYPE_ID']);
+            if (!$iblockTypeDbRes || (!$iblockTypeDbRes->SelectedRowsCount())) {
+
+                $this->error('Iblock type with id = "' . $up_data['IBLOCK_TYPE_ID'] .'" not exist.');
+                $field_val = $dialog->ask("Do you want to continue recording a non-existent id? [Y/N]", 'Y');
+                if (strtolower($field_val) == "y"){
+                    $do = false;
+                }
+
+            } else {
+                $do = false;
+            }
+        }
+
+        $desk = "Name of the information block - no default/required";
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[NAME]:',\ConsoleKit\Colors::YELLOW), '',false);
         $up_data['NAME'] =  $this->clear($field_val);
 
         $do = true;
         while ($do) {
-            $desk = "Символьный код инфоблока - no default/required";
+            $desk = "Character code information block - no default/required";
             $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
             $up_data['CODE'] = $this->clear($field_val);
 
@@ -69,13 +85,13 @@ class CreateCommand extends BaseCommand {
         # send down function var
         $down_data['IBLOCK_CODE'] = $this->clear($up_data['CODE']);
 
-        $desk = "Сайты, к которым относится инфоблок - no default/required. Пример: s1";
+        $desk = "Sites to which the information block - no default/required. Пример: s1";
         $field_val = $dialog->ask($desk.PHP_EOL.$this->color('[LID]:',\ConsoleKit\Colors::YELLOW), "s1");
         $up_data['LID'] = $this->clear($field_val);
 
 
         # set
-        $name_migration = $this->getMigrationName($this->fromCamelCase(__METHOD__));
+        $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
