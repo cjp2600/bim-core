@@ -232,6 +232,7 @@ class BaseCommand extends Command {
             )
         ));
         if ($arMigration = $obMigration->fetch()){
+            # This Bitrix - Babe
             if ($arMigration['id'] == $migration_id){
                 return true;
             }
