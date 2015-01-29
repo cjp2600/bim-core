@@ -14,7 +14,16 @@ class CreateCommand extends BaseCommand {
     public function execute(array $args, array $options = array())
     {
         if (isset($args[0])) {
-            $method = "create" . ucfirst($args[0]);
+
+            #chemethod
+            if (strstr($args[0], ':')) {
+                $ex = explode(":",$args[0]);
+                $methodName = ucfirst($ex[0]).ucfirst($ex[1]);
+            } else {
+                throw new Exception("Improperly formatted command. Example: php bim create iblock:add");
+            }
+
+            $method = "create" . $methodName;
             if (method_exists($this,$method)) {
                 $this->{$method}($args, $options);
             } else {
@@ -30,7 +39,7 @@ class CreateCommand extends BaseCommand {
      * @param array $args
      * @param array $options
      */
-    public function createIblock(array $args, array $options = array())
+    public function createIblockAdd(array $args, array $options = array())
     {
         # Up Wizard
         $up_data = array();
@@ -128,6 +137,16 @@ class CreateCommand extends BaseCommand {
                 $desc,
                 get_current_user()
             ));
+    }
+
+    /**
+     * createIblockDelete
+     * @param array $args
+     * @param array $options
+     */
+    public function createIblockDelete(array $args, array $options = array())
+    {
+        $this->padding("this createIblockDelete");
     }
 
 
