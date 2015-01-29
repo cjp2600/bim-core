@@ -34,7 +34,6 @@ class ListCommand extends BaseCommand
         $filter_from = ($filter_from) ? strtotime($filter_from) : false;
         $filter_to = ($filter_to) ? strtotime($filter_to) : false;
 
-
         if (!empty($list)) {
 
             $headers = array('№', 'id', 'Author', 'Date');
@@ -56,25 +55,25 @@ class ListCommand extends BaseCommand
             $return_array_apply = array();
 
             #filter
-            if ($filter_from || $filter_to){
-                $this->padding("Filter list:".$this->color(PHP_EOL."from: ".$options['from'].PHP_EOL."to: ".$options['to'],Colors::YELLOW));
-                $newArrayList=array();
+            if ($filter_from || $filter_to) {
+                $this->padding("Filter list:" . $this->color(PHP_EOL . "from: " . $options['from'] . PHP_EOL . "to: " . $options['to'], Colors::YELLOW));
+                $newArrayList = array();
                 foreach ($list as $id => $data) {
-                    if ($filter_from && $filter_to){
-                        if ($id >= $filter_from && $id <= $filter_to){
+                    if ($filter_from && $filter_to) {
+                        if ($id >= $filter_from && $id <= $filter_to) {
                             $newArrayList[$id] = $data;
                         }
-                    } else if ($filter_from && !$filter_to){
-                        if ($id >= $filter_from){
+                    } else if ($filter_from && !$filter_to) {
+                        if ($id >= $filter_from) {
                             $newArrayList[$id] = $data;
                         }
-                    } else if (!$filter_from && $filter_to){
-                        if ($id <= $filter_to){
+                    } else if (!$filter_from && $filter_to) {
+                        if ($id <= $filter_to) {
                             $newArrayList[$id] = $data;
                         }
                     }
                 }
-                if (!empty($newArrayList)){
+                if (!empty($newArrayList)) {
                     $list = $newArrayList;
                 } else {
                     $list = array();
@@ -91,7 +90,7 @@ class ListCommand extends BaseCommand
 
                 # check in db
                 $is_new = (!$this->checkInDb($id));
-                $class_name = "Migration".$id;
+                $class_name = "Migration" . $id;
                 include_once "" . $this->getMigrationPath() . $row . "";
 
                 $color = ConsoleKit\Colors::GREEN;
@@ -132,20 +131,16 @@ class ListCommand extends BaseCommand
             } else if ($filter_apply) {
                 $table->setRows($return_array_apply);
             } else {
-                $table->setRows(array_merge($return_array_apply,$return_array_new));
+                $table->setRows(array_merge($return_array_apply, $return_array_new));
             }
 
             $progress->stop();
-            if (!empty($return_array_new) || !empty($return_array_apply)) {
-                $table->display();
+            $table->display();
 
-                # count info
-                $return[] = Colors::colorize('New:', Colors::RED) . " " . $new;
-                $return[] = Colors::colorize('Applied:', Colors::GREEN) . " " . $applied;
-                $return[] = "Count: " . $count;
-            } else {
-                $return[] = Colors::colorize('View list is empty', Colors::YELLOW);
-            }
+            # count info
+            $return[] = Colors::colorize('New:', Colors::RED) . " " . $new;
+            $return[] = Colors::colorize('Applied:', Colors::GREEN) . " " . $applied;
+            $return[] = "Count: " . $count;
 
             # display
             $this->padding(implode(PHP_EOL, $return));
