@@ -29,6 +29,11 @@ class ListCommand extends BaseCommand
         $file = (isset($options['f'])) ? true : false;
         $filter_apply = (isset($options['a'])) ? $options['a'] : false;
         $filter_new = (isset($options['n'])) ? $options['n'] : false;
+        $filter_from = (isset($options['from'])) ? $options['from'] : false;
+        $filter_to = (isset($options['to'])) ? $options['to'] : false;
+        $filter_from = ($filter_from) ? strtotime($filter_from) : false;
+        $filter_to = ($filter_to) ? strtotime($filter_to) : false;
+
 
         if (!empty($list)) {
 
@@ -51,6 +56,31 @@ class ListCommand extends BaseCommand
             $return_array_apply = array();
 
             #filter
+            if ($filter_from || $filter_to){
+                $this->padding("Filter list:".$this->color(PHP_EOL."from: ".$options['from'].PHP_EOL."to: ".$options['to'],Colors::YELLOW));
+                $newArrayList=array();
+                foreach ($list as $id => $data) {
+                    if ($filter_from && $filter_to){
+                        if ($id >= $filter_from && $id <= $filter_to){
+                            $newArrayList[$id] = $data;
+                        }
+                    } else if ($filter_from && !$filter_to){
+                        if ($id >= $filter_from){
+                            $newArrayList[$id] = $data;
+                        }
+                    } else if (!$filter_from && $filter_to){
+                        if ($id <= $filter_to){
+                            $newArrayList[$id] = $data;
+                        }
+                    }
+                }
+                if (!empty($newArrayList)){
+                    $list = $newArrayList;
+                } else {
+                    $list = array();
+                    $this->info('Empty filter list');
+                }
+            }
 
             $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $data) {
