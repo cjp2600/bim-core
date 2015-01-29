@@ -3,7 +3,7 @@
 use ConsoleKit\Widgets\ProgressBar,ConsoleKit\Colors;
 
 /**
- *
+ * _
  * That command displays a list of migration
  *
  * 1) Common list:
@@ -18,6 +18,7 @@ use ConsoleKit\Widgets\ProgressBar,ConsoleKit\Colors;
  * 4) Displays a list of migrations for a certain period of time:
  *              Example:  php bim ls --from="29.01.2015 00:01" --to="29.01.2015 23:55"
  *
+ * _
  */
 class ListCommand extends BaseCommand
 {
@@ -137,10 +138,13 @@ class ListCommand extends BaseCommand
             $progress->stop();
             $table->display();
 
-            # count info
-            $return[] = Colors::colorize('New:', Colors::RED) . " " . $new;
-            $return[] = Colors::colorize('Applied:', Colors::GREEN) . " " . $applied;
-            $return[] = "Count: " . $count;
+            if (!$filter_new && !$filter_apply) {
+                # count info
+                $return[] = Colors::colorize('New:', Colors::RED) . " " . $new;
+                $return[] = Colors::colorize('Applied:', Colors::GREEN) . " " . $applied;
+                $return[] = "Count: " . $count;
+
+            }
 
             # display
             $this->padding(implode(PHP_EOL, $return));
