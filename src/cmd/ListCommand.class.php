@@ -16,7 +16,7 @@ use ConsoleKit\Widgets\ProgressBar,ConsoleKit\Colors;
  *              Example: php bim ls --n
  *
  * 4) Displays a list of migrations for a certain period of time:
- *              Example: php bim ls --from=01.12.2014 --to=31.12.2014
+ *              Example:  php bim ls --from="29.01.2015 00:01" --to="29.01.2015 23:55"
  *
  */
 class ListCommand extends BaseCommand
@@ -137,7 +137,9 @@ class ListCommand extends BaseCommand
             }
 
             $progress->stop();
-            $table->display();
+            if (!empty($list)) {
+                $table->display();
+            }
 
             # count info
             $return[] = Colors::colorize('New:', Colors::RED) . " " . $new;
