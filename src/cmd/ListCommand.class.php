@@ -2,6 +2,23 @@
 
 use ConsoleKit\Widgets\ProgressBar,ConsoleKit\Colors;
 
+/**
+ *
+ * That command displays a list of migration
+ *
+ * 1) Common list:
+ *              Example: php bim ls
+ *
+ * 2) Displays a list of already Applied on migration:
+ *              Example: php bim ls --a
+ *
+ * 3) Displays a list of new migrations:
+ *              Example: php bim ls --n
+ *
+ * 4) Displays a list of migrations for a certain period of time:
+ *              Example: php bim ls --from=01.12.2014 --to=31.12.2014
+ *
+ */
 class ListCommand extends BaseCommand
 {
     public function execute(array $args, array $options = array())
@@ -32,6 +49,8 @@ class ListCommand extends BaseCommand
             $i = 1;
             $return_array_new = array();
             $return_array_apply = array();
+
+            #filter
 
             $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $data) {
