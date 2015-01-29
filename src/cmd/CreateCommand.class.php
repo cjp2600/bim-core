@@ -132,8 +132,8 @@ class CreateCommand extends BaseCommand {
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
-                $this->setTemplateMethod(strtolower($args[0]), 'create', $up_data, $temp ),
-                $this->setTemplateMethod(strtolower($args[0]), 'create', $down_data, "down"),
+                $this->setTemplateMethod('iblock', 'add', $up_data, $temp ),
+                $this->setTemplateMethod('iblock', 'add', $down_data, "down"),
                 $desc,
                 get_current_user()
             ));
