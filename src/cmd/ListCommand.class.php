@@ -3,7 +3,7 @@
 use ConsoleKit\Widgets\ProgressBar,ConsoleKit\Colors;
 
 /**
- * _
+ * .
  * That command displays a list of migration
  *
  * 1) Common list:
@@ -17,8 +17,7 @@ use ConsoleKit\Widgets\ProgressBar,ConsoleKit\Colors;
  *
  * 4) Displays a list of migrations for a certain period of time:
  *              Example:  php bim ls --from="29.01.2015 00:01" --to="29.01.2015 23:55"
- *
- * _
+ * .
  */
 class ListCommand extends BaseCommand
 {
