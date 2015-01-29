@@ -78,7 +78,6 @@ class ListCommand extends BaseCommand
                     $list = $newArrayList;
                 } else {
                     $list = array();
-                    $this->info('Empty filter list');
                 }
             }
 
