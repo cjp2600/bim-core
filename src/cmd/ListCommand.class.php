@@ -137,13 +137,15 @@ class ListCommand extends BaseCommand
             }
 
             $progress->stop();
-            if (!empty($list)) {
+            if (!empty($return_array_new) || !empty($return_array_apply)) {
                 $table->display();
 
                 # count info
                 $return[] = Colors::colorize('New:', Colors::RED) . " " . $new;
                 $return[] = Colors::colorize('Applied:', Colors::GREEN) . " " . $applied;
                 $return[] = "Count: " . $count;
+            } else {
+                $return[] = Colors::colorize('View list is empty', Colors::YELLOW);
             }
 
             # display
