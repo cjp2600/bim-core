@@ -68,9 +68,7 @@ class UpdateCommand extends BaseCommand
                             if (!$obSelect->fetch()) {
                                 $content = base64_encode(file_get_contents($mig[1]));
                                 $ob = Bim\Db\Entity\MigrationsTable::add(array(
-                                    "id" => $id,
-                                    "migration" => $mig[2],
-                                    "content" => $content
+                                    "id" => $id
                                 ));
                                 if ($ob->isSuccess()) {
                                     $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));

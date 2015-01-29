@@ -37,16 +37,7 @@ class MigrationsTable extends Entity\DataManager
                 'data_type' => 'string',
                 'required' => true,
                 'validation' => array(__CLASS__, 'validateId'),
-            ),
-            'migration' => array(
-                'data_type' => 'string',
-                'required' => true,
-                'validation' => array(__CLASS__, 'validateMigration'),
-            ),
-            'content' => array(
-                'data_type' => 'text',
-                'required' => false,
-            ),
+            )
         );
     }
     public static function validateId()
