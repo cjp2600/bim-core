@@ -37,6 +37,11 @@ class DownCommand extends BaseCommand
                 if (is_string($args[0])) {
                     $f_id  = $args[0];
                 }
+                # if type desctiption
+            } else if (isset($options['d'])){
+                if (is_string($options['d'])) {
+                    $f_id = $this->getIdByDescription($list,$options['d']);
+                }
             }
 
             if ($f_id){

@@ -90,31 +90,5 @@ class UpdateCommand extends BaseCommand
         }
     }
 
-    /**
-     * getIdByDescription
-     * @param array $list
-     * @param $desc_find
-     * @return bool|int|string
-     */
-    private function getIdByDescription(array $list, $desc_find)
-    {
-        $return = $desc_find;
-        foreach ($list as $id => $data) {
-            if (!empty($data['file'])) {
-                include_once $this->getMigrationPath() . $data['file'];
-            }
-            $class_name = "Migration".$id;
-            $desc = false;
-            if ((method_exists($class_name, "getDescription"))) {
-                $desc = $class_name::getDescription();
-                if (!empty($desc)){
-                    if (strtolower($desc_find) == strtolower($desc)){
-                        $return = $id;
-                    }
-                }
-            }
-        }
-        return $return;
-    }
 
 }
