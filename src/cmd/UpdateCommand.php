@@ -98,7 +98,7 @@ class UpdateCommand extends BaseCommand
      */
     private function getIdByDescription(array $list, $desc_find)
     {
-        $return = false;
+        $return = $desc_find;
         foreach ($list as $id => $data) {
             if (!empty($data['file'])) {
                 include_once $this->getMigrationPath() . $data['file'];
