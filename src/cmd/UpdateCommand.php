@@ -37,6 +37,11 @@ class UpdateCommand extends BaseCommand
                 if (is_string($args[0])) {
                     $f_id  = $args[0];
                 }
+            # if type desctiption
+            } else if (isset($options['d'])){
+                if (is_string($options['id'])) {
+                    $f_id = $this->getIdByDescription($list,$options['d']);
+                }
             }
 
             if ($f_id){
@@ -84,4 +89,30 @@ class UpdateCommand extends BaseCommand
             $this->info(" -> ".round($time, 2)."s");
         }
     }
+
+    /**
+     * getIdByDescription
+     * @param array $list
+     * @param $desc_find
+     * @return bool|int|string
+     */
+    private function getIdByDescription(array $list, $desc_find)
+    {
+        $return = false;
+        foreach ($list as $id => $data) {
+            include_once $this->getMigrationPath() . $data['file'];
+            $class_name = "Migration".$id;
+            $desc = false;
+            if ((method_exists($class_name, "getDescription"))) {
+                $desc = $class_name::getDescription();
+                if (!empty($desc)){
+                    if (strtolower($desc_find) == strtolower($desc)){
+                        $return = $id;
+                    }
+                }
+            }
+        }
+        return $return;
+    }
+
 }
