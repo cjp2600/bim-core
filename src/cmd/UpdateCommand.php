@@ -51,7 +51,7 @@ class UpdateCommand extends BaseCommand
                     if (isset ($return_array_apply[$f_id])) {
                         throw new Exception("Migration ".$f_id . " - is already applied");
                     } else {
-                        throw new Exception("Migration ".$f_id . " - is not found");
+                        throw new Exception("Migration ".$f_id . " - is not found in new migrations list");
                     }
                 }
             }
