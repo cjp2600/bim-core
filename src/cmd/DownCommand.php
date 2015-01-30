@@ -45,7 +45,17 @@ class DownCommand extends BaseCommand
             }
 
             if ($f_id){
-                if (isset ($return_array_apply[$f_id])) {
+                if (is_array($f_id)){
+                    $new_array = array();
+                    foreach ($f_id as $rid){
+                        if (isset ($return_array_apply[$rid])) {
+                            $new_array[$rid] = $return_array_apply[$rid];
+                        }
+                    }
+                    if (!empty($new_array)) {
+                        $return_array_apply = $new_array;
+                    }
+                }else if (isset ($return_array_apply[$f_id])) {
                     $return_array_apply = array($f_id => $return_array_apply[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
