@@ -82,9 +82,7 @@ class ListCommand extends BaseCommand
                 }
             }
 
-            $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $data) {
-                $progress->incr();
                 $count++;
 
                 $row = $data['file'];
@@ -136,7 +134,6 @@ class ListCommand extends BaseCommand
                 $table->setRows(array_merge($return_array_apply, $return_array_new));
             }
 
-            $progress->stop();
             $displayArray=$table->getDisplayLines();
             if (!empty($displayArray)) {
                 $table->display();
