@@ -100,7 +100,9 @@ class UpdateCommand extends BaseCommand
     {
         $return = false;
         foreach ($list as $id => $data) {
-            include_once $this->getMigrationPath() . $data['file'];
+            if (!empty($data['file'])) {
+                include_once $this->getMigrationPath() . $data['file'];
+            }
             $class_name = "Migration".$id;
             $desc = false;
             if ((method_exists($class_name, "getDescription"))) {
