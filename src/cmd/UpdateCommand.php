@@ -39,7 +39,7 @@ class UpdateCommand extends BaseCommand
                 }
             # if type desctiption
             } else if (isset($options['d'])){
-                if (is_string($options['id'])) {
+                if (is_string($options['d'])) {
                     $f_id = $this->getIdByDescription($list,$options['d']);
                 }
             }
