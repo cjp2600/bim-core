@@ -256,11 +256,11 @@ class BaseCommand extends Command {
      * getIdByDescription
      * @param array $list
      * @param $desc_find
-     * @return bool|int|string
+     * @return bool|int|string|array
      */
     public function getIdByDescription(array $list, $desc_find)
     {
-        $return = $desc_find;
+        $return = array();
         foreach ($list as $id => $data) {
             if (!empty($data['file'])) {
                 include_once $this->getMigrationPath() . $data['file'];
@@ -271,12 +271,12 @@ class BaseCommand extends Command {
                 $desc = $class_name::getDescription();
                 if (!empty($desc)){
                     if (strtolower($desc_find) == strtolower($desc)){
-                        $return = $id;
+                        $return[] = $id;
                     }
                 }
             }
         }
-        return $return;
+        return (!empty($return)) ? $return : $desc_find;
     }
 
 }
