@@ -34,6 +34,9 @@ class ListCommand extends BaseCommand
         $filter_from = ($filter_from) ? strtotime($filter_from) : false;
         $filter_to = ($filter_to) ? strtotime($filter_to) : false;
 
+        #check tag list
+        $filer_tag = (isset($options['tag'])) ? $options['tag'] : false;
+
         if (!empty($list)) {
 
             $headers = array('№', 'id', 'Author', 'Date');
@@ -70,6 +73,23 @@ class ListCommand extends BaseCommand
                         }
                     } else if (!$filter_from && $filter_to) {
                         if ($id <= $filter_to) {
+                            $newArrayList[$id] = $data;
+                        }
+                    }
+                }
+                if (!empty($newArrayList)) {
+                    $is_filter = true;
+                    $list = $newArrayList;
+                } else {
+                    $list = array();
+                }
+            }
+            # check to tag list
+            if ($filer_tag) {
+                $newArrayList = array();
+                foreach ($list as $id => $data) {
+                    if (!empty($data['tags'])) {
+                        if (in_array(strtolower($filer_tag), $data['tags'])) {
                             $newArrayList[$id] = $data;
                         }
                     }
