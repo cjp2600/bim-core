@@ -24,6 +24,7 @@ class DownCommand extends BaseCommand
             }
 
             # filer
+            $is_filter = false;
             $f_id = false;
             if ((isset($options['id']))) {
                 if (is_string($options['id'])) {
@@ -42,6 +43,7 @@ class DownCommand extends BaseCommand
 
             if ($f_id){
                 if (isset ($return_array_apply[$f_id])) {
+                    $is_filter = true;
                     $return_array_apply = array($f_id => $return_array_apply[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
@@ -50,13 +52,8 @@ class DownCommand extends BaseCommand
                         throw new Exception("Migration ".$f_id . " - is not found in applied list");
                     }
                 }
-            } else {
-                $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
-                $type  = $dialog->ask('Are you sure you want to remove all applied migration (yes/no)?:', 'yes');
-                if (strtolower($type) == "no" || strtolower($type) == "n"){
-                    return true;
-                }
             }
+
             # check to tag list
             if ($filer_tag) {
                 $this->padding("down migration for tag : ".$filer_tag);
@@ -69,9 +66,18 @@ class DownCommand extends BaseCommand
                     }
                 }
                 if (!empty($newArrayList)) {
+                    $is_filter = true;
                     $return_array_apply = $newArrayList;
                 } else {
                     $return_array_apply = array();
+                }
+            }
+
+            if (!$is_filter) {
+                $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+                $type = $dialog->ask('Are you sure you want to remove all applied migration (yes/no)?:', 'yes');
+                if (strtolower($type) == "no" || strtolower($type) == "n") {
+                    return true;
                 }
             }
 
