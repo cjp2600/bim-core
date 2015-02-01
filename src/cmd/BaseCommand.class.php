@@ -293,31 +293,5 @@ class BaseCommand extends Command {
         }
     }
 
-    /**
-     * getIdByDescription
-     * @param array $list
-     * @param $desc_find
-     * @return bool|int|string|array
-     */
-    public function getIdByDescription(array $list, $desc_find)
-    {
-        $return = array();
-        foreach ($list as $id => $data) {
-            if (!empty($data['file'])) {
-                include_once $this->getMigrationPath() . $data['file'];
-            }
-            $class_name = "Migration".$id;
-            $desc = false;
-            if ((method_exists($class_name, "getDescription"))) {
-                $desc = $class_name::getDescription();
-                if (!empty($desc)){
-                    if (strtolower($desc_find) == strtolower($desc)){
-                        $return[] = $id;
-                    }
-                }
-            }
-        }
-        return (!empty($return)) ? $return : $desc_find;
-    }
 
 }
