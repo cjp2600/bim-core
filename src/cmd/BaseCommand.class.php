@@ -203,11 +203,13 @@ class BaseCommand extends Command {
             $class_name = "Migration".$key;
             $description = (method_exists($class_name, "getDescription")) ? $this->color_tg($class_name::getDescription()) : "";
             $tags = (!empty($description)) ? $this->getHashTags($description) : array();
+            $author = (method_exists($class_name, "getAuthor")) ? $class_name::getAuthor() : "";
 
                 $return[$key] = array(
                     "name" => $key,
                     "file" => $val,
                     "date" => $key,
+                    "author" => $author,
                     "description" => $description,
                     "tags" => $tags
                 );
@@ -223,7 +225,7 @@ class BaseCommand extends Command {
     public function getHashTags($text)
     {
         $hashtags = array();
-        preg_match_all("/(#\w+)/", $text, $matches);
+        preg_match_all("/#([\w-]+)/i", $text, $matches);
         if( !empty($matches[0]) ){
             foreach( $matches[0] as $hashtag ){
                 $hashtag = strtolower( str_replace('#', '', $hashtag) );
@@ -243,7 +245,7 @@ class BaseCommand extends Command {
      */
     public function color_tg($text)
     {
-        return preg_replace("/#(\w+)/i", Colors::colorize("$0",Colors::BLUE), $text);
+        return preg_replace("/#([\w-]+)/i", Colors::colorize("$0",Colors::BLUE), $text);
     }
 
     /**

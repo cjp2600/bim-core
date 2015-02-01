@@ -108,7 +108,7 @@ class ListCommand extends BaseCommand
                 $rowArray = array(
                     ConsoleKit\Colors::colorize($i, $color),
                     ConsoleKit\Colors::colorize($id, $color),
-                    (method_exists($class_name, "getAuthor")) ? $class_name::getAuthor() : "",
+                    $data['author'],
                     date("d.m.y G:h", $data['date'])
                 );
                 if ($file) {
