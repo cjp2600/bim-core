@@ -55,8 +55,9 @@ class ListCommand extends BaseCommand
             $return_array_apply = array();
 
             #filter
+            $is_filter = false;
             if ($filter_from || $filter_to) {
-                $this->padding("Filter list:" . $this->color(PHP_EOL . "from: " . $options['from'] . PHP_EOL . "to: " . $options['to'], Colors::YELLOW));
+                $this->padding("Filter to the list:" . $this->color(PHP_EOL . "from: " . $options['from'] . PHP_EOL . "to: " . $options['to'], Colors::YELLOW));
                 $newArrayList = array();
                 foreach ($list as $id => $data) {
                     if ($filter_from && $filter_to) {
@@ -74,15 +75,14 @@ class ListCommand extends BaseCommand
                     }
                 }
                 if (!empty($newArrayList)) {
+                    $is_filter = true;
                     $list = $newArrayList;
                 } else {
                     $list = array();
                 }
             }
 
-            $progress = new ProgressBar($this->console, count($list));
             foreach ($list as $id => $data) {
-                $progress->incr();
                 $count++;
 
                 $row = $data['file'];
@@ -134,10 +134,12 @@ class ListCommand extends BaseCommand
                 $table->setRows(array_merge($return_array_apply, $return_array_new));
             }
 
-            $progress->stop();
-            $table->display();
+            $displayArray=$table->getDisplayLines();
+            if (!empty($displayArray)) {
+                $table->display();
+            }
 
-            if (!$filter_new && !$filter_apply) {
+            if (!$is_filter) {
                 # count info
                 $return[] = Colors::colorize('New:', Colors::RED) . " " . $new;
                 $return[] = Colors::colorize('Applied:', Colors::GREEN) . " " . $applied;

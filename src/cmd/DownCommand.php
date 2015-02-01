@@ -37,16 +37,31 @@ class DownCommand extends BaseCommand
                 if (is_string($args[0])) {
                     $f_id  = $args[0];
                 }
+                # if type desctiption
+            } else if (isset($options['d'])){
+                if (is_string($options['d'])) {
+                    $f_id = $this->getIdByDescription($list,$options['d']);
+                }
             }
 
             if ($f_id){
-                if (isset ($return_array_apply[$f_id])) {
+                if (is_array($f_id)){
+                    $new_array = array();
+                    foreach ($f_id as $rid){
+                        if (isset ($return_array_apply[$rid])) {
+                            $new_array[$rid] = $return_array_apply[$rid];
+                        }
+                    }
+                    if (!empty($new_array)) {
+                        $return_array_apply = $new_array;
+                    }
+                }else if (isset ($return_array_apply[$f_id])) {
                     $return_array_apply = array($f_id => $return_array_apply[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
                         throw new Exception("Migration ".$f_id . " - is already applied");
                     } else {
-                        throw new Exception("Migration ".$f_id . " - is not found");
+                        throw new Exception("Migration ".$f_id . " - is not found in applied list");
                     }
                 }
             } else {
