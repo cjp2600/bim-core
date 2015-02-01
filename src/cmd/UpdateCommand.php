@@ -17,9 +17,9 @@ class UpdateCommand extends BaseCommand
                 $class_name = "Migration".$id;
 
                 if ($is_new) {
-                    $return_array_new[$id] = array($class_name,"" . $this->getMigrationPath() . $row . "",$name);
+                    $return_array_new[$id] = array($class_name,"" . $this->getMigrationPath() . $row . "",$name, $data['tags']);
                 } else {
-                    $return_array_apply[$id] =  array($class_name,"" . $this->getMigrationPath() . $row . "",$name);
+                    $return_array_apply[$id] =  array($class_name,"" . $this->getMigrationPath() . $row . "",$name, $data['tags']);
                 }
             }
 
@@ -43,6 +43,8 @@ class UpdateCommand extends BaseCommand
                     $f_id = $this->getIdByDescription($list,$options['d']);
                 }
             }
+            #check tag list
+            $filer_tag = (isset($options['tag'])) ? $options['tag'] : false;
 
             if ($f_id){
                 if (is_array($f_id)){
@@ -63,6 +65,23 @@ class UpdateCommand extends BaseCommand
                     } else {
                         throw new Exception("Migration ".$f_id . " - is not found in new migrations list");
                     }
+                }
+            }
+            # check to tag list
+            if ($filer_tag) {
+                $this->padding("appling migration for tag : ".$filer_tag);
+                $newArrayList = array();
+                foreach ($return_array_new as $id => $mig) {
+                    if (!empty($mig[3])) {
+                        if (in_array(strtolower($filer_tag), $mig[3])) {
+                            $newArrayList[$id] = $mig;
+                        }
+                    }
+                }
+                if (!empty($newArrayList)) {
+                    $return_array_new = $newArrayList;
+                } else {
+                    $return_array_new = array();
                 }
             }
 
