@@ -198,13 +198,52 @@ class BaseCommand extends Command {
         }
         $return = array();
         foreach ($dir_array as $key => $val){
+
+            include_once "" . $this->getMigrationPath() . $val . "";
+            $class_name = "Migration".$key;
+            $description = (method_exists($class_name, "getDescription")) ? $this->color_tg($class_name::getDescription()) : "";
+            $tags = (!empty($description)) ? $this->getHashTags($description) : array();
+
                 $return[$key] = array(
                     "name" => $key,
                     "file" => $val,
-                    "date" => $key
+                    "date" => $key,
+                    "description" => $description,
+                    "tags" => $tags
                 );
         }
         return $return;
+    }
+
+    /**
+     * getHashTags
+     * @param $text
+     * @return array
+     */
+    public function getHashTags($text)
+    {
+        $hashtags = array();
+        preg_match_all("/(#\w+)/", $text, $matches);
+        if( !empty($matches[0]) ){
+            foreach( $matches[0] as $hashtag ){
+                $hashtag = strtolower( str_replace('#', '', $hashtag) );
+                $hashtags[] = $hashtag;
+            }
+        }
+        if (!empty($hashtags)) {
+            $hashtags = array_unique($hashtags);
+        }
+        return $hashtags;
+    }
+
+    /**
+     * color_tg
+     * @param $text
+     * @return mixed
+     */
+    public function color_tg($text)
+    {
+        return preg_replace("/#(\w+)/i", Colors::colorize("$0",Colors::BLUE), $text);
     }
 
     /**

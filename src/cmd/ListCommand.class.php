@@ -114,7 +114,7 @@ class ListCommand extends BaseCommand
                 if ($file) {
                     $rowArray[] = $row;
                 }
-                $rowArray[] = (method_exists($class_name, "getDescription")) ? $class_name::getDescription() : "";
+                $rowArray[] = $data['description'];
                 $rowArray[] = $status;
 
                 if ($is_new) {
