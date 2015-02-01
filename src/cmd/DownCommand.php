@@ -17,13 +17,12 @@ class DownCommand extends BaseCommand
                 $class_name = "Migration".$id;
 
                 if ($is_new) {
-                    $return_array_new[$id] = array($class_name,"" . $this->getMigrationPath() . $row . "",$name);
+                    $return_array_new[$id] = array($class_name,"" . $this->getMigrationPath() . $row . "",$name,$data['tags']);
                 } else {
-                    $return_array_apply[$id] =  array($class_name,"" . $this->getMigrationPath() . $row . "",$name);
+                    $return_array_apply[$id] =  array($class_name,"" . $this->getMigrationPath() . $row . "",$name,$data['tags']);
                 }
             }
 
-            $return = array();
             # filer
             $f_id = false;
             if ((isset($options['id']))) {
@@ -37,25 +36,12 @@ class DownCommand extends BaseCommand
                 if (is_string($args[0])) {
                     $f_id  = $args[0];
                 }
-                # if type desctiption
-            } else if (isset($options['d'])){
-                if (is_string($options['d'])) {
-                    $f_id = $this->getIdByDescription($list,$options['d']);
-                }
             }
+            #check tag list
+            $filer_tag = (isset($options['tag'])) ? $options['tag'] : false;
 
             if ($f_id){
-                if (is_array($f_id)){
-                    $new_array = array();
-                    foreach ($f_id as $rid){
-                        if (isset ($return_array_apply[$rid])) {
-                            $new_array[$rid] = $return_array_apply[$rid];
-                        }
-                    }
-                    if (!empty($new_array)) {
-                        $return_array_apply = $new_array;
-                    }
-                }else if (isset ($return_array_apply[$f_id])) {
+                if (isset ($return_array_apply[$f_id])) {
                     $return_array_apply = array($f_id => $return_array_apply[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
@@ -67,9 +53,25 @@ class DownCommand extends BaseCommand
             } else {
                 $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
                 $type  = $dialog->ask('Are you sure you want to remove all applied migration (yes/no)?:', 'yes');
-
                 if (strtolower($type) == "no" || strtolower($type) == "n"){
                     return true;
+                }
+            }
+            # check to tag list
+            if ($filer_tag) {
+                $this->padding("down migration for tag : ".$filer_tag);
+                $newArrayList = array();
+                foreach ($return_array_apply as $id => $mig) {
+                    if (!empty($mig[3])) {
+                        if (in_array(strtolower($filer_tag), $mig[3])) {
+                            $newArrayList[$id] = $mig;
+                        }
+                    }
+                }
+                if (!empty($newArrayList)) {
+                    $return_array_apply = $newArrayList;
+                } else {
+                    $return_array_apply = array();
                 }
             }
 

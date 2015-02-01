@@ -59,48 +59,7 @@ class ListCommand extends BaseCommand
 
             #filter
             $is_filter = false;
-            if ($filter_from || $filter_to) {
-                $this->padding("Filter to the list:" . $this->color(PHP_EOL . "from: " . $options['from'] . PHP_EOL . "to: " . $options['to'], Colors::YELLOW));
-                $newArrayList = array();
-                foreach ($list as $id => $data) {
-                    if ($filter_from && $filter_to) {
-                        if ($id >= $filter_from && $id <= $filter_to) {
-                            $newArrayList[$id] = $data;
-                        }
-                    } else if ($filter_from && !$filter_to) {
-                        if ($id >= $filter_from) {
-                            $newArrayList[$id] = $data;
-                        }
-                    } else if (!$filter_from && $filter_to) {
-                        if ($id <= $filter_to) {
-                            $newArrayList[$id] = $data;
-                        }
-                    }
-                }
-                if (!empty($newArrayList)) {
-                    $is_filter = true;
-                    $list = $newArrayList;
-                } else {
-                    $list = array();
-                }
-            }
-            # check to tag list
-            if ($filer_tag) {
-                $newArrayList = array();
-                foreach ($list as $id => $data) {
-                    if (!empty($data['tags'])) {
-                        if (in_array(strtolower($filer_tag), $data['tags'])) {
-                            $newArrayList[$id] = $data;
-                        }
-                    }
-                }
-                if (!empty($newArrayList)) {
-                    $is_filter = true;
-                    $list = $newArrayList;
-                } else {
-                    $list = array();
-                }
-            }
+            $this->prepareFilter($list,$filter_from,$filter_to,$filer_tag,$options,$is_filter);
 
             foreach ($list as $id => $data) {
                 $count++;
@@ -164,7 +123,6 @@ class ListCommand extends BaseCommand
                 $return[] = Colors::colorize('New:', Colors::RED) . " " . $new;
                 $return[] = Colors::colorize('Applied:', Colors::GREEN) . " " . $applied;
                 $return[] = "Count: " . $count;
-
             }
 
             # display
@@ -174,5 +132,61 @@ class ListCommand extends BaseCommand
             $this->info('Empty list');
         }
     }
+
+    /**
+     * prepareFilter
+     * @param $list
+     * @param $filter_from
+     * @param $filter_to
+     * @param $filer_tag
+     * @param $options
+     * @param $is_filter
+     */
+    public function prepareFilter(&$list,$filter_from,$filter_to,$filer_tag,$options,&$is_filter)
+    {
+        if ($filter_from || $filter_to) {
+            $this->padding("Filter to the list:" . $this->color(PHP_EOL . "from: " . $options['from'] . PHP_EOL . "to: " . $options['to'], Colors::YELLOW));
+            $newArrayList = array();
+            foreach ($list as $id => $data) {
+                if ($filter_from && $filter_to) {
+                    if ($id >= $filter_from && $id <= $filter_to) {
+                        $newArrayList[$id] = $data;
+                    }
+                } else if ($filter_from && !$filter_to) {
+                    if ($id >= $filter_from) {
+                        $newArrayList[$id] = $data;
+                    }
+                } else if (!$filter_from && $filter_to) {
+                    if ($id <= $filter_to) {
+                        $newArrayList[$id] = $data;
+                    }
+                }
+            }
+            if (!empty($newArrayList)) {
+                $is_filter = true;
+                $list = $newArrayList;
+            } else {
+                $list = array();
+            }
+        }
+        # check to tag list
+        if ($filer_tag) {
+            $newArrayList = array();
+            foreach ($list as $id => $data) {
+                if (!empty($data['tags'])) {
+                    if (in_array(strtolower($filer_tag), $data['tags'])) {
+                        $newArrayList[$id] = $data;
+                    }
+                }
+            }
+            if (!empty($newArrayList)) {
+                $is_filter = true;
+                $list = $newArrayList;
+            } else {
+                $list = array();
+            }
+        }
+    }
+
 
 }

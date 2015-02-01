@@ -23,7 +23,6 @@ class UpdateCommand extends BaseCommand
                 }
             }
 
-            $return = array();
             # filer
             $f_id = false;
             if ((isset($options['id']))) {
@@ -37,27 +36,12 @@ class UpdateCommand extends BaseCommand
                 if (is_string($args[0])) {
                     $f_id  = $args[0];
                 }
-            # if type desctiption
-            } else if (isset($options['d'])){
-                if (is_string($options['d'])) {
-                    $f_id = $this->getIdByDescription($list,$options['d']);
-                }
             }
             #check tag list
             $filer_tag = (isset($options['tag'])) ? $options['tag'] : false;
 
             if ($f_id){
-                if (is_array($f_id)){
-                        $new_array = array();
-                    foreach ($f_id as $rid){
-                        if (isset ($return_array_new[$rid])) {
-                            $new_array[$rid] = $return_array_new[$rid];
-                        }
-                    }
-                    if (!empty($new_array)) {
-                        $return_array_new = $new_array;
-                    }
-                }else if (isset ($return_array_new[$f_id])) {
+                if (isset ($return_array_new[$f_id])) {
                     $return_array_new = array($f_id => $return_array_new[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
@@ -69,7 +53,7 @@ class UpdateCommand extends BaseCommand
             }
             # check to tag list
             if ($filer_tag) {
-                $this->padding("appling migration for tag : ".$filer_tag);
+                $this->padding("up migration for tag : ".$filer_tag);
                 $newArrayList = array();
                 foreach ($return_array_new as $id => $mig) {
                     if (!empty($mig[3])) {
