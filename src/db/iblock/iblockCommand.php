@@ -83,7 +83,7 @@ class IblockCommand extends \BaseCommand {
         $up_data['LID'] = $this->clear($field_val);
 
         if ($is_full){
-            $desk = "text description of the information block - default ''";
+            $desk = "Text description of the information block - default ''";
             $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[DESCRIPTION]:', \ConsoleKit\Colors::YELLOW), '', false);
             $up_data['DESCRIPTION'] = $this->clear($field_val);
 
@@ -94,6 +94,15 @@ class IblockCommand extends \BaseCommand {
             $desk = "Заголовок 'Раздел' - default 'Раздел'";
             $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[SECTION_NAME]:', \ConsoleKit\Colors::YELLOW), 'Раздел', true);
             $up_data['SECTION_NAME'] = $this->clear($field_val);
+
+            $desk = "Заголовок 'Элементы' - default 'Элементы'";
+            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[ELEMENTS_NAME]:', \ConsoleKit\Colors::YELLOW), 'Элементы', true);
+            $up_data['ELEMENTS_NAME'] = $this->clear($field_val);
+
+            $desk = "Заголовок 'Элемент' - default 'Элемент'";
+            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[ELEMENT_NAME]:', \ConsoleKit\Colors::YELLOW), 'Элемент', true);
+            $up_data['ELEMENT_NAME'] = $this->clear($field_val);
+
         }
 
 
