@@ -42,7 +42,7 @@ class IblockCommand extends \BaseCommand {
             $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
             $up_data['IBLOCK_TYPE_ID'] = $this->clear($field_val);
 
-            $iblockTypeDbRes = CIBlockType::GetByID($up_data['IBLOCK_TYPE_ID']);
+            $iblockTypeDbRes = \CIBlockType::GetByID($up_data['IBLOCK_TYPE_ID']);
             if (!$iblockTypeDbRes || (!$iblockTypeDbRes->SelectedRowsCount())) {
 
                 $this->error('Iblock type with id = "' . $up_data['IBLOCK_TYPE_ID'] . '" not exist.');
