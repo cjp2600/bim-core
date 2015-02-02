@@ -12,7 +12,7 @@
 namespace Bim\Db\Iblock;
 
 
-class Commad extends BaseCommand {
+class IblockCommand extends \ConsoleKit\Command {
 
     /**
      * createWizard

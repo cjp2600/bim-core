@@ -50,7 +50,7 @@ class CreateCommand extends BaseCommand {
         $desc = "";
 
         # create wizard command
-        Bim\Db\Iblock\Commad::createWizard($up_data,$down_data,$desc,$is_full);
+        Bim\Db\Iblock\IblockCommand::createWizard($up_data,$down_data,$desc,$is_full);
 
         # set
         $temp = ($is_full) ? "up_full" : "up";
