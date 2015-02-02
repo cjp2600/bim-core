@@ -23,7 +23,7 @@ class IblockCommand extends \ConsoleKit\Command {
      */
     public static function createWizard(&$up_data,&$down_data,&$desc,$is_full)
     {
-        $dialog  = new \ConsoleKit\Widgets\Dialog(self::$console);
+        $dialog  = new \ConsoleKit\Widgets\Dialog(self::getConsole());
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
