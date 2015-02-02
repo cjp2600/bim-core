@@ -9,11 +9,8 @@
  * @time: 22:42
  */
 
-use ConsoleKit\Console,
-    ConsoleKit\Command,
-    ConsoleKit\Colors,
-    ConsoleKit\Widgets\Dialog,
-    ConsoleKit\Widgets\ProgressBar;
+use ConsoleKit\Command,
+    ConsoleKit\Colors;
 
 /**
  * Getting information about the project

@@ -1,6 +1,6 @@
 <?php
 
-use ConsoleKit\Widgets\ProgressBar,ConsoleKit\Colors;
+use ConsoleKit\Colors;
 
 class UpdateCommand extends BaseCommand
 {
