@@ -181,7 +181,7 @@ class IblockCommand extends \BaseCommand {
                         unset($arPropertyValues['PROPERTY_ID']);
                     $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
 
-                    $return[] = $this->getContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
+                    $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
                 }
 
                 return implode(PHP_EOL,$return);
