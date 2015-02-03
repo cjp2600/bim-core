@@ -166,7 +166,7 @@ class IblockCommand extends \BaseCommand {
             //Удалем ID из Массива.
             unset($arIblock['ID']);
 
-            if ($return[] = $this->getMethodContent('IblockIntegrate', 'Add', array($arIblock)))
+            if ($return[] = $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Add', array($arIblock)))
             {
                 $IblockProperty = new \CIBlockProperty();
 
@@ -181,7 +181,7 @@ class IblockCommand extends \BaseCommand {
                         unset($arPropertyValues['PROPERTY_ID']);
                     $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
 
-                    $return[] = $this->getContent('IblockPropertyIntegrate', 'Add', array($arIblockProperty));
+                    $return[] = $this->getContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
                 }
 
                 return implode(PHP_EOL,$return);
