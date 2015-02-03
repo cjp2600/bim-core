@@ -1,3 +1,5 @@
 $iblock = new Bim\Db\Iblock\IblockIntegrate();
-        $response = $iblock->Delete("#IBLOCK_CODE#");
+        $response = $iblock->Add(
+                        #IBLOCK_ADD_CODE#
+                    );
         return self::response($response);

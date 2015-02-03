@@ -121,11 +121,30 @@ class IblockCommand extends \BaseCommand {
     {
         $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
 
-        $desk = "Character code information block";
-        $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW));
-        $up_data['IBLOCK_CODE'] = $this->clear($field_val);
+        $do = true;
+        while ($do) {
+            $desk = "Character code information block - no default/required";
+            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
+            $up_data['IBLOCK_CODE'] = $this->clear($field_val);
+
+            #check on exist
+            $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $up_data['IBLOCK_CODE']));
+            if ($iblockDbRes && ($iblockDbRes->SelectedRowsCount())) {
+                $do = false;
+            } else {
+                $this->error('Iblock with code = "' . $up_data['IBLOCK_CODE'] . '" not exist.');
+            }
+        }
 
         $down_data = "";
+        if ($arIblock = $iblockDbRes->Fetch()) {
+            //Добавляем права на доступ к инфоблоку.
+            $arIblock['GROUP_ID'] = CIBlock::GetGroupPermissions($arIblock['ID']);
+            $arIblock['FIELDS'] = CIBlock::GetFields($arIblock['ID']);
+            //Удалем ID из Массива.
+            unset($arIblock['ID']);
+
+        }
 
         if (empty($desc)) {
             $desk = "Type Description of migration file. Example: TASK-124";
