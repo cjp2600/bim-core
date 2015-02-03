@@ -116,9 +116,8 @@ class IblockCommand extends \BaseCommand {
      * @param $up_data
      * @param $down_data
      * @param $desc
-     * @param $is_full
      */
-    public function deleteWizard(&$up_data,&$down_data,&$desc,$is_full)
+    public function deleteWizard(&$up_data,&$down_data,&$desc)
     {
         $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
 
