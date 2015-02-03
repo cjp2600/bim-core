@@ -346,7 +346,6 @@ class IblockIntegrate
      */
     public function Add($arFields,$isRevert = false)
     {
-        global $RESPONSE;
         if (isset($arFields['SORT']))
         {
             if (!is_int($arFields['SORT']))
@@ -399,12 +398,14 @@ class IblockIntegrate
         );
 
         if ( !strlen( $arFields['CODE'] ) ) {
-            return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Not found iblock code');
+            throw new \Exception('Not found iblock code');
+            return false;
         }
 
         $iblockDbRes = \CIBlock::GetList( array(), array('CODE' => $arFields['CODE'] ) );
         if ( $iblockDbRes !== false && $iblockDbRes->SelectedRowsCount() ) {
-            return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Iblock with code = "' . $arFields['CODE'] .'" already exist.');
+            throw new \Exception('Iblock with code = "' . $arFields['CODE'] .'" already exist.');
+            return false;
         }
 
 
@@ -420,10 +421,12 @@ class IblockIntegrate
 
         if ($ID)
         {
-            return $RESPONSE[] = array('type' => 'success', 'ID' => $ID);
+            return $ID;
         }
-        else
-            return $RESPONSE[] = array('type' => 'error', 'error_text' => $CIblock->LAST_ERROR);
+        else {
+            throw new \Exception($CIblock->LAST_ERROR);
+            return false;
+        }
     }
 
     /*
@@ -791,21 +794,26 @@ class IblockIntegrate
                 if ($IblockRevert->Update($IblockCode))
                 {
                     $Iblock = new \CIBlock();
-                    if ($Iblock->Update($NewArFields['ID'], $NewArFields))
-                        return $RESPONSE[] = array('type' => 'success');
-                    else
-                        return $RESPONSE[] = array('type' => 'error', 'error_text' => $Iblock->LAST_ERROR);
+                    if ($Iblock->Update($NewArFields['ID'], $NewArFields)) {
+                        return true;
+                    } else {
+                        throw new \Exception($Iblock->LAST_ERROR);
+                        return false;
+                    }
                 }
                 else {
-                    return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Cant complete "iblock update revert" operation');
+                    throw new \Exception('Cant complete "iblock update revert" operation');
+                    return false;
                 }
 
             } else {
                 $Iblock = new \CIBlock();
-                if ($Iblock->Update($NewArFields['ID'], $NewArFields))
-                    return $RESPONSE[] = array('type' => 'success');
-                else
-                    return $RESPONSE[] = array('type' => 'error', 'error_text' => $Iblock->LAST_ERROR);
+                if ($Iblock->Update($NewArFields['ID'], $NewArFields)) {
+                    return true;
+                } else {
+                    throw new \Exception($Iblock->LAST_ERROR);
+                    return false;
+                }
             }
         }
         else
@@ -818,24 +826,26 @@ class IblockIntegrate
      */
     public function Delete($IblockCode)
     {
-        global $RESPONSE;
         $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode));
         if ($arIblock = $dbIblock->Fetch())
         {
             $iblockElDbRes = \CIBlockElement::GetList( array(), array('IBLOCK_ID' => $arIblock['ID'] ) );
             if ( $iblockElDbRes !== false && $iblockElDbRes->SelectedRowsCount() ) {
-                return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Can not delete iblock id = ' . $arIblock['ID'] . ' have elements');
+                throw new \Exception('Can not delete iblock id = ' . $arIblock['ID'] . ' have elements');
+                return false;
             }
 
             if (\CIBlock::Delete($arIblock['ID'])) {
-                return $RESPONSE[] = array('type' => 'success');
+                return true;
             } else {
-                return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Iblock delete error!');
+                throw new \Exception('Iblock delete error!');
+                return false;
             }
 
         }
         else {
-            return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Not find iblock with code '.$IblockCode);
+            throw new \Exception('Not find iblock with code '.$IblockCode);
+            return false;
         }
     }
 }

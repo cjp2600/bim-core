@@ -1,8 +1,13 @@
-$iblock = new Bim\Db\Iblock\IblockIntegrate();
-        $response = $iblock->Add(array(
-            "IBLOCK_TYPE_ID" => "#IBLOCK_TYPE_ID#",
-            "NAME" => "#NAME#",
-            "CODE" => "#CODE#",
-            "LID"  =>  "#LID#"
-        ));
-        return self::response($response);
+try {
+                Bim\Db\Iblock\IblockIntegrate::Add(
+                array(
+                            "IBLOCK_TYPE_ID" => "#IBLOCK_TYPE_ID#",
+                            "NAME" => "#NAME#",
+                            "CODE" => "#CODE#",
+                            "LID"  =>  "#LID#"
+                        )
+                );
+                return self::response(array("type"=>"success"));
+        } catch (Exception $e) {
+                return self::response(array("type"=>"error","error_text"=>$e->getMessage()));
+        }

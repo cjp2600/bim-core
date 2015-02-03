@@ -305,7 +305,7 @@ abstract class BaseCommand extends Command {
     {
         $arParamsToString = array();
         foreach ($arParams as $param) {
-            $arParamsToString[] = "\t\t".var_export($param, true);
+            $arParamsToString[] = var_export($param, true);
         }
 
         $arParamsToString[] = 'true';
