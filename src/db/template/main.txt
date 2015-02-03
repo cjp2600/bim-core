@@ -37,8 +37,8 @@ class Migration#CLASS_NAME# extends Bim\Revision {
     public static function down()
     {
         try {
-           // do down code
-           #DOWN_CONTENT#
+            // do down code
+            #DOWN_CONTENT#
 
             $response = array("type"=>"success");
             return self::response($response);

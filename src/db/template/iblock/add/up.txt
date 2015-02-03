@@ -5,4 +5,4 @@ Bim\Db\Iblock\IblockIntegrate::Add(
                 "CODE" => "#CODE#",
                 "LID"  =>  "#LID#"
                 )
-        );
+            );
