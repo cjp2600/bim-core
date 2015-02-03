@@ -311,7 +311,7 @@ abstract class BaseCommand extends Command {
         $arParamsToString[] = 'true';
         $paramsToString = implode(', ', $arParamsToString);
 
-        return $className.'::'.$methodName.'('.$paramsToString.');'.PHP_EOL;
+        return $className.'::'.$methodName.'('."\t\t".$paramsToString.');'.PHP_EOL;
     }
 
 
