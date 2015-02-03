@@ -305,13 +305,13 @@ abstract class BaseCommand extends Command {
     {
         $arParamsToString = array();
         foreach ($arParams as $param) {
-            $arParamsToString[] = var_export($param, true);
+            $arParamsToString[] = "\t\t".var_export($param, true);
         }
 
         $arParamsToString[] = 'true';
         $paramsToString = implode(', ', $arParamsToString);
 
-        return $className.'::'.$methodName.'('."\t\t".$paramsToString.');'.PHP_EOL;
+        return $className.'::'.$methodName.'('.$paramsToString.');'.PHP_EOL;
     }
 
 
