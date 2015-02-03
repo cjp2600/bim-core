@@ -1,8 +1,1 @@
-try {
-            Bim\Db\Iblock\IblockIntegrate::Delete("#IBLOCK_CODE#");
-            $response = array("type"=>"success");
-            return self::response($response);
-        } catch (Exception $e) {
-            $response = array("type"=>"error","error_text"=>$e->getMessage());
-            return self::response($response);
-        }
+Bim\Db\Iblock\IblockIntegrate::Delete("#IBLOCK_CODE#");

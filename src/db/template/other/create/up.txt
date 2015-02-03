@@ -1,2 +1,1 @@
-# return boolean true/false 
-        return self::response(); // empty return false
+# empty up method (use Exception)
