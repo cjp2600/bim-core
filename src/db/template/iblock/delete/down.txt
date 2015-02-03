@@ -1,6 +1,5 @@
-try {
-        #IBLOCK_ADD_CODE#;
+try { #IBLOCK_ADD_CODE#
         return self::response(array("type"=>"success"));
         } catch (Exception $e) {
-        return self::response(array("type"=>"error","error_text"=>$e->getMessage());
+        return self::response(array("type"=>"error","error_text"=>$e->getMessage()));
         }
