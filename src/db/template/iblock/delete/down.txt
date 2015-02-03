@@ -1,5 +1,6 @@
-$iblock = new Bim\Db\Iblock\IblockIntegrate();
-        $response = $iblock->Add(
-                        #IBLOCK_ADD_CODE#
-                    );
-        return self::response($response);
+try {
+        #IBLOCK_ADD_CODE#;
+        return self::response(array("type"=>"success"));
+        } catch (Exception $e) {
+        return self::response(array("type"=>"error","error_text"=>$e->getMessage());
+        }

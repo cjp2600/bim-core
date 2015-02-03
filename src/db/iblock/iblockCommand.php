@@ -136,20 +136,61 @@ class IblockCommand extends \BaseCommand {
             }
         }
 
-        $down_data = "";
-        if ($arIblock = $iblockDbRes->Fetch()) {
-            //Добавляем права на доступ к инфоблоку.
-            $arIblock['GROUP_ID'] = CIBlock::GetGroupPermissions($arIblock['ID']);
-            $arIblock['FIELDS'] = CIBlock::GetFields($arIblock['ID']);
-            //Удалем ID из Массива.
-            unset($arIblock['ID']);
-
+        if ($content = $this->revertAdd($up_data['IBLOCK_CODE'])) {
+            $down_data['IBLOCK_ADD_CODE'] = $content;
+        } else {
+            $down_data['IBLOCK_ADD_CODE'] = 'throw new \Exception("create revert error");';
         }
 
         if (empty($desc)) {
             $desk = "Type Description of migration file. Example: TASK-124";
             $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
         }
+    }
+
+    /**
+     * revertAdd
+     * @param $IblockCode
+     * @return bool|string
+     */
+    public function revertAdd($IblockCode)
+    {
+        $Iblock = new \CIBlock();
+        $return = array();
+        $dbIblock = $Iblock->GetList(array(), array('CODE' => $IblockCode));
+        if ($arIblock = $dbIblock->Fetch())
+        {
+            //Добавляем права на доступ к инфоблоку.
+            $arIblock['GROUP_ID'] = \CIBlock::GetGroupPermissions($arIblock['ID']);
+            $arIblock['FIELDS'] = \CIBlock::GetFields( $arIblock['ID'] );
+            //Удалем ID из Массива.
+            unset($arIblock['ID']);
+
+            if ($return[] = $this->getMethodContent('IblockIntegrate', 'Add', array($arIblock)))
+            {
+                $IblockProperty = new \CIBlockProperty();
+
+                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $arIblock['CODE']));
+
+                $propsArray = array();
+                while ($arIblockProperty = $dbIblockProperty->Fetch())
+                {
+                    unset($arIblockProperty['ID']);
+                    $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(), array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
+                    while($arPropertyValues = $dbPropertyValues->Fetch())
+                        unset($arPropertyValues['PROPERTY_ID']);
+                    $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
+
+                    $return[] = $this->getContent('IblockPropertyIntegrate', 'Add', array($arIblockProperty));
+                }
+
+                return implode(PHP_EOL,$return);
+            }
+            else
+                return false;
+        }
+        else
+            return false;
     }
 
 }

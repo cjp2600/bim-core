@@ -73,7 +73,26 @@ class CreateCommand extends BaseCommand {
      */
     public function createIblockDelete(array $args, array $options = array())
     {
-        $this->padding("this createIblockDelete");
+        # Up Wizard
+        $up_data = array();
+        $down_data = array();
+        $desc = "";
+
+        # create wizard command
+        $wizard = new \Bim\Db\Iblock\IblockCommand($this->getConsole());
+        $wizard->deleteWizard($up_data,$down_data,$desc);
+
+        # set
+        $temp =  "up";
+        $name_migration = $this->getMigrationName();
+        $this->saveTemplate($name_migration,
+            $this->setTemplate(
+                $name_migration,
+                $this->setTemplateMethod('iblock', 'delete', $up_data, $temp ),
+                $this->setTemplateMethod('iblock', 'delete', $down_data, "down"),
+                $desc,
+                get_current_user()
+            ));
     }
 
 

@@ -15,7 +15,7 @@ use ConsoleKit\Command,
 /**
  * Getting information about the project
  */
-class BaseCommand extends Command {
+abstract class BaseCommand extends Command {
 
     /**
      * info
@@ -121,7 +121,11 @@ class BaseCommand extends Command {
         return ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/" : $migration_path;
     }
 
-
+    /**
+     * clear
+     * @param $text
+     * @return mixed
+     */
     public function clear($text)
     {
         $text = str_replace("�"," ",$text);
@@ -288,6 +292,26 @@ class BaseCommand extends Command {
         if ( !$DB->Query("SELECT 'id' FROM bim_migrations", true) ) {
             throw new Exception("Migration table not found, run init command. Example: php bim init");
         }
+    }
+
+    /**
+     * getMethodContent
+     * @param $className
+     * @param $methodName
+     * @param $arParams
+     * @return string
+     */
+    public function getMethodContent($className, $methodName, $arParams)
+    {
+        $arParamsToString = array();
+        foreach ($arParams as $param) {
+            $arParamsToString[] = var_export($param, true);
+        }
+
+        $arParamsToString[] = 'true';
+        $paramsToString = implode(', ', $arParamsToString);
+
+        return $className.'::'.$methodName.'('.$paramsToString.');'.PHP_EOL;
     }
 
 
