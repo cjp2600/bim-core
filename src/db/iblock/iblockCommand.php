@@ -28,7 +28,7 @@ class IblockCommand extends \BaseCommand {
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
         if (!is_string($desc)) {
-            $desk = "Type Description of migration file. Example: TASK-124";
+            $desk = "Type Description of migration file. Example: #TASK-124";
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
 
@@ -105,6 +105,28 @@ class IblockCommand extends \BaseCommand {
 
         }
 
+        if (empty($desc)) {
+            $desk = "Type Description of migration file. Example: TASK-124";
+            $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
+        }
+    }
+
+    /**
+     * deleteWizard
+     * @param $up_data
+     * @param $down_data
+     * @param $desc
+     * @param $is_full
+     */
+    public function deleteWizard(&$up_data,&$down_data,&$desc,$is_full)
+    {
+        $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
+
+        $desk = "Character code information block";
+        $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW));
+        $up_data['IBLOCK_CODE'] = $this->clear($field_val);
+
+        $down_data = "";
 
         if (empty($desc)) {
             $desk = "Type Description of migration file. Example: TASK-124";
