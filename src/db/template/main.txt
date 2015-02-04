@@ -16,16 +16,8 @@ class Migration#CLASS_NAME# extends Bim\Revision {
      */
     public static function up()
     {
-        try {
-            // do up code
-            #UP_CONTENT#
-
-            $response = array("type"=>"success");
-            return self::response($response);
-        } catch (Exception $e) {
-            $response = array("type"=>"error","error_text"=>$e->getMessage());
-            return self::response($response);
-        }
+        // do up code
+        #UP_CONTENT#
     }
 
     /**
@@ -36,16 +28,8 @@ class Migration#CLASS_NAME# extends Bim\Revision {
      */
     public static function down()
     {
-        try {
-            // do down code
-            #DOWN_CONTENT#
-
-            $response = array("type"=>"success");
-            return self::response($response);
-        } catch (Exception $e) {
-            $response = array("type"=>"error","error_text"=>$e->getMessage());
-            return self::response($response);
-        }
+        // do down code
+        #DOWN_CONTENT#
     }
 
     /**

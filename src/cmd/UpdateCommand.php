@@ -80,11 +80,12 @@ class UpdateCommand extends BaseCommand
             foreach ( $return_array_new as $id => $mig) {
                 include_once "" . $mig[1] . "";
                 if ((method_exists($mig[0], "up"))) {
-                    if ($do = $mig[0]::up()) {
-                        if ($do === true) {
+
+                    try {
+                        # call up function
+                        if (false !== $mig[0]::up()) {
                             $obSelect = Bim\Db\Entity\MigrationsTable::getList(array("filter" => array("id" => $id)));
                             if (!$obSelect->fetch()) {
-                                $content = base64_encode(file_get_contents($mig[1]));
                                 $ob = Bim\Db\Entity\MigrationsTable::add(array(
                                     "id" => $id
                                 ));
@@ -92,7 +93,12 @@ class UpdateCommand extends BaseCommand
                                     $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
                                 }
                             }
+                        } else {
+                            $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED)." ".Colors::colorize("(Method Up return false)",Colors::YELLOW));
                         }
+
+                    }  catch (Exception $e) {
+                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED)." ".Colors::colorize("(".$e->getMessage().")",Colors::YELLOW));
                     }
                 }
             }
