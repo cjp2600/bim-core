@@ -92,8 +92,8 @@ class DownCommand extends BaseCommand
             foreach ( $return_array_apply as $id => $mig) {
                 include_once "" . $mig[1] . "";
                 if ((method_exists($mig[0], "down"))) {
-                    if ($do = $mig[0]::down()) {
-                        if ($do === true) {
+                    try {
+                        if (false !== $mig[0]::down()) {
                             $obSelect = Bim\Db\Entity\MigrationsTable::getList(array("filter" => array("id" => $id)));
                             if ($obSelect->fetch()) {
                                 $ob = Bim\Db\Entity\MigrationsTable::delete($id);
@@ -101,7 +101,11 @@ class DownCommand extends BaseCommand
                                     $this->writeln($this->color("     - revert   : " . $mig[2], Colors::GREEN));
                                 }
                             }
+                        } else {
+                            $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Down return false)", Colors::YELLOW));
                         }
+                    } catch (Exception $e) {
+                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(" . $e->getMessage() . ")", Colors::YELLOW));
                     }
                 }
             }
