@@ -79,32 +79,28 @@ class UpdateCommand extends BaseCommand
             $this->writeln('');
             foreach ( $return_array_new as $id => $mig) {
                 include_once "" . $mig[1] . "";
-
                 # check bim migration.
-                if ( new $mig[0]() instanceof Bim\Revision ) {
-                    if ((method_exists($mig[0], "up"))) {
-                        try {
-                            # call up function
-                            if (false !== $mig[0]::up()) {
-                                $obSelect = Bim\Db\Entity\MigrationsTable::getList(array("filter" => array("id" => $id)));
-                                if (!$obSelect->fetch()) {
-                                    $ob = Bim\Db\Entity\MigrationsTable::add(array(
-                                        "id" => $id
-                                    ));
-                                    if ($ob->isSuccess()) {
-                                        $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
-                                    }
+                if ((method_exists($mig[0], "up"))) {
+                    try {
+                        # call up function
+                        if (false !== $mig[0]::up()) {
+                            $obSelect = Bim\Db\Entity\MigrationsTable::getList(array("filter" => array("id" => $id)));
+                            if (!$obSelect->fetch()) {
+                                $ob = Bim\Db\Entity\MigrationsTable::add(array(
+                                    "id" => $id
+                                ));
+                                if ($ob->isSuccess()) {
+                                    $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
                                 }
-                            } else {
-                                $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
                             }
-
-                        } catch (Exception $e) {
-                            $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(" . $e->getMessage() . ")", Colors::YELLOW));
+                        } else {
+                            $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
                         }
+
+                    } catch (Exception $e) {
+                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(" . $e->getMessage() . ")", Colors::YELLOW));
                     }
                 }
-
             }
             $time_end = microtime(true);
             $time = $time_end - $time_start;
