@@ -202,9 +202,11 @@ abstract class BaseCommand extends Command {
 
             include_once "" . $this->getMigrationPath() . $val . "";
             $class_name = "Migration".$key;
-            $description = (method_exists($class_name, "getDescription")) ? $this->color_tg($class_name::getDescription()) : "";
-            $tags = (!empty($description)) ? $this->getHashTags($description) : array();
-            $author = (method_exists($class_name, "getAuthor")) ? $class_name::getAuthor() : "";
+            if ( new $class_name() instanceof Bim\Revision ) {
+
+                $description = (method_exists($class_name, "getDescription")) ? $this->color_tg($class_name::getDescription()) : "";
+                $tags = (!empty($description)) ? $this->getHashTags($description) : array();
+                $author = (method_exists($class_name, "getAuthor")) ? $class_name::getAuthor() : "";
 
                 $return[$key] = array(
                     "name" => $key,
@@ -214,6 +216,8 @@ abstract class BaseCommand extends Command {
                     "description" => $description,
                     "tags" => $tags
                 );
+
+            }
         }
         return $return;
     }

@@ -11,28 +11,11 @@
 
 namespace Bim;
 
+interface Revision {
 
-use ConsoleKit\Colors;
-use ConsoleKit\Console;
-
-class Revision {
-
-    public function response($response = false)
-    {
-        $console = new Console();
-        $mig = str_replace("Migration","",get_called_class());
-        if (isset($response['type']) && $response['type'] == "success") {
-            return true;
-        } else if ($response['type'] == "error"){
-            if (isset($response['error_text'])){
-                $console->writeln(Colors::colorize("     - error : " . $mig, Colors::RED)." ".Colors::colorize("(".str_replace("<br>",", ",$response['error_text']).")",Colors::YELLOW));
-                return false;
-            }
-        }
-        if (!$response) {
-            $console->writeln(Colors::colorize("     - error : " . $mig, Colors::RED)." ".Colors::colorize("(Method Up return false)",Colors::YELLOW));
-        }
-        return is_bool($response) ? $response : false;
-    }
+    public static function up();
+    public static function down();
+    public static function getDescription();
+    public static function getAuthor();
 
 }
