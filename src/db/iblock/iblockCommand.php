@@ -101,6 +101,9 @@ class IblockCommand extends \BaseCommand {
 
         }
 
+        # set current date.
+        $up_data['CREATE_DATE'] = date("d.m.Y G:h:i");
+
         if (empty($desc)) {
             $desk = "Type Description of migration file. Example: TASK-124";
             $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
