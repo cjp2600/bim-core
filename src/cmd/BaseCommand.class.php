@@ -196,7 +196,7 @@ abstract class BaseCommand extends Command {
                     $dir_array[str_replace("." . $x, "", $d)] = $d;
             }
         }
-        ksort($dir_array);
+
         $return = array();
         foreach ($dir_array as $key => $val) {
             # include migration file.

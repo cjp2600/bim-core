@@ -31,7 +31,6 @@ class IblockCommand extends \BaseCommand {
             $desk = "Type Description of migration file. Example: #TASK-124";
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
-
         $do = true;
         while ($do) {
             $desk = "Information block type - no default/required";
