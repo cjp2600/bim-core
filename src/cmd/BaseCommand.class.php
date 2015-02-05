@@ -12,9 +12,6 @@
 use ConsoleKit\Command,
     ConsoleKit\Colors;
 
-/**
- * Getting information about the project
- */
 abstract class BaseCommand extends Command {
 
     /**
@@ -80,6 +77,8 @@ abstract class BaseCommand extends Command {
      * @param $class_name
      * @param $up_content
      * @param $down_content
+     * @param string $desc_content
+     * @param string $author
      * @return mixed|string
      */
     public function setTemplate($class_name, $up_content, $down_content, $desc_content = "",$author = "")
@@ -185,27 +184,30 @@ abstract class BaseCommand extends Command {
      * @param $x
      * @return array
      */
-    public function getDirectoryTree( $outerDir , $x)
+    public function getDirectoryTree($outerDir, $x)
     {
-        $dirs = array_diff( scandir( $outerDir ), Array( ".", ".." ) );
+        $dirs = array_diff(scandir($outerDir), Array(".", ".."));
         $dir_array = Array();
-        foreach( $dirs as $d ){
-            if( is_dir($outerDir."/".$d)  ){
-                $dir_array[ $d ] = $this->getDirectoryTree( $outerDir."/".$d , $x);
-            }else{
-                if (($x)?ereg($x.'$',$d):1)
-                    $dir_array[ str_replace(".".$x,"",$d) ] = $d;
+        foreach ($dirs as $d) {
+            if (is_dir($outerDir . "/" . $d)) {
+                $dir_array[$d] = $this->getDirectoryTree($outerDir . "/" . $d, $x);
+            } else {
+                if (($x) ? ereg($x . '$', $d) : 1)
+                    $dir_array[str_replace("." . $x, "", $d)] = $d;
             }
         }
         $return = array();
-        foreach ($dir_array as $key => $val){
-
+        foreach ($dir_array as $key => $val) {
+            # include migration file.
             include_once "" . $this->getMigrationPath() . $val . "";
-            $class_name = "Migration".$key;
-            if ( new $class_name() instanceof Bim\Revision ) {
-
+            $class_name = "Migration" . $key;
+            # check instance of Revision interface.
+            if (new $class_name() instanceof Bim\Revision) {
+                # get description
                 $description = (method_exists($class_name, "getDescription")) ? $this->color_tg($class_name::getDescription()) : "";
+                # get tags
                 $tags = (!empty($description)) ? $this->getHashTags($description) : array();
+                # get author
                 $author = (method_exists($class_name, "getAuthor")) ? $class_name::getAuthor() : "";
 
                 $return[$key] = array(
@@ -216,7 +218,6 @@ abstract class BaseCommand extends Command {
                     "description" => $description,
                     "tags" => $tags
                 );
-
             }
         }
         return $return;

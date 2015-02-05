@@ -21,7 +21,7 @@ class IblockCommand extends \BaseCommand {
      * @param $desc
      * @param $is_full
      */
-    public function createWizard(&$up_data,&$down_data,&$desc,$is_full)
+    public function createWizard(&$up_data,&$down_data,&$desc,$is_full = true)
     {
         $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
 
@@ -30,10 +30,6 @@ class IblockCommand extends \BaseCommand {
         if (!is_string($desc)) {
             $desk = "Type Description of migration file. Example: #TASK-124";
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
-        }
-
-        if ($is_full){
-            $this->padding("Full designer create an information block".PHP_EOL.$this->color('Warning! It may take a long time', \ConsoleKit\Colors::YELLOW));
         }
 
         $do = true;

@@ -41,9 +41,6 @@ class CreateCommand extends BaseCommand {
      */
     public function createIblockAdd(array $args, array $options = array())
     {
-        # check on full mode
-        $is_full = (isset($options['full'])) ? $options['full'] : false;
-
         # Up Wizard
         $up_data = array();
         $down_data = array();
@@ -51,15 +48,14 @@ class CreateCommand extends BaseCommand {
 
         # create wizard command
         $wizard = new \Bim\Db\Iblock\IblockCommand($this->getConsole());
-        $wizard->createWizard($up_data,$down_data,$desc,$is_full);
+        $wizard->createWizard($up_data,$down_data,$desc);
 
         # set
-        $temp = ($is_full) ? "up_full" : "up";
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
-                $this->setTemplateMethod('iblock', 'add', $up_data, $temp ),
+                $this->setTemplateMethod('iblock', 'add', $up_data, "up" ),
                 $this->setTemplateMethod('iblock', 'add', $down_data, "down"),
                 $desc,
                 get_current_user()
