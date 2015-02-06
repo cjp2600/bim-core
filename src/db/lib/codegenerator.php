@@ -220,9 +220,6 @@ abstract class CodeGenerator
      */
     public function getMethodContent($className, $methodName, $arParams)
     {
-        if (empty($className) || empty($methodName) || empty($params)) {
-            throw new \Exception('Переданы некорректные параметры для метода buildCode');
-        }
 
         $arParamsToString = array();
         foreach ($arParams as $param) {
