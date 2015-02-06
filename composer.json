@@ -26,6 +26,15 @@
 		"classmap": [
 		  	"src",
 		    "src/db",
+		    "src/db/lib",
+		    "src/db/lib/advertising_generator",
+		    "src/db/lib/catalog_generator",
+		    "src/db/lib/currency_generator",
+		    "src/db/lib/form_generator",
+		    "src/db/lib/iblock_generator",
+		    "src/db/lib/main_generator",
+		    "src/db/lib/sale_generator",
+		    "src/db/lib/subscribe_generator",
 		    "src/db/entity",
 			"src/db/iblock",
 		    "src/cmd"

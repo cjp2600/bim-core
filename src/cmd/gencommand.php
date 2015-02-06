@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Main class of creating migration is required for the generation of migration files.
  *
@@ -9,21 +8,30 @@
  *   - other
  *
  */
-class CreateCommand extends BaseCommand {
+class GenCommand extends BaseCommand {
 
+    # generate object
+    private $gen_obj = null;
+
+    /**
+     * execute
+     * @param array $args
+     * @param array $options
+     * @return mixed|void
+     * @throws Exception
+     */
     public function execute(array $args, array $options = array())
     {
         if (isset($args[0])) {
-
             #chemethod
             if (strstr($args[0], ':')) {
                 $ex = explode(":",$args[0]);
+                $this->setGenObj(Bim\Db\Lib\CodeGenerator::buildHandler(ucfirst($ex[0])));
                 $methodName = ucfirst($ex[0]).ucfirst($ex[1]);
             } else {
                 throw new Exception("Improperly formatted command. Example: php bim create iblock:add");
             }
-
-            $method = "create" . $methodName;
+            $method = "gen" . $methodName;
             if (method_exists($this,$method)) {
                 $this->{$method}($args, $options);
             } else {
@@ -39,24 +47,36 @@ class CreateCommand extends BaseCommand {
      * @param array $args
      * @param array $options
      */
-    public function createIblockAdd(array $args, array $options = array())
+    public function genIblockAdd(array $args, array $options = array())
     {
-        # Up Wizard
-        $up_data = array();
-        $down_data = array();
-        $desc = "";
+        $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
 
-        # create wizard command
-        $wizard = new \Bim\Db\Iblock\IblockCommand($this->getConsole());
-        $wizard->createWizard($up_data,$down_data,$desc);
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+        if (!is_string($desc)) {
+            $desk = "Type Description of migration file. Example: #TASK-124";
+            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
+        }
+
+        $do = true;
+        while ($do) {
+            $desk = "Information block type - no default/required";
+            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+            $up_data['iblockId'] = $this->clear($field_val);
+
+            $iblockTypeDbRes = \CIBlockType::GetByID($up_data['iblockId']);
+            if ($iblockTypeDbRes->SelectedRowsCount()) {
+                $do = false;
+            }
+        }
 
         # set
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
-                $this->setTemplateMethod('iblock', 'add', $up_data, "up" ),
-                $this->setTemplateMethod('iblock', 'add', $down_data, "down"),
+                $this->gen_obj->generateAddCode($up_data),
+                $this->gen_obj->generateDeleteCode($up_data),
                 $desc,
                 get_current_user()
             ));
@@ -120,6 +140,22 @@ class CreateCommand extends BaseCommand {
                 $desc,
                 get_current_user()
             ));
+    }
+
+    /**
+     * @return null
+     */
+    public function getGenObj()
+    {
+        return $this->gen_obj;
+    }
+
+    /**
+     * @param null $gen_obj
+     */
+    public function setGenObj($gen_obj)
+    {
+        $this->gen_obj = $gen_obj;
     }
 
 }

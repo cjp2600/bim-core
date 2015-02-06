@@ -158,19 +158,13 @@ class IblockCommand extends \BaseCommand {
         $dbIblock = $Iblock->GetList(array(), array('CODE' => $IblockCode));
         if ($arIblock = $dbIblock->Fetch())
         {
-            //Добавляем права на доступ к инфоблоку.
             $arIblock['GROUP_ID'] = \CIBlock::GetGroupPermissions($arIblock['ID']);
             $arIblock['FIELDS'] = \CIBlock::GetFields( $arIblock['ID'] );
-            //Удалем ID из Массива.
             unset($arIblock['ID']);
-
             if ($return[] = $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Add', array($arIblock)))
             {
                 $IblockProperty = new \CIBlockProperty();
-
                 $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $arIblock['CODE']));
-
-                $propsArray = array();
                 while ($arIblockProperty = $dbIblockProperty->Fetch())
                 {
                     unset($arIblockProperty['ID']);
@@ -178,17 +172,15 @@ class IblockCommand extends \BaseCommand {
                     while($arPropertyValues = $dbPropertyValues->Fetch())
                         unset($arPropertyValues['PROPERTY_ID']);
                     $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
-
                     $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
                 }
-
                 return implode(PHP_EOL,$return);
-            }
-            else
+            } else {
                 return false;
-        }
-        else
+            }
+        } else {
             return false;
+        }
     }
 
 }
