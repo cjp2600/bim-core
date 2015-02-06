@@ -67,6 +67,7 @@ class GenCommand extends BaseCommand {
             $iblockTypeDbRes = \CIBlockType::GetByID($up_data['iblockId']);
             if ($iblockTypeDbRes->SelectedRowsCount()) {
                 $do = false;
+                break;
             }
         }
 
