@@ -211,27 +211,28 @@ abstract class CodeGenerator
     }
 
     /**
-     * метод формирует код для сохранения в скрипте update.php
-     * @param $className название класса
-     * @param $methodName название метод
-     * @param $params массив параметров
+     * getMethodContent
+     * @param $className
+     * @param $methodName
+     * @param $arParams
      * @return string
      * @throws \Exception
      */
-    protected  function buildCode( $className, $methodName, $params)
+    public function getMethodContent($className, $methodName, $arParams)
     {
-        if ( empty( $className ) || empty( $methodName ) || empty( $params ) ) {
-            throw new \Exception( 'Переданы некорректные параметры для метода buildCode' );
+        if (empty($className) || empty($methodName) || empty($params)) {
+            throw new \Exception('Переданы некорректные параметры для метода buildCode');
         }
 
-        $paramsToString = array();
-        foreach ( $params as $param ) {
-            $paramsToString[] = var_export($param, true);
+        $arParamsToString = array();
+        foreach ($arParams as $param) {
+            $arParamsToString[] = var_export($param, true);
         }
 
-        $paramsToString = implode(', ', $paramsToString);
-        $newCode = $className.'::'.$methodName.'('.$paramsToString.');'.PHP_EOL;
-        return $newCode;
+        $arParamsToString[] = 'true';
+        $paramsToString = implode(', ', $arParamsToString);
+
+        return $className . '::' . $methodName . '(' . $paramsToString . ');' . PHP_EOL;
     }
 
     /**

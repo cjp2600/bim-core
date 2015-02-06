@@ -12,23 +12,40 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
     public function __construct(){
         \CModule::IncludeModule('iblock');
     }
+
     /**
      * метод для генерации кода добавления нового  инфоблока
-     * @param $params array
+     * @param array $IblockCode
      * @return mixed
+     * @internal param array $params
      */
-    public function generateAddCode( $params )
+    public function generateAddCode($IblockCode)
     {
-        $this->checkParams( $params );
-        $code = false;
-        foreach( $this->ownerItemDbData as $iblockData  ) {
-            $addFields = $iblockData;
-            unset( $addFields['ID'] );
-            $addFields['FIELDS'] = \CIBlock::GetFields( $iblockData['ID'] );
-            $addFields['GROUP_ID'] = \CIBlock::GetGroupPermissions( $iblockData['ID'] );
-            $code = $this->buildCode('Bim\Db\Iblock\IblockIntegrate', 'Add', array( $addFields ) ) .PHP_EOL.PHP_EOL;
+        $Iblock = new \CIBlock();
+        $return = array();
+        $dbIblock = $Iblock->GetList(array(), array('CODE' => $IblockCode));
+        if ($arIblock = $dbIblock->Fetch()) {
+            $arIblock['GROUP_ID'] = \CIBlock::GetGroupPermissions($arIblock['ID']);
+            $arIblock['FIELDS'] = \CIBlock::GetFields($arIblock['ID']);
+            unset($arIblock['ID']);
+            if ($return[] = $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Add', array($arIblock))) {
+                $IblockProperty = new \CIBlockProperty();
+                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $arIblock['CODE']));
+                while ($arIblockProperty = $dbIblockProperty->Fetch()) {
+                    unset($arIblockProperty['ID']);
+                    $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(), array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
+                    while ($arPropertyValues = $dbPropertyValues->Fetch())
+                        unset($arPropertyValues['PROPERTY_ID']);
+                    $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
+                    $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
+                }
+                return implode(PHP_EOL, $return);
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
-        return $code;
     }
     /**
      * метод для генерации кода обновления инфоблока
@@ -66,28 +83,12 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
 
 
     /**
-     * метод проверки передаваемых параметров
-     * @param $params array(
-     * iblockId => id инфоблоков
-     * )
+     * абстрактный метод проверки передаваемых параметров
+     * @param $params array
      * @return mixed
-     * @throws \Exception
      */
-    public function checkParams( $params  )
+    public function checkParams($params)
     {
-        if ( !isset( $params['iblockId'] ) || empty( $params['iblockId'] ) ) {
-            throw new \Exception( 'В параметрах не найден iblockId' );
-        }
-        foreach( $params['iblockId'] as $iblockId ) {
-            $iblockDbRes = \CIBlock::GetByID( $iblockId );
-            if ( $iblockDbRes === false || !$iblockDbRes->SelectedRowsCount() ) {
-                throw new \Exception( 'В системе не найден  инфоблок с id = ' . $iblockId );
-            }
-            $iblockData = $iblockDbRes->Fetch();
-            if ( !strlen($iblockData['CODE']) ) {
-                throw new \Exception('У инфоблока "' . $iblockData['NAME'] . '" не указан символьный код' );
-            }
-            $this->ownerItemDbData[] = $iblockData;
-        }
+        // TODO: Implement checkParams() method.
     }
 }
