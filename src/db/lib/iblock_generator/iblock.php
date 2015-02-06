@@ -68,17 +68,13 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
 
     /**
      * метод для генерации кода удаления  инфоблока
-     * @param $params array
+     * @param array $iblockCode
      * @return mixed
+     * @internal param array $params
      */
-    public function generateDeleteCode( $params )
+    public function generateDeleteCode( $iblockCode )
     {
-        $this->checkParams( $params );
-        $code = false;
-        foreach( $this->ownerItemDbData as $iblockData  ){
-            $code =  $this->buildCode('Bim\Db\Iblock\IblockIntegrate', 'Delete', array( $iblockData['CODE'] ) );
-        }
-        return $code;
+        return $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Delete', array( $iblockCode ) );
     }
 
 
