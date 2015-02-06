@@ -51,25 +51,20 @@ class GenCommand extends BaseCommand {
     {
         $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
 
+        $desk = "Information block type - no default/required";
+        $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+        $iblockTypeDbRes = \CIBlockType::GetByID($field_val);
+        if ($iblockTypeDbRes->SelectedRowsCount()) {
+            $up_data['iblockId'] = $field_val;
+        }
+
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (!is_string($desc)) {
+        if (empty($desc)) {
             $desk = "Type Description of migration file. Example: #TASK-124";
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
 
-        $do = true;
-        while ($do) {
-            $desk = "Information block type - no default/required";
-            $field_val = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
-            $up_data['iblockId'] = $this->clear($field_val);
-
-            $iblockTypeDbRes = \CIBlockType::GetByID($up_data['iblockId']);
-            if ($iblockTypeDbRes->SelectedRowsCount()) {
-                $do = false;
-                break;
-            }
-        }
 
         # set
         $name_migration = $this->getMigrationName();
