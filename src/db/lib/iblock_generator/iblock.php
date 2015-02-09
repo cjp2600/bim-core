@@ -21,16 +21,16 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
      */
     public function generateAddCode($IblockCode)
     {
-        $Iblock = new \CIBlock();
+        $iblock = new \CIBlock();
         $return = array();
-        $dbIblock = $Iblock->GetList(array(), array('CODE' => $IblockCode));
-        if ($arIblock = $dbIblock->Fetch()) {
-            $arIblock['GROUP_ID'] = \CIBlock::GetGroupPermissions($arIblock['ID']);
-            $arIblock['FIELDS'] = \CIBlock::GetFields($arIblock['ID']);
-            unset($arIblock['ID']);
-            if ($return[] = $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Add', array($arIblock))) {
+        $iblock_object = $iblock->GetList(array(), array('CODE' => $IblockCode));
+        if ($item = $iblock_object->Fetch()) {
+            $item['GROUP_ID'] = \CIBlock::GetGroupPermissions($item['ID']);
+            $item['FIELDS'] = \CIBlock::GetFields($item['ID']);
+            unset($item['ID']);
+            if ($return[] = $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Add', array($item))) {
                 $IblockProperty = new \CIBlockProperty();
-                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $arIblock['CODE']));
+                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $item['CODE']));
                 while ($arIblockProperty = $dbIblockProperty->Fetch()) {
                     unset($arIblockProperty['ID']);
                     $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(), array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));

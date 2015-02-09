@@ -220,15 +220,12 @@ abstract class CodeGenerator
      */
     public function getMethodContent($className, $methodName, $arParams)
     {
-
         $arParamsToString = array();
         foreach ($arParams as $param) {
             $arParamsToString[] = var_export($param, true);
         }
-
         $arParamsToString[] = 'true';
         $paramsToString = implode(', ', $arParamsToString);
-
         return $className . '::' . $methodName . '(' . $paramsToString . ');' . PHP_EOL;
     }
 
