@@ -50,8 +50,21 @@ class GenCommand extends BaseCommand {
     public function genIblockAdd(array $args, array $options = array())
     {
         $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
+        $code    = (isset($options['code'])) ? $options['code'] : false;
 
-        $id = (isset($options['id'])) ? $options['id'] : "";
+        if ( !$code ) {
+            $do = true;
+            while ($do) {
+                $desk = "Put code information block - no default/required";
+                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code));
+                if ($iblockDbRes->SelectedRowsCount()) {
+                    $do = false;
+                } else {
+                    $this->error('Iblock with code = "' . $code . '" not exist.');
+                }
+            }
+        }
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
@@ -65,8 +78,8 @@ class GenCommand extends BaseCommand {
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
-                $this->gen_obj->generateAddCode($id),
-                "HEllo",
+                $this->gen_obj->generateAddCode($code),
+                $this->gen_obj->generateDeleteCode($code),
                 $desc,
                 get_current_user()
             ));
