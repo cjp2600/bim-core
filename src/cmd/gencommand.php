@@ -218,6 +218,68 @@ class GenCommand extends BaseCommand {
 
 
     /**
+     * genIblockPropertyAdd
+     * @param array $args
+     * @param array $options
+     */
+    public function genIblockPropertyAdd (array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $code = (isset($options['code'])) ? $options['code'] : false;
+
+        if (!$code) {
+            $do = true;
+            while ($do) {
+                $desk = "Put code information block - no default/required";
+                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code));
+                if ($iblockDbRes->SelectedRowsCount()) {
+                    $do = false;
+                } else {
+                    $this->error('Iblock with code = "' . $code . '" not exist.');
+                }
+            }
+        }
+
+        $propertyCode = (isset($options['propertyCode'])) ? $options['propertyCode'] : false;
+        if (!$propertyCode) {
+            $do = true;
+            while ($do) {
+                $desk = "Put property code - no default/required";
+                $propertyCode = $dialog->ask($desk . PHP_EOL . $this->color('[PROPERTY_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $IblockProperty = new \CIBlockProperty();
+                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' =>  $code, 'CODE' => $propertyCode ));
+                if ($arIblockProperty = $dbIblockProperty->Fetch())
+                {
+                    $do = false;
+                } else {
+                    $this->error('Property with code = "' . $propertyCode . '" not exist.');
+                }
+            }
+        }
+
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+        if (empty($desc)) {
+            $desk = "Type Description of migration file. Example: #TASK-124";
+            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
+        }
+
+        # set
+        $temp =  "up";
+        $name_migration = $this->getMigrationName();
+        $this->saveTemplate($name_migration,
+            $this->setTemplate(
+                $name_migration,
+                $this->gen_obj->generateDeleteCode(array($code,$propertyCode)),
+                "# delete",
+                $desc,
+                get_current_user()
+            ));
+    }
+
+
+    /**
      * createOther
      * @param array $args
      * @param array $options
