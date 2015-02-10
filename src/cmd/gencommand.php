@@ -79,7 +79,50 @@ class GenCommand extends BaseCommand {
             $this->setTemplate(
                 $name_migration,
                 $this->gen_obj->generateAddCode($iblocktypeId),
-                "# delete",
+                $this->gen_obj->generateDeleteCode($iblocktypeId),
+                $desc,
+                get_current_user()
+            ));
+    }
+
+    /**
+     * genIblocktypeDelete
+     * @param array $args
+     * @param array $options
+     */
+    public function genIblocktypeDelete( array $args, array $options = array() )
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $iblocktypeId = (isset($options['typeId'])) ? $options['typeId'] : false;
+
+        if (!$iblocktypeId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put block type id - no default/required";
+                $iblocktypeId = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $iblockDbRes = \CIBlockType::GetByID($iblocktypeId);
+                if ($iblockDbRes->SelectedRowsCount()) {
+                    $do = false;
+                } else {
+                    $this->error('Iblock with id = "' . $iblocktypeId . '" not exist.');
+                }
+            }
+        }
+
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+        if (empty($desc)) {
+            $desk = "Type Description of migration file. Example: #TASK-124";
+            $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
+        }
+
+        # set
+        $name_migration = $this->getMigrationName();
+        $this->saveTemplate($name_migration,
+            $this->setTemplate(
+                $name_migration,
+                $this->gen_obj->generateDeleteCode($iblocktypeId),
+                $this->gen_obj->generateAddCode($iblocktypeId),
                 $desc,
                 get_current_user()
             ));

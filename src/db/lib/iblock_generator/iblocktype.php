@@ -118,15 +118,9 @@ class IblockTypeGen extends \Bim\Db\Lib\CodeGenerator
      * @param $params array
      * @return mixed
      */
-    public function generateDeleteCode( $params ){
-        $this->checkParams( $params );
-
-        $code = '<?php'.PHP_EOL.'/*  Удаляем тип ИБ с id = "' . $params['iblockTypeId'] .'"  */'.PHP_EOL.PHP_EOL;
-
-        $code = $code . $this->buildCode('IblockTypeIntegrate', 'Delete', array( $params['iblockTypeId'] ) );
-
-        return $code;
-
+    public function generateDeleteCode( $IblockTypeId )
+    {
+        return  $this->getMethodContent('Bim\Db\Iblock\IblockTypeIntegrate', 'Delete', array( $IblockTypeId ) );
     }
 
 
