@@ -1,28 +1,38 @@
 <?php
 
+namespace Bim\Db\Lib;
+
 /**
  * Class IblockPropertyGen
  * класс для генерацияя кода изменений в типах инфоблоков:
  *
- * @package Bitrix\Adv_Preset\IblockPropertyGen
  */
-class IblockPropertyGen extends CodeGenerator
+class IblockPropertyGen extends \Bim\Db\Lib\CodeGenerator
 {
 
 
     public function __construct(){
         \CModule::IncludeModule('iblock');
     }
+
     /**
      * метод для генерации кода добавления нового свойства инфоблока
-     * @param $params array
+     * @param array $ch
      * @return mixed
+     * @throws \Exception
+     * @internal param array $params
      */
-    public function generateAddCode( $params ){
+    public function generateAddCode( $ch )
+    {
+        $IblockProperty = new \CIBlockProperty();
+        $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $ch[0], 'CODE' => $ch[1]));
+        if ($arIblockProperty = $dbIblockProperty->Fetch())
+        {
+            $params['iblockId'] = $arIblockProperty['IBLOCK_ID'];
+            $params['propertyId'] = $arIblockProperty['ID'];
+        }
         $this->checkParams( $params );
-
         $ownerItemDbData = $this->ownerItemDbData;
-        $code = '<?php'.PHP_EOL.'/*  Добавляем новое свойство инфоблока */'.PHP_EOL.PHP_EOL;
         foreach( $ownerItemDbData['propertyData'] as $propertyData ) {
             $addFields = $propertyData;
             $addFields['IBLOCK_CODE'] = $ownerItemDbData['iblockData']['CODE'];
@@ -34,12 +44,9 @@ class IblockPropertyGen extends CodeGenerator
                 $addFields['LINK_IBLOCK_CODE'] = $this->getIblockCode( $propertyData['LINK_IBLOCK_ID'] );
 
             }
-
-            $code = $code . $this->buildCode('IblockPropertyIntegrate', 'Add', array(  $addFields ) ) .PHP_EOL.PHP_EOL;    
+            $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array(  $addFields ));
         }
-
-        return $code;
-
+        return implode(PHP_EOL, $return);
     }
     /**
      * метод для генерации кода обновления  свойства инфоблока

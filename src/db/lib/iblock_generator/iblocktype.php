@@ -115,8 +115,9 @@ class IblockTypeGen extends \Bim\Db\Lib\CodeGenerator
 
     /**
      * метод для генерации кода удаления типа инфоблоков
-     * @param $params array
+     * @param array $IblockTypeId
      * @return mixed
+     * @internal param array $params
      */
     public function generateDeleteCode( $IblockTypeId )
     {
@@ -155,6 +156,7 @@ class IblockTypeGen extends \Bim\Db\Lib\CodeGenerator
      * метод проверки передаваемых параметров
      * @param $params array
      * @return mixed
+     * @throws \Exception
      */
     public function checkParams( $params  ) {
 
