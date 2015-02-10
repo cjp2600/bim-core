@@ -33,6 +33,8 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
                 $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $item['CODE']));
                 while ($arIblockProperty = $dbIblockProperty->Fetch()) {
                     unset($arIblockProperty['ID']);
+                    unset($arIblockProperty['IBLOCK_ID']);
+                    $arIblockProperty['IBLOCK_CODE'] = $item['IBLOCK_TYPE_ID'];
                     $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(), array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
                     while ($arPropertyValues = $dbPropertyValues->Fetch())
                         unset($arPropertyValues['PROPERTY_ID']);
