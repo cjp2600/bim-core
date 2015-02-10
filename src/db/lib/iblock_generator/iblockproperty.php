@@ -82,18 +82,9 @@ class IblockPropertyGen extends \Bim\Db\Lib\CodeGenerator
      * @param $params array
      * @return mixed
      */
-    public function generateDeleteCode( $params ){
-        $this->checkParams( $params );
-
-        $ownerItemDbData = $this->ownerItemDbData;
-        $code = '<?php'.PHP_EOL.'/*  Удаляем свойства инфоблока  */'.PHP_EOL.PHP_EOL;
-        foreach( $ownerItemDbData['propertyData'] as $propertyData ) {
-
-            $code = $code . $this->buildCode('IblockPropertyIntegrate', 'Delete', array( $ownerItemDbData['iblockData']['CODE'], $propertyData['CODE'] ) ) .PHP_EOL.PHP_EOL;
-        }
-
-        return $code;
-
+    public function generateDeleteCode( $params )
+    {
+        return $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Delete', array( $params['iblockCode'], $params['propertyCode'] ));
     }
 
 
