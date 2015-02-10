@@ -17,29 +17,30 @@ class IblockPropertyGen extends \Bim\Db\Lib\CodeGenerator
 
     /**
      * метод для генерации кода добавления нового свойства инфоблока
-     * @param array $ch
+     * @param array $params
      * @return mixed
-     * @throws \Exception
+     * @internal param array $ch
      * @internal param array $params
      */
     public function generateAddCode( $params )
     {
-        $this->checkParams( $params );
-        $ownerItemDbData = $this->ownerItemDbData;
-        foreach( $ownerItemDbData['propertyData'] as $propertyData ) {
-            $addFields = $propertyData;
-            $addFields['IBLOCK_CODE'] = $ownerItemDbData['iblockData']['CODE'];
-            unset( $addFields['ID'] );
-            if ( $propertyData['PROPERTY_TYPE'] == 'L' ) {
-                $addFields['VALUES'] = $this->getEnumItemList( $params['iblockId'], $propertyData['ID'] );
-            }
-            if ( isset( $propertyData['LINK_IBLOCK_ID'] ) ) {
-                $addFields['LINK_IBLOCK_CODE'] = $this->getIblockCode( $propertyData['LINK_IBLOCK_ID'] );
+        $IblockCode = $params[0];
+        $PropertyCode = $params[1];
 
+        $IblockProperty = new \CIBlockProperty();
+        $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $IblockCode, 'CODE' => $PropertyCode));
+        if ($arIblockProperty = $dbIblockProperty->Fetch()) {
+            if (isset($arIblockProperty['LINK_IBLOCK_ID'])) {
+                $res = \CIBlock::GetByID($arIblockProperty['LINK_IBLOCK_ID']);
+                if ($ar_res = $res->GetNext()) {
+                    unset($arIblockProperty['LINK_IBLOCK_ID']);
+                    $arIblockProperty['LINK_IBLOCK_CODE'] = $ar_res['CODE'];
+                }
             }
-            $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array(  $addFields ));
+            return $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
+        } else {
+            return false;
         }
-        return implode(PHP_EOL, $return);
     }
     /**
      * метод для генерации кода обновления  свойства инфоблока

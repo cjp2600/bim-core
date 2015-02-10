@@ -252,9 +252,6 @@ class GenCommand extends BaseCommand {
                 $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' =>  $code, 'CODE' => $propertyCode ));
                 if ($arIblockProperty = $dbIblockProperty->Fetch())
                 {
-                    $params['iblockId'] = $arIblockProperty['IBLOCK_ID'];
-                    $params['propertyId'] = $arIblockProperty['ID'];
-
                     $do = false;
                 } else {
                     $this->error('Property with code = "' . $propertyCode . '" not exist.');
@@ -262,10 +259,13 @@ class GenCommand extends BaseCommand {
             }
         }
 
-        if (!isset($params)){
+        if (!empty($code) && !empty($propertyCode)) {
+            $params['iblockCode'] = $code;
+            $params['propertyCode'] = $propertyCode;
+        } else {
             throw new Exception("Ошибка генерации params");
         }
-
+        
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
         if (empty($desc)) {
