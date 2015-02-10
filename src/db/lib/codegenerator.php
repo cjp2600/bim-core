@@ -34,7 +34,7 @@ abstract class CodeGenerator
                 return new IblockPropertyGen();
             break;
 
-            case 'Highloadblock':
+            case 'Hlblock':
                 return new HighloadblockGen();
             break;
 

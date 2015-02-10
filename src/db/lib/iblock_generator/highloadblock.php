@@ -1,5 +1,8 @@
 <?php
-use Bitrix\Highloadblock as HL;
+
+namespace Bim\Db\Lib;
+
+use \Bitrix\Highloadblock as HL;
 
 
 /**
@@ -8,32 +11,30 @@ use Bitrix\Highloadblock as HL;
  *
  * @package Bitrix\Adv_Preset\HighloadblockGen
  */
-class HighloadblockGen extends CodeGenerator
+class HighloadblockGen extends \Bim\Db\Lib\CodeGenerator
 {
 
 
     public function __construct(){
         \CModule::IncludeModule("highloadblock");
     }
+
     /**
      * метод для генерации кода добавления нового highload инфоблока
-     * @param $params array
+     * @param array $hlblockId
      * @return mixed
+     * @throws \Exception
+     * @internal param array $params
      */
-    public function generateAddCode( $params ){
-        $this->checkParams( $params );
-
-        $code = '<?php'.PHP_EOL.'/*  Добавляем новый highload ИБ */'.PHP_EOL.PHP_EOL;
-        foreach( $this->ownerItemDbData as $hlblockData  ){
-
-
-            $code = $code . $this->buildCode('HighloadblockIntegrate', 'Add', array( $hlblockData['NAME'], $hlblockData['TABLE_NAME'] ) ) .PHP_EOL.PHP_EOL;
+    public function generateAddCode( $hlblockId )
+    {
+        $hlblock = HL\HighloadBlockTable::getById( $hlblockId )->fetch();
+        if ( !$hlblock ) {
+            throw new \Exception( 'В системе не найден highload инфоблок с id = ' . $hlblockId );
         }
-
-
-        return $code;
-
+        return $this->getMethodContent('Bim\Db\Iblock\HighloadblockIntegrate', 'Add', array( $hlblock['NAME'], $hlblock['TABLE_NAME'] ));
     }
+
     /**
      * метод для генерации кода обновления highload инфоблока
      * @param $params array
@@ -73,14 +74,13 @@ class HighloadblockGen extends CodeGenerator
     }
 
 
-
-
     /**
      * метод проверки передаваемых параметров
      * @param $params array(
-                hlblockId => array id highload инфоблоков
+     * hlblockId => array id highload инфоблоков
      * )
      * @return mixed
+     * @throws \Exception
      */
     public function checkParams( $params ) {
 
