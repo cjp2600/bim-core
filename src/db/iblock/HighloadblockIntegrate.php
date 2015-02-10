@@ -1,7 +1,7 @@
 <?php
-
 namespace Bim\Db\Iblock;
 
+\CModule::IncludeModule("highloadblock");
 use Bitrix\Highloadblock as HL;
 /*
  * класс взаимодействия с highload инфоблоками
