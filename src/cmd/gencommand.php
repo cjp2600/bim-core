@@ -35,7 +35,7 @@ class GenCommand extends BaseCommand {
             if (method_exists($this,$method)) {
                 $this->{$method}($args, $options);
             } else {
-                throw new Exception("Missing command, see help Example: php bim help create");
+                throw new Exception("Missing command, see help Example: php bim help gen");
             }
         } else {
             $this->createOther($args,$options);
@@ -90,7 +90,7 @@ class GenCommand extends BaseCommand {
      * @param array $args
      * @param array $options
      */
-    public function createIblockDelete(array $args, array $options = array())
+    public function genIblockDelete(array $args, array $options = array())
     {
 
         $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
