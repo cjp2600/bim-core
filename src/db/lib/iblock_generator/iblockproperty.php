@@ -24,8 +24,8 @@ class IblockPropertyGen extends \Bim\Db\Lib\CodeGenerator
      */
     public function generateAddCode( $params )
     {
-        $IblockCode = $params[0];
-        $PropertyCode = $params[1];
+        $IblockCode = $params['iblockCode'];
+        $PropertyCode = $params['propertyCode'];
 
         $IblockProperty = new \CIBlockProperty();
         $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $IblockCode, 'CODE' => $PropertyCode));
