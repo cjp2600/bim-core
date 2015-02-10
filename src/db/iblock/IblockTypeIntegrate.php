@@ -209,44 +209,22 @@ class IblockTypeIntegrate
      * Delete() - метод удаляет тип инфоблока
      * @param string $IblockTypeCode - символьный идентификатор изменяемого типа инфоблока - no defaults/required
      */
-    public function Delete($IblockTypeCode,$isRevert = false)
+    public function Delete($IblockTypeCode)
     {
-        global $RESPONSE;
-        $IblockTypeRevert = new IblockTypeRevertIntegrate();
-
-//        $resIblock = CIBlock::GetList(array(),array('TYPE'=>$IblockTypeCode),true);
-//        if ($arIblocks = $resIblock->Fetch()) {
-//            return $RESPONSE[] = array('type' => 'error', 'error_text' => $IblockTypeCode.' type is not empty!');
-//        }
-
-        $Iblock = new CIBlock();
+        $Iblock = new \CIBlock();
         $dbIblock = $Iblock->GetList(array(), array('TYPE' => $IblockTypeCode));
         while( $dbRow = $dbIblock->Fetch() ) {
-            $iblockElDbRes = CIBlockElement::GetList( array(), array('IBLOCK_ID' => $dbRow['ID'] ) );
+            $iblockElDbRes = \CIBlockElement::GetList( array(), array('IBLOCK_ID' => $dbRow['ID'] ) );
             if ( $iblockElDbRes !== false && $iblockElDbRes->SelectedRowsCount() ) {
-                return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Can not delete iblock type: iblock id =' . $dbRow['ID'] . ' have elements');
+                throw new \Exception('Can not delete iblock type: iblock id =' . $dbRow['ID'] . ' have elements');
+                return false;
             }
         }
-        if (!$isRevert) {
-
-            if ($IblockTypeRevert->Add($IblockTypeCode))
-            {
-
-                if(!CIBlockType::Delete($IblockTypeCode))
-                    return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Delete iblock type error!');
-
-                return $RESPONSE[] = array('type' => 'success');
-            }
-            else
-                return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Cant complete "iblock type delete revert" operation');
-
-        } else {
-
-            if(!CIBlockType::Delete($IblockTypeCode))
-                return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Delete iblock type error!');
-
-            return $RESPONSE[] = array('type' => 'success');
+        if(!CIBlockType::Delete($IblockTypeCode)){
+            throw new \Exception('Delete iblock type error!');
+            return false;
         }
-
+        return true;
     }
+
 }
