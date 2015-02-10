@@ -1,11 +1,12 @@
 <?php
 
+namespace Bim\Db\Lib;
 /**
  * Class IblockType
  * класс для генерацияя кода изменений в типах инфоблоков:
  *
  */
-class IblockTypeGen extends CodeGenerator
+class IblockTypeGen extends \Bim\Db\Lib\CodeGenerator
 {
 
 

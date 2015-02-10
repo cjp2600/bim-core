@@ -47,7 +47,7 @@ class GenCommand extends BaseCommand {
      * @param array $args
      * @param array $options
      */
-    public function genIblockTypeAdd( array $args, array $options = array() )
+    public function genIblocktypeAdd( array $args, array $options = array() )
     {
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
         $iblocktypeId = (isset($options['typeId'])) ? $options['typeId'] : false;
