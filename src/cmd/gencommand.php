@@ -92,14 +92,30 @@ class GenCommand extends BaseCommand {
      */
     public function createIblockDelete(array $args, array $options = array())
     {
-        # Up Wizard
-        $up_data = array();
-        $down_data = array();
-        $desc = "";
 
-        # create wizard command
-        $wizard = new \Bim\Db\Iblock\IblockCommand($this->getConsole());
-        $wizard->deleteWizard($up_data,$down_data,$desc);
+        $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
+        $code    = (isset($options['code'])) ? $options['code'] : false;
+
+        if ( !$code ) {
+            $do = true;
+            while ($do) {
+                $desk = "Put code information block - no default/required";
+                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code));
+                if ($iblockDbRes->SelectedRowsCount()) {
+                    $do = false;
+                } else {
+                    $this->error('Iblock with code = "' . $code . '" not exist.');
+                }
+            }
+        }
+
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+        if (empty($desc)) {
+            $desk = "Type Description of migration file. Example: #TASK-124";
+            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
+        }
 
         # set
         $temp =  "up";
@@ -107,8 +123,8 @@ class GenCommand extends BaseCommand {
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
-                $this->setTemplateMethod('iblock', 'delete', $up_data, $temp ),
-                $this->setTemplateMethod('iblock', 'delete', $down_data, "down"),
+                $this->gen_obj->generateDeleteCode($code),
+                $this->gen_obj->generateAddCode($code),
                 $desc,
                 get_current_user()
             ));
@@ -124,9 +140,10 @@ class GenCommand extends BaseCommand {
     {
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (!is_string($desc)) {
+        if (empty($desc)) {
             $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
-            $desc = $dialog->ask('Description:', '', false);
+            $desk = "Type Description of migration file. Example: #TASK-124";
+            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
 
         $up_data = array();
