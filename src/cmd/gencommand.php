@@ -29,7 +29,7 @@ class GenCommand extends BaseCommand {
                 $this->setGenObj(Bim\Db\Lib\CodeGenerator::buildHandler(ucfirst($ex[0])));
                 $methodName = ucfirst($ex[0]).ucfirst($ex[1]);
             } else {
-                throw new Exception("Improperly formatted command. Example: php bim create iblock:add");
+                throw new Exception("Improperly formatted command. Example: php bim gen iblock:add");
             }
             $method = "gen" . $methodName;
             if (method_exists($this,$method)) {
