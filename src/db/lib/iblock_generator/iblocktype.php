@@ -13,22 +13,83 @@ class IblockTypeGen extends CodeGenerator
     public function __construct(){
         \CModule::IncludeModule('iblock');
     }
+
     /**
      * метод для генерации кода добавления нового типа инфоблоков
-     * @param $params array
+     * @param $IblockTypeId
      * @return mixed
+     * @internal param array $params
      */
-    public function generateAddCode( $params ){
-        $this->checkParams( $params );
+    public function generateAddCode( $IblockTypeId )
+    {
+        $CIblockType = new \CIBlockType();
+        $return = array();
+        $dbIblockType = $CIblockType->GetByID($IblockTypeId);
+        if ($arIblockType = $dbIblockType->GetNext())
+        {
+            $Iblock = new \CIBlock();
+            $dbIblock = $Iblock->GetList(array(), array('TYPE' => $IblockTypeId));
+            $check = true;
+            while ($arIblock = $dbIblock->GetNext())
+            {
+                $IblockProperty = new \CIBlockProperty();
+                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $arIblock['CODE']));
+                while ($arIblockProperty = $dbIblockProperty->GetNext())
+                {
+                    $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(), array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
+                    while($arPropertyValues = $dbPropertyValues->Fetch())
+                        $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
 
-        $addFields = $this->ownerItemDbData;
-        $addFields['LANG'] = $this->getLangData( $params['iblockTypeId'] );
+                    unset($arIblockProperty['ID']);unset($arIblockProperty['~ID']);
+                    unset($arIblockProperty['IBLOCK_ID']);unset($arIblockProperty['~IBLOCK_ID']);
+                    $arIblockProperty['IBLOCK_CODE'] = $arIblock['CODE'];
 
-        $code = '<?php'.PHP_EOL.'/*  Добавляем новый тип ИБ */'.PHP_EOL.PHP_EOL;
+                    foreach ($arIblockProperty as $k => $v){
+                        if (strstr($k,"~") || is_null($v)){
+                            unset($arIblockProperty[$k]);
+                        }
+                    }
+                    if (isset($arIblockProperty['LINK_IBLOCK_ID'])) {
+                        $res = \CIBlock::GetByID($arIblockProperty['LINK_IBLOCK_ID']);
+                        if($ar_res = $res->GetNext()) {
+                            unset($arIblockProperty['LINK_IBLOCK_ID']);
+                            $arIblockProperty['LINK_IBLOCK_CODE'] = $ar_res['CODE'];
+                        }
+                    }
+                    $return[] = $this->getMethodContent('IblockPropertyIntegrate', 'Add', array($arIblockProperty));
+                }
+                foreach ($arIblock as $k => $v){
+                    if ( (strstr($k,"~")) || ($k == 'ID') ) {
+                        unset($arIblock[$k]);
+                    }
+                }
+                $return[] = $this->getMethodContent('IblockIntegrate', 'Add', array($arIblock));
+            }
 
-        $code = $code . $this->buildCode('IblockTypeIntegrate', 'Add', array( $addFields ) );
+            foreach ($arIblockType as $k => $v){
+                if ( strstr($k,"~") || is_null($v)){
+                    unset($arIblockType[$k]);
+                }
+            }
 
-        return $code;
+            //Устанавливаем названия елементов и разделов в типе.
+            $rsLang = \CLanguage::GetList($by="lid", $order="desc");
+            while ($arLang = $rsLang->Fetch())
+            {
+                $arTypeLang = \CIblockType::GetByIDLang($IblockTypeId,$arLang['LID']);
+                $arIblockType["LANG"][$arLang['LID']] = array(
+                    'NAME' => $arTypeLang['NAME'],
+                    'SECTION_NAME' => $arTypeLang['SECTION_NAME'],
+                    'ELEMENT_NAME' => $arTypeLang['ELEMENT_NAME'],
+                );
+            }
+            $return[] = $this->getMethodContent('IblockTypeIntegrate', 'Add', array($arIblockType));
+
+            return implode(PHP_EOL, $return);
+        } else {
+            return false;
+        }
+
 
     }
     /**
