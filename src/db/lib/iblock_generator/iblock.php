@@ -61,7 +61,7 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
             unset( $updateFields['ID'] );
             $updateFields['FIELDS'] = \CIBlock::GetFields( $iblockData['ID'] );
             $updateFields['GROUP_ID'] = \CIBlock::GetGroupPermissions( $iblockData['ID'] );
-            $code = $code . $this->buildCode('Bim\Db\Iblock\IblockIntegrate', 'Update', array( $updateFields['CODE'], $updateFields ) ) .PHP_EOL.PHP_EOL;
+            $code = $code . $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Update', array( $updateFields['CODE'], $updateFields ) ) .PHP_EOL.PHP_EOL;
         }
         return $code;
     }

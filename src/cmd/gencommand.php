@@ -43,16 +43,26 @@ class GenCommand extends BaseCommand {
     }
 
     /**
+     * genIblockTypeAdd
+     * @param array $args
+     * @param array $options
+     */
+    public function genIblockTypeAdd( array $args, array $options = array() )
+    {
+
+    }
+
+    /**
      * createIblock
      * @param array $args
      * @param array $options
      */
     public function genIblockAdd(array $args, array $options = array())
     {
-        $dialog  = new \ConsoleKit\Widgets\Dialog($this->console);
-        $code    = (isset($options['code'])) ? $options['code'] : false;
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $code = (isset($options['code'])) ? $options['code'] : false;
 
-        if ( !$code ) {
+        if (!$code) {
             $do = true;
             while ($do) {
                 $desk = "Put code information block - no default/required";
@@ -70,7 +80,7 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
         if (empty($desc)) {
             $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
+            $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
         }
 
         # set
