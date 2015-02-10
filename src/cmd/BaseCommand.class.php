@@ -92,8 +92,9 @@ abstract class BaseCommand extends Command {
      * saveTemplate
      * @param $filename
      * @param $template
+     * @param bool $needUp
      */
-    public function saveTemplate($filename,$template)
+    public function saveTemplate($filename,$template,$needUp = false)
     {
         $migration_path = $this->getMigrationPath();
         if (!file_exists($migration_path)){
@@ -103,9 +104,67 @@ abstract class BaseCommand extends Command {
         $newFile = fopen($save_file, 'w');
         fwrite($newFile, $template);
         fclose($newFile);
+
+        #if need up
+        if ($needUp){
+            $this->autoUpMethod($needUp,$save_file,$filename);
+        }
+
         # output
         $this->writeln("Create new migration file: ");
         $this->success($save_file);
+    }
+
+    /**
+     * autoUpMethod
+     * @param $needUp
+     * @param $save_file
+     * @param $migration
+     */
+    public function autoUpMethod($needUp,$save_file,$migration)
+    {
+        $time_start = microtime(true);
+        $this->info(" -> Start auto applying migration:");
+        $this->writeln('');
+        if ($needUp != "add") {
+            include_once "" . $save_file . "";
+            $migrationClass = "Migration" . $migration;
+            # check bim migration.
+            if ((method_exists($migrationClass, "up"))) {
+                try {
+                    # call up function
+                    if (false !== $migrationClass::up()) {
+                        $obSelect = Bim\Db\Entity\MigrationsTable::getList(array("filter" => array("id" => $migration)));
+                        if (!$obSelect->fetch()) {
+                            $ob = Bim\Db\Entity\MigrationsTable::add(array(
+                                "id" => $migration
+                            ));
+                            if ($ob->isSuccess()) {
+                                $this->writeln($this->color("     - applied   : " . $migration, Colors::GREEN));
+                            }
+                        }
+                    } else {
+                        $this->writeln(Colors::colorize("     - error : " . $migration, Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
+                    }
+                } catch (Exception $e) {
+                    $this->writeln(Colors::colorize("     - error : " . $migration, Colors::RED) . " " . Colors::colorize("(" . $e->getMessage() . ")", Colors::YELLOW));
+                }
+            }
+        } else {
+            $obSelect = Bim\Db\Entity\MigrationsTable::getList(array("filter" => array("id" => $migration)));
+            if (!$obSelect->fetch()) {
+                $ob = Bim\Db\Entity\MigrationsTable::add(array(
+                    "id" => $migration
+                ));
+                if ($ob->isSuccess()) {
+                    $this->writeln($this->color("     - applied   : " . $migration, Colors::GREEN));
+                }
+            }
+        }
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        $this->writeln('');
+        $this->info(" -> ".round($time, 2)."s");
     }
 
     /**

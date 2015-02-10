@@ -82,7 +82,7 @@ class GenCommand extends BaseCommand {
                 $this->gen_obj->generateDeleteCode($iblocktypeId),
                 $desc,
                 get_current_user()
-            ));
+            ),"add");
     }
 
     /**
@@ -125,7 +125,7 @@ class GenCommand extends BaseCommand {
                 $this->gen_obj->generateAddCode($iblocktypeId),
                 $desc,
                 get_current_user()
-            ));
+            ),"delete");
     }
 
     /**
@@ -168,7 +168,7 @@ class GenCommand extends BaseCommand {
                 $this->gen_obj->generateDeleteCode($code),
                 $desc,
                 get_current_user()
-            ));
+            ),"add");
     }
 
     /**
@@ -213,7 +213,7 @@ class GenCommand extends BaseCommand {
                 $this->gen_obj->generateAddCode($code),
                 $desc,
                 get_current_user()
-            ));
+            ),"delete");
     }
 
 
@@ -283,7 +283,7 @@ class GenCommand extends BaseCommand {
                 $this->gen_obj->generateDeleteCode($params),
                 $desc,
                 get_current_user()
-            ));
+            ),"add");
     }
 
 
@@ -353,7 +353,7 @@ class GenCommand extends BaseCommand {
                 $this->gen_obj->generateAddCode($params),
                 $desc,
                 get_current_user()
-            ));
+            ),"delete");
     }
 
 
