@@ -30,6 +30,9 @@ class IblockPropertyGen extends \Bim\Db\Lib\CodeGenerator
         $IblockProperty = new \CIBlockProperty();
         $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $IblockCode, 'CODE' => $PropertyCode));
         if ($arIblockProperty = $dbIblockProperty->Fetch()) {
+            if ( $arIblockProperty['PROPERTY_TYPE'] == 'L' ) {
+                $arIblockProperty['VALUES'] = $this->getEnumItemList( $arIblockProperty['IBLOCK_ID'], $arIblockProperty['ID'] );
+            }
             if (isset($arIblockProperty['LINK_IBLOCK_ID'])) {
                 $res = \CIBlock::GetByID($arIblockProperty['LINK_IBLOCK_ID']);
                 if ($ar_res = $res->GetNext()) {
@@ -37,6 +40,10 @@ class IblockPropertyGen extends \Bim\Db\Lib\CodeGenerator
                     $arIblockProperty['LINK_IBLOCK_CODE'] = $ar_res['CODE'];
                 }
             }
+            unset($arIblockProperty['ID']);
+            unset($arIblockProperty['IBLOCK_ID']);
+            $arIblockProperty['IBLOCK_CODE'] = $IblockCode;
+
             return $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
         } else {
             return false;
