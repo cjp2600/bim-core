@@ -220,7 +220,7 @@ class IblockTypeIntegrate
                 return false;
             }
         }
-        if(!CIBlockType::Delete($IblockTypeCode)){
+        if(!\CIBlockType::Delete($IblockTypeCode)){
             throw new \Exception('Delete iblock type error!');
             return false;
         }
