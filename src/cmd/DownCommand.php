@@ -1,7 +1,25 @@
 <?php
 
 use ConsoleKit\Colors;
-
+/**
+ * .
+ * That command revert a applied list of migration.
+ * =========================================================================================
+ *
+ * 1) Revert all list of new migrations (sort by timestamp name):
+ *              Example: php bim down
+ *
+ * 2) Revert single migration (php bim down [name]):
+ *              Example: php bim down 1423573720
+ *
+ * 2) Revert list of applied migrations for a certain period of time (sort by timestamp name):
+ *              Example:  php bim down --from="29.01.2015 00:01" --to="29.01.2015 23:55"
+ *
+ * 5) Revert list of applied migrations with tag (sort by timestamp name):
+ *              Example: php bim down --tag=iws-123
+ *
+ * .
+ */
 class DownCommand extends BaseCommand
 {
     public function execute(array $args, array $options = array())
