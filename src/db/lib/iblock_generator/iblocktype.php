@@ -85,6 +85,7 @@ class IblockTypeGen extends \Bim\Db\Lib\CodeGenerator
             }
             $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockTypeIntegrate', 'Add', array($arIblockType));
 
+            $return = array_reverse($return);
             return implode(PHP_EOL, $return);
         } else {
             return false;
