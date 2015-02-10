@@ -429,7 +429,7 @@ class GenCommand extends BaseCommand {
             $this->setTemplate(
                 $name_migration,
                 $this->gen_obj->generateAddCode($hlId),
-                "# delete",
+                $this->gen_obj->generateDeleteCode($hlId),
                 $desc . " #".$autoTag,
                 get_current_user()
             ),$autoTag);

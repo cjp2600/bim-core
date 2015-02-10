@@ -65,21 +65,18 @@ class HighloadblockGen extends \Bim\Db\Lib\CodeGenerator
 
     /**
      * метод для генерации кода удаления highload инфоблока
-     * @param $params array
+     * @param array $hlblockId
      * @return mixed
+     * @throws \Exception
+     * @internal param array $params
      */
-    public function generateDeleteCode( $params ){
-        $this->checkParams( $params );
-
-        $code = '<?php'.PHP_EOL.'/*  Удаляем  ИБ   */'.PHP_EOL.PHP_EOL;
-        foreach( $this->ownerItemDbData as $hlblockData  ){
-
-            $code = $code . $this->buildCode('HighloadblockIntegrate', 'Delete', array( $hlblockData['NAME'] ) ) .PHP_EOL.PHP_EOL;
-
+    public function generateDeleteCode( $hlblockId )
+    {
+        $hlblock = HL\HighloadBlockTable::getById( $hlblockId )->fetch();
+        if ( !$hlblock ) {
+            throw new \Exception( 'В системе не найден highload инфоблок с id = ' . $hlblockId );
         }
-
-        return $code;
-
+        return $this->getMethodContent('Bim\Db\Iblock\HighloadblockIntegrate', 'Delete', array( $hlblock['NAME']));
     }
 
 
