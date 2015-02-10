@@ -74,15 +74,16 @@ class GenCommand extends BaseCommand {
         }
 
         # set
+        $autoTag = "add";
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
                 $this->gen_obj->generateAddCode($iblocktypeId),
                 $this->gen_obj->generateDeleteCode($iblocktypeId),
-                $desc,
+                $desc." #".$autoTag,
                 get_current_user()
-            ),"add");
+            ),$autoTag);
     }
 
     /**
@@ -117,15 +118,16 @@ class GenCommand extends BaseCommand {
         }
 
         # set
+        $autoTag = "delete";
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
                 $this->gen_obj->generateDeleteCode($iblocktypeId),
                 $this->gen_obj->generateAddCode($iblocktypeId),
-                $desc,
+                $desc." #".$autoTag,
                 get_current_user()
-            ),"delete");
+            ),$autoTag);
     }
 
     /**
@@ -160,15 +162,16 @@ class GenCommand extends BaseCommand {
         }
 
         # set
+        $autoTag = "add";
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
                 $this->gen_obj->generateAddCode($code),
                 $this->gen_obj->generateDeleteCode($code),
-                $desc,
+                $desc." #".$autoTag,
                 get_current_user()
-            ),"add");
+            ),$autoTag);
     }
 
     /**
@@ -204,16 +207,16 @@ class GenCommand extends BaseCommand {
         }
 
         # set
-        $temp =  "up";
+        $autoTag = "delete";
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
                 $this->gen_obj->generateDeleteCode($code),
                 $this->gen_obj->generateAddCode($code),
-                $desc,
+                $desc. " #". $autoTag,
                 get_current_user()
-            ),"delete");
+            ), $autoTag);
     }
 
 
@@ -274,16 +277,16 @@ class GenCommand extends BaseCommand {
         }
 
         # set
-        $temp =  "up";
+        $autoTag = "add";
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
                 $this->gen_obj->generateAddCode($params),
                 $this->gen_obj->generateDeleteCode($params),
-                $desc,
+                $desc." #".$autoTag,
                 get_current_user()
-            ),"add");
+            ),$autoTag);
     }
 
 
@@ -344,16 +347,16 @@ class GenCommand extends BaseCommand {
         }
 
         # set
-        $temp =  "up";
+        $autoTag = "delete";
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
                 $this->gen_obj->generateDeleteCode($params),
                 $this->gen_obj->generateAddCode($params),
-                $desc,
+                $desc . " #".$autoTag,
                 get_current_user()
-            ),"delete");
+            ),$autoTag);
     }
 
 
@@ -383,7 +386,7 @@ class GenCommand extends BaseCommand {
                 $name_migration,
                 $this->setTemplateMethod(strtolower($name_method), 'create', $up_data),
                 $this->setTemplateMethod(strtolower($name_method), 'create', $down_data, "down"),
-                $desc,
+                $desc." #custom",
                 get_current_user()
             ));
     }
