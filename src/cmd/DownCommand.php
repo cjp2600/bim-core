@@ -12,10 +12,10 @@ use ConsoleKit\Colors;
  * 2) Revert single migration (php bim down [name]):
  *              Example: php bim down 1423573720
  *
- * 2) Revert list of applied migrations for a certain period of time (sort by timestamp name):
+ * 3) Revert list of applied migrations for a certain period of time (sort by timestamp name):
  *              Example:  php bim down --from="29.01.2015 00:01" --to="29.01.2015 23:55"
  *
- * 5) Revert list of applied migrations with tag (sort by timestamp name):
+ * 4) Revert list of applied migrations with tag (sort by timestamp name):
  *              Example: php bim down --tag=iws-123
  *
  * .

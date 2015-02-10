@@ -12,10 +12,10 @@ use ConsoleKit\Colors;
  * 2) Applied single migration (php bim up [name]):
  *              Example: php bim up 1423573720
  *
- * 2) Applied list of new migrations for a certain period of time (sort by timestamp name):
+ * 3) Applied list of new migrations for a certain period of time (sort by timestamp name):
  *              Example:  php bim up --from="29.01.2015 00:01" --to="29.01.2015 23:55"
  *
- * 5) Applied list of new migrations with tag (sort by timestamp name):
+ * 4) Applied list of new migrations with tag (sort by timestamp name):
  *              Example: php bim up --tag=iws-123
  *
  * .
