@@ -38,7 +38,6 @@ class IblockTypeIntegrate
      */
     public function Add($arFields,$isRevert = false)
     {
-        global $RESPONSE;
         if (!isset($arFields['SECTIONS']) || empty($arFields['SECTIONS']))
             $arFields['SECTIONS'] = 'Y';
 
@@ -81,24 +80,15 @@ class IblockTypeIntegrate
             }
         }
 
-        $CIblockType = new CIBlockType();
-
+        $CIblockType = new \CIBlockType();
         if ($CIblockType->Add($arFields))
         {
-          if ( !$isRevert ) {
-
-            $IblockTypeRevert = new IblockTypeRevertIntegrate();
-            if ($IblockTypeRevert->Delete($arFields['ID'])) {
-                return $RESPONSE[] = array('type' => 'success');
-            } else {
-                return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Cant create "iblock type add revert" operation');
-            }
-
-          }
-            return $RESPONSE[] = array('type' => 'success');
+            return true;
         }
-        else
-            return $RESPONSE[] = array('type' => 'error', 'error_text' => $CIblockType->LAST_ERROR);
+        else {
+            throw new \Exception($CIblockType->LAST_ERROR);
+            return false;
+        }
     }
 
     /*
