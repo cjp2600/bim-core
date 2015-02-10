@@ -36,7 +36,7 @@ class HighloadblockGen extends \Bim\Db\Lib\CodeGenerator
         $return[] =  $this->getMethodContent('Bim\Db\Iblock\HighloadblockIntegrate', 'Add', array( $hlblock['NAME'], $hlblock['TABLE_NAME'] ));
         $obHl = \CUserTypeEntity::GetList(array(), array("ENTITY_ID"=>"HLBLOCK_".$hlblockId));
         while ($arHl = $obHl->Fetch()) {
-            $arFullData = CUserTypeEntity::GetByID( $arHl['ID']  );
+            $arFullData = \CUserTypeEntity::GetByID( $arHl['ID']  );
             unset($arFullData['ID']);
             unset($arFullData['ENTITY_ID']);
             $return[] =  $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Add', array( $hlblock['NAME'], $arFullData ));
