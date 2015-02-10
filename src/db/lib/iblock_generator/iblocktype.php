@@ -4,7 +4,6 @@
  * Class IblockType
  * класс для генерацияя кода изменений в типах инфоблоков:
  *
- * @package Bitrix\Adv_Preset\IblockTypeGen
  */
 class IblockTypeGen extends CodeGenerator
 {
@@ -56,14 +55,14 @@ class IblockTypeGen extends CodeGenerator
                             $arIblockProperty['LINK_IBLOCK_CODE'] = $ar_res['CODE'];
                         }
                     }
-                    $return[] = $this->getMethodContent('IblockPropertyIntegrate', 'Add', array($arIblockProperty));
+                    $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
                 }
                 foreach ($arIblock as $k => $v){
                     if ( (strstr($k,"~")) || ($k == 'ID') ) {
                         unset($arIblock[$k]);
                     }
                 }
-                $return[] = $this->getMethodContent('IblockIntegrate', 'Add', array($arIblock));
+                $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Add', array($arIblock));
             }
 
             foreach ($arIblockType as $k => $v){
@@ -83,7 +82,7 @@ class IblockTypeGen extends CodeGenerator
                     'ELEMENT_NAME' => $arTypeLang['ELEMENT_NAME'],
                 );
             }
-            $return[] = $this->getMethodContent('IblockTypeIntegrate', 'Add', array($arIblockType));
+            $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockTypeIntegrate', 'Add', array($arIblockType));
 
             return implode(PHP_EOL, $return);
         } else {
