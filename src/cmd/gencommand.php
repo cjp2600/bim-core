@@ -221,6 +221,7 @@ class GenCommand extends BaseCommand {
      * genIblockPropertyAdd
      * @param array $args
      * @param array $options
+     * @throws Exception
      */
     public function genIblockPropertyAdd (array $args, array $options = array())
     {
@@ -251,11 +252,18 @@ class GenCommand extends BaseCommand {
                 $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' =>  $code, 'CODE' => $propertyCode ));
                 if ($arIblockProperty = $dbIblockProperty->Fetch())
                 {
+                    $params['iblockId'] = $arIblockProperty['IBLOCK_ID'];
+                    $params['propertyId'] = $arIblockProperty['ID'];
+
                     $do = false;
                 } else {
                     $this->error('Property with code = "' . $propertyCode . '" not exist.');
                 }
             }
+        }
+
+        if (!isset($params)){
+            throw new Exception("Ошибка генерации params");
         }
 
         # get description options
@@ -271,7 +279,7 @@ class GenCommand extends BaseCommand {
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
-                $this->gen_obj->generateDeleteCode(array($code,$propertyCode)),
+                $this->gen_obj->generateAddCode($params),
                 "# delete",
                 $desc,
                 get_current_user()

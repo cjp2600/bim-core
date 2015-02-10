@@ -22,15 +22,8 @@ class IblockPropertyGen extends \Bim\Db\Lib\CodeGenerator
      * @throws \Exception
      * @internal param array $params
      */
-    public function generateAddCode( $ch )
+    public function generateAddCode( $params )
     {
-        $IblockProperty = new \CIBlockProperty();
-        $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $ch[0], 'CODE' => $ch[1]));
-        if ($arIblockProperty = $dbIblockProperty->Fetch())
-        {
-            $params['iblockId'] = $arIblockProperty['IBLOCK_ID'];
-            $params['propertyId'] = $arIblockProperty['ID'];
-        }
         $this->checkParams( $params );
         $ownerItemDbData = $this->ownerItemDbData;
         foreach( $ownerItemDbData['propertyData'] as $propertyData ) {
