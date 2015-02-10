@@ -100,7 +100,7 @@ class HighloadblockIntegrate
      * Delete() - метод удаляет highload инфоблок
      * @param string $entityName - Название сущности - no defaults/required
      */
-    public function Delete($entityName, $isRevert = false)
+    public function Delete($entityName)
     {
         if ( !strlen( $entityName ) ) {
             throw new \Exception('Incorrect entityName param value');
@@ -114,13 +114,6 @@ class HighloadblockIntegrate
             throw new \Exception('Not found highloadBlock with entityName = ' . $entityName );
         }
         $hlBlockRow = $hlBlockDbRes->fetch();
-
-        if ( !$isRevert ) {
-            $hlBlockRevert = new HighloadblockRevertIntegrate();
-            if ( !$hlBlockRevert->Add( $hlBlockRow['NAME'], $hlBlockRow['TABLE_NAME'] ) ) {
-                throw new \Exception( 'Cant create "highblock add revert" operation' );
-            }
-        }
         $delResult = HL\HighloadBlockTable::delete( $hlBlockRow['ID'] );
 
         if ( !$delResult->isSuccess() ) {
