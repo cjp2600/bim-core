@@ -1,7 +1,7 @@
 # Bitrix Migration (BIM)
 [![Latest Stable Version](https://poser.pugx.org/cjp2600/bim-core/v/stable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Total Downloads](https://poser.pugx.org/cjp2600/bim-core/downloads.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Latest Unstable Version](https://poser.pugx.org/cjp2600/bim-core/v/unstable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![License](https://poser.pugx.org/cjp2600/bim-core/license.svg)](https://packagist.org/packages/cjp2600/bim-core)
 
-Версионная миграция структуры БД для 1С Битрикс CMS
+Версионная миграция структуры БД для **[http://bitrix.ru](1С Битрикс CMS)**
 
 # 1.1 Автоматическая установка BIM
 
@@ -195,7 +195,7 @@ php bim gen --d="new description #iws-123"
 
 > После выполнения команды создается файл миграции вида: */[migrations_path]/[timestamp].php*
 
-> Например /migrations/123412434.php
+> Например: /migrations/123412434.php
  
 ## 2) Создание миграционного кода по наличию:
 
