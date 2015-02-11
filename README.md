@@ -192,9 +192,9 @@ php bim gen
 ``` bash 
 php bim gen IblockType:add
 ``` 
-Также возможно передать **iblock type id** опционально:
+Также возможно передать iblock type id и description опционально:
 ``` bash  
-php bim gen IblockType:add --typeId=catalog
+php bim gen IblockType:add --typeId=catalog --d="new description #iws-123"
 ``` 
 ### 2.2 Iblock *( php bim gen Iblock:[add|delete] )*:
 
