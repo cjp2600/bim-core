@@ -7,6 +7,9 @@
 - [Автоматическая установка BIM](#auto)
 - [Ручная установка](#hand)
 - [Настройка](#prop)
+- [Развертывание bim up](#up)
+- [Откат bim down](#down)
+- [Вывод списка миграций bim ls](#ls)
 
 # <a name="auto"></a>1.1 Автоматическая установка BIM
 
@@ -92,7 +95,7 @@ php bim init
 ```
 
 
-# 3 Развертывание [BIM UP]
+# 3 <a name="up"></a>Развертывание [BIM UP]
 
 - Общее применение:
 ```bash
@@ -121,7 +124,7 @@ php bim up --tag=iws-123
 > Description: add new migration #iws-123
 
 
-# 4 Откат  [BIM DOWN]
+# 4 <a name="down"></a>Откат  [BIM DOWN]
 
 - Общий откат:
 ```bash
@@ -148,7 +151,7 @@ php bim up --tag=iws-123
 Например:
 > Description: add new migration #iws-123
 
-# 5 Вывод списка миграций [BIM LS]
+# 5 <a name="ls"></a>Вывод списка миграций [BIM LS]
 - Общей список:
 ```bash
 php bim ls
