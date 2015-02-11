@@ -12,6 +12,9 @@
   * [Создание пустой миграции](#gen_empty)
   * [Создание миграционного кода по наличию](#gen_nal)
     * [IblockType](#iblocktype)
+    * [Iblock](#iblock)
+    * [IblockProperty](#iblockproperty)
+    * [Highloadblock](#hlblock)
 
 
 # <a name="about"></a>Bitrix Migration (BIM)
@@ -237,7 +240,7 @@ php bim gen IblockType:add
 ``` bash  
 php bim gen IblockType:add --typeId=catalog --d="new description #iws-123"
 ``` 
-### 2.2 Iblock *( php bim gen Iblock:[add|delete] )*:
+### <a name="iblock"></a>2.2 Iblock *( php bim gen Iblock:[add|delete] )*:
 
 Создается Миграционный код "**ИБ**" включая созданные для него *(IblockProperty)*
 
@@ -254,7 +257,7 @@ php bim gen Iblock:add
 php bim gen Iblock:add --code=goods --d="new description #iws-123"
 ``` 
 
-### 2.3 IblockProperty *( php bim gen IblockProperty:[add|delete] )*:
+### <a name="iblockproperty"></a>2.3 IblockProperty *( php bim gen IblockProperty:[add|delete] )*:
 
 Создается Миграционный код "**Свойства ИБ**"
 
@@ -272,7 +275,7 @@ php bim gen IblockProperty:add
 php bim gen IblockProperty:add --code=goods --propertyCode=NEW_ITEM --d="new description #iws-123"
 ``` 
 
-### 2.4 Hlblock *( php bim gen Hlblock:[add|delete] )*:
+### <a name="hlblock"></a>2.4 Hlblock *( php bim gen Hlblock:[add|delete] )*:
 
 Создается Миграционный код "**Highloadblock**" включая созданные для него *(UserFields)*
 
