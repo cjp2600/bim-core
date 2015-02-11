@@ -10,6 +10,8 @@
 - [Вывод списка миграций - bim ls](#ls)
 - [Создание новых миграций - bim gen](#gen)
   * [Создание пустой миграции](#gen_empty)
+  * [Создание миграционного кода по наличию](#gen_nal)
+    * [IblockType](#iblocktype)
 
 
 # <a name="about"></a>Bitrix Migration (BIM)
@@ -213,12 +215,12 @@ php bim gen --d="new description #iws-123"
 
 > Например: /migrations/123412434.php
  
-## 2) Создание миграционного кода по наличию:
+## <a name="gen_nal"></a>2) Создание миграционного кода по наличию:
 
 Создается код развертывания/отката существующего элемента схемы bitrix БД.
 На данный момент доступно генерация по наличию для следующих элементов bitrix БД:
  
-### 2.1 IblockType *( php bim gen IblockType:[add|delete] )*:
+### 2.1 <a name="iblocktype"></a>IblockType *( php bim gen IblockType:[add|delete] )*:
 
 Создается Миграционный код "**Типа ИБ**" включая созданные для него *(UserFields, IBlock, IblockProperty)*
  
