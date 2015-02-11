@@ -17,9 +17,12 @@ curl -s https://getcomposer.org/installer | php
 php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install');" | php
 ```
 > Автоматические действия установщика:
-1) Добавление файла **bim** в корень проекта.
-2) Инициализация **composer autoloader** в файле **inint.php**
-3) Создание файла **composer.json** в корне проекта со ссылкой на **bim** репозиторий **"require": { "cjp2600/bim-core": "dev-master"}**
+
+> 1) Добавление файла **bim** в корень проекта.
+
+> 2) Инициализация **composer autoloader** в файле **inint.php**
+
+> 3) Создание файла **composer.json** в корне проекта со ссылкой на **bim** репозиторий **"require": { "cjp2600/bim-core": "dev-master"}**
 
 ## 1.2 Ручная установка BIM
 
