@@ -7,11 +7,11 @@
 
 Для установки и инициализации bim для bitrix проекта необходимо выполнить следующиие действия из корня проекта:
 
-1. Установить Composer:
+- Установить Composer:
 ```    
 curl -s https://getcomposer.org/installer | php
 ```
-2. Выполнить установочный скрипт:
+- Выполнить установочный скрипт:
 
 ``` bash
 php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install');" | php
@@ -26,13 +26,13 @@ php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install')
 
 Для ручной установки bim необходимо:
 
-1. Установить Composer:
+- Установить Composer:
    
 ```    
 curl -s https://getcomposer.org/installer | php
 ```
 
-2. Создать файл bim (без расширения) в корне bitrix проекта с содержимым:
+- Создать файл bim (без расширения) в корне bitrix проекта с содержимым:
 ```
 #!/usr/bin/php
 <?php
@@ -48,14 +48,14 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.
 \Bim\Migration::init();
 
 ```
-3. Добавть инициализацию composer (в файл init.php добавить запись):
+- Добавть инициализацию composer (в файл init.php добавить запись):
 
 ```
 if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
     require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 ```
 
-4. Создать в корне сайта файл **composer.json** с содержимым:
+- Создать в корне сайта файл **composer.json** с содержимым:
 
 ```
 {
@@ -65,7 +65,7 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 }
 ```
 
-5. В **.gitignore** добавить запись:
+- В **.gitignore** добавить запись:
 
 ```
 /vendor
@@ -89,23 +89,23 @@ php bim init
 
 # 3 Развертывание [BIM UP]
 
-1. Общее применение:
+- Общее применение:
 ```bash
 php bim up
 ```
 Применяет весь список не применённых миграционных классов отсортированых по названию (**timestamp**).
 
-2. Еденичное применение:
+- Еденичное применение:
 ``` bash
 php bim up 1423660766
 ```
 Применяет указанную в праметрах миграцию.
 
-3. Применение по временному периоду:
+- Применение по временному периоду:
 ```bash
 php bim up --from="29.01.2015 00:01" --to="29.01.2015 23:55"
 ```
-4. Применение по тегу:
+- Применение по тегу:
 ```bash
 php bim up --tag=iws-123
 ```
@@ -118,23 +118,23 @@ php bim up --tag=iws-123
 
 # 4 Откат  [BIM DOWN]
 
-1. Общий откат:
+- Общий откат:
 ```bash
 php bim down
 ```
 Применяет весь список применённых миграционных классов.
 
-2. Еденичный откат:
+- Еденичный откат:
 ``` bash
 php bim down 1423660766
 ```
 Откатывает указанную в праметрах миграцию.
 
-3. Откат по временному периоду:
+- Откат по временному периоду:
 ```bash
 php bim down --from="29.01.2015 00:01" --to="29.01.2015 23:55"
 ```
-4. Откат по тегу:
+- Откат по тегу:
 ```bash
 php bim up --tag=iws-123
 ```
@@ -144,23 +144,23 @@ php bim up --tag=iws-123
 > Description: add new migration #iws-123
 
 # 5 Вывод списка миграций [BIM LS]
-1. Общей список:
+- Общей список:
 ```bash
 php bim ls
 ```
-2. Список применённых миграций:
+- Список применённых миграций:
 ```bash
 php bim ls --a
 ```
-3. Список новых миграций:
+- Список новых миграций:
 ```bash
 php bim ls --n
 ```
-4. Список миграций за определённый период времени:
+- Список миграций за определённый период времени:
 ```bash
 php bim ls --from="29.01.2015 00:01" --to="29.01.2015 23:55" 
 ```
-5. Список миграций по тегу:
+- Список миграций по тегу:
 ```bash
 php bim ls --tag=iws-123
 ```
