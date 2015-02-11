@@ -33,7 +33,7 @@ curl -s https://getcomposer.org/installer | php
 ```
 
 - Создать файл bim (без расширения) в корне bitrix проекта с содержимым:
-```
+```php
 #!/usr/bin/php
 <?php
 
@@ -50,14 +50,14 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.
 ```
 - Добавть инициализацию composer (в файл init.php добавить запись):
 
-```
+```bash
 if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
     require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 ```
 
 - Создать в корне сайта файл **composer.json** с содержимым:
 
-```
+```json
 {
 	"require": {
 		"cjp2600/bim-core": "dev-master"
@@ -82,7 +82,7 @@ php composer.phar update
 ```
 Создаём таблицу миграций : 
 
-```
+```bash
 php bim init
 ```
 
@@ -96,7 +96,7 @@ php bim up
 Применяет весь список не применённых миграционных классов отсортированых по названию (**timestamp**).
 
 - Еденичное применение:
-``` bash
+```bash
 php bim up 1423660766
 ```
 Применяет указанную в праметрах миграцию.
