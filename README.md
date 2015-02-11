@@ -1,7 +1,7 @@
 # Bitrix Migration (BIM)
 [![Latest Stable Version](https://poser.pugx.org/cjp2600/bim-core/v/stable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Total Downloads](https://poser.pugx.org/cjp2600/bim-core/downloads.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Latest Unstable Version](https://poser.pugx.org/cjp2600/bim-core/v/unstable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![License](https://poser.pugx.org/cjp2600/bim-core/license.svg)](https://packagist.org/packages/cjp2600/bim-core)
 
-Версионная миграция структуры БД для **[http://bitrix.ru](1С Битрикс CMS)**
+Версионная миграция структуры БД для **[1С Битрикс CMS](http://bitrix.ru)**
 
 # 1.1 Автоматическая установка BIM
 
@@ -19,7 +19,7 @@ php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install')
 > Автоматические действия установщика:
 
 > 1. Добавление файла **bim** в корень проекта.
-> 2. Инициализация **composer autoloader** в файле **inint.php**
+> 2. Инициализация **composer autoloader** в файле **init.php**
 > 3. Создание файла **composer.json** в корне проекта со ссылкой на **bim** репозиторий **"require": { "cjp2600/bim-core": "dev-master"}**
 
 ## 1.2 Ручная установка BIM
