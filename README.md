@@ -183,7 +183,11 @@ php bim gen
 
 Создается Миграционный код "**Типа ИБ**" включая созданные для него *(UserFields, IBlock, IblockProperty)*
  
-**Пример *(запрашивается [IBLOCK_TYPE_ID])*:**
+Дополнительно запрашивается:
+- [IBLOCK_TYPE_ID]
+- [Description]
+ 
+**Пример:**
 
 ``` bash 
 php bim gen IblockType:add
@@ -195,14 +199,38 @@ php bim gen IblockType:add --typeId=catalog
 ### 2.2 Iblock *( php bim gen Iblock:[add|delete] )*:
 
 Создается Миграционный код "**ИБ**" включая созданные для него *(IblockProperty)*
- 
-**Пример *(запрашивается [IBLOCK_CODE])*:**
+
+Дополнительно запрашивается:
+- [IBLOCK_CODE]
+- [Description]
+
+**Пример:**
 ``` bash  
 php bim gen Iblock:add
 ``` 
-Также возможно передать iblock code опционально:
+Также возможно передать iblock code и description опционально:
 ``` bash  
-php bim gen Iblock:add --code=goods
+php bim gen Iblock:add --code=goods --d="new description #iws-123"
 ``` 
+
+### 2.2 IblockProperty *( php bim gen IblockProperty:[add|delete] )*:
+
+Создается Миграционный код "**Свойства ИБ**"
+
+Дополнительно запрашивается:
+- [IBLOCK_CODE]
+- [PROPERTY_CODE]
+- [Description]
+
+**Пример:**
+``` bash  
+php bim gen IblockProperty:add
+``` 
+Также возможно передать iblock code, property code и description опционально:
+``` bash  
+php bim gen IblockProperty:add --code=goods --propertyCode=NEW_ITEM --d="new description #iws-123"
+``` 
+
+
 > Обратите внимание! что миграционные классы созданые по наличию, применяются автоматически.
  
