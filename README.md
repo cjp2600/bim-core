@@ -55,8 +55,6 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 ```
 
 
-
-
 # 2 Настройка
 
 Для начала работы обновляем **composer** и создаем миграционную таблицу в БД:
@@ -69,7 +67,6 @@ php composer.phar update
 ```
 php bim init
 ```
-
 
 
 # 3 Развертывание [BIM UP]
@@ -99,7 +96,6 @@ php bim up --tag=iws-123
 Например:
 
 > Description: add new migration #iws-123
-
 
 
 # 4 Откат  [BIM DOWN]
@@ -232,5 +228,5 @@ php bim gen IblockProperty:add --code=goods --propertyCode=NEW_ITEM --d="new des
 ``` 
 
 
-> Обратите внимание! что миграционные классы созданые по наличию, применяются автоматически.
+> Обратите внимание! что миграционные классы созданные по наличию, применяются автоматически.
  
