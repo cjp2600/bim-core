@@ -100,7 +100,7 @@ php bim up --tag=iws-123
 
 # 4 Откат  [BIM DOWN]
 
-### 1) Общей откат:
+### 1) Общий откат:
 ```bash
 php bim down
 ```
