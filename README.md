@@ -213,7 +213,7 @@ php bim gen Iblock:add
 php bim gen Iblock:add --code=goods --d="new description #iws-123"
 ``` 
 
-### 2.2 IblockProperty *( php bim gen IblockProperty:[add|delete] )*:
+### 2.3 IblockProperty *( php bim gen IblockProperty:[add|delete] )*:
 
 Создается Миграционный код "**Свойства ИБ**"
 
