@@ -179,7 +179,7 @@ php bim gen
 Создается код развертывания/отката существующего элемента схемы bitrix БД.
 На данный момент доступно генерация по наличию для следующих элементов bitrix БД:
  
-##№ 2.1 IblockType *( php bim gen IblockType:[add|delete] )*:
+### 2.1 IblockType *( php bim gen IblockType:[add|delete] )*:
 
 Создается Миграционный код "**Типа ИБ**" включая созданные для него *(UserFields, IBlock, IblockProperty)*
  
