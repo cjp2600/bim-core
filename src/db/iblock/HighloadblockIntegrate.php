@@ -114,6 +114,15 @@ class HighloadblockIntegrate
             throw new \Exception('Not found highloadBlock with entityName = ' . $entityName );
         }
         $hlBlockRow = $hlBlockDbRes->fetch();
+
+        $entity = HL\HighloadBlockTable::compileEntity($hlBlockRow);
+        $entityDataClass = $entity->getDataClass();
+
+        $obList = $entityDataClass::getList();
+        if ( $obList->getSelectedRowsCount() > 0) {
+            throw new \Exception('Unable to remove a highloadBlock['.$entityName.'], because it has elements');
+        }
+
         $delResult = HL\HighloadBlockTable::delete( $hlBlockRow['ID'] );
 
         if ( !$delResult->isSuccess() ) {
