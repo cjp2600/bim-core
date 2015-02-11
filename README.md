@@ -227,6 +227,24 @@ php bim gen IblockProperty:add
 php bim gen IblockProperty:add --code=goods --propertyCode=NEW_ITEM --d="new description #iws-123"
 ``` 
 
+### 2.4 Hlblock *( php bim gen Hlblock:[add|delete] )*:
+
+Создается Миграционный код "**Highloadblock**" включая созданные для него *(UserFields)*
+
+Дополнительно запрашивается:
+- [HLBLOCK_ID]
+- [Description]
+
+**Пример:**
+``` bash  
+php bim gen Hlblock:add
+``` 
+Также возможно передать hlblock id и description опционально:
+``` bash  
+php bim gen IHlblock:add --id=82 --d="new description #iws-123"
+``` 
+
+
 
 > Обратите внимание! что миграционные классы созданные по наличию, применяются автоматически.
  
