@@ -1,6 +1,16 @@
+# Bitrix Migration (BIM)
+[![Latest Stable Version](https://poser.pugx.org/cjp2600/bim-core/v/stable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Total Downloads](https://poser.pugx.org/cjp2600/bim-core/downloads.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Latest Unstable Version](https://poser.pugx.org/cjp2600/bim-core/v/unstable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![License](https://poser.pugx.org/cjp2600/bim-core/license.svg)](https://packagist.org/packages/cjp2600/bim-core)
+
+
 # 1.1 Автоматическая установка BIM
 
-Для установки и инициализации bim для bitrix проекта необходимо выполнить следующиие действия из корня проекта.
+Для установки и инициализации bim для bitrix проекта необходимо выполнить следующиие действия из корня проекта:
+
+1) Установить Composer:
+```    
+curl -s https://getcomposer.org/installer | php
+```
+1) Выполнить установочный скрипт:
 
 ``` bash
 php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install');" | php
@@ -14,7 +24,13 @@ php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install')
 
 Для ручной установки bim необходимо:
 
-1) Создать файл bim (без расширения) в корне bitrix проекта с содержимым:
+1) Установить Composer:
+   
+```    
+curl -s https://getcomposer.org/installer | php
+```
+
+2) Создать файл bim (без расширения) в корне bitrix проекта с содержимым:
 ```
 #!/usr/bin/php
 <?php
@@ -30,14 +46,14 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.
 \Bim\Migration::init();
 
 ```
-2) Добавть инициализацию composer (в файл init.php добавить запись):
+3) Добавть инициализацию composer (в файл init.php добавить запись):
 
 ```
 if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
     require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 ```
 
-3) Создать в корне сайта файл **composer.json** с содержимым:
+4) Создать в корне сайта файл **composer.json** с содержимым:
 
 ```
 {
@@ -47,7 +63,7 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 }
 ```
 
-4) В **.gitignore** добавить запись:
+5) В **.gitignore** добавить запись:
 
 ```
 /vendor
