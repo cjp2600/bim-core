@@ -1,17 +1,21 @@
-# Bitrix Migration (BIM)
+
+# Оглавление
+- [О bim](#about)
+- [Установка](#install)
+- [Настройка](#prop)
+- [Развертывание - bim up](#up)
+- [Откат - bim down](#down)
+- [Вывод списка миграций - bim ls](#ls)
+
+
+# <a name="about"></a>Bitrix Migration (BIM)
 [![Latest Stable Version](https://poser.pugx.org/cjp2600/bim-core/v/stable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Total Downloads](https://poser.pugx.org/cjp2600/bim-core/downloads.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Latest Unstable Version](https://poser.pugx.org/cjp2600/bim-core/v/unstable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![License](https://poser.pugx.org/cjp2600/bim-core/license.svg)](https://packagist.org/packages/cjp2600/bim-core)
 
 Версионная миграция структуры БД для **[1С Битрикс CMS](http://bitrix.ru)**
 
-# Оглавление
-- [Автоматическая установка BIM](#auto)
-- [Ручная установка](#hand)
-- [Настройка](#prop)
-- [Развертывание bim up](#up)
-- [Откат bim down](#down)
-- [Вывод списка миграций bim ls](#ls)
+# <a name="install"></a>1 Установка
 
-# <a name="auto"></a>1.1 Автоматическая установка BIM
+### 1.1 Автоматическая установка BIM
 
 Для установки и инициализации bim для bitrix проекта необходимо выполнить следующиие действия из корня проекта:
 
@@ -30,7 +34,7 @@ php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install')
 > 2. Инициализация **composer autoloader** в файле **init.php**
 > 3. Создание файла **composer.json** в корне проекта со ссылкой на **bim** репозиторий **"require": { "cjp2600/bim-core": "dev-master"}**
 
-## <a name="hand"></a>1.2 Ручная установка BIM
+### 1.2 Ручная установка BIM
 
 Для ручной установки bim необходимо:
 
