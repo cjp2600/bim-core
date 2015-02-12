@@ -76,7 +76,16 @@ class HighloadblockGen extends \Bim\Db\Lib\CodeGenerator
         if ( !$hlblock ) {
             throw new \Exception( 'В системе не найден highload инфоблок с id = ' . $hlblockId );
         }
-        return $this->getMethodContent('Bim\Db\Iblock\HighloadblockIntegrate', 'Delete', array( $hlblock['NAME']));
+
+        $obHl = \CUserTypeEntity::GetList(array(), array("ENTITY_ID"=>"HLBLOCK_".$hlblockId));
+        while ($arHl = $obHl->Fetch()) {
+            $arFullData = \CUserTypeEntity::GetByID( $arHl['ID']  );
+            unset($arFullData['ID']);
+            unset($arFullData['ENTITY_ID']);
+            $return[] =  $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Delete', array( $hlblock['NAME'], $arFullData['FIELD_NAME'] ));
+        }
+        $return[] = $this->getMethodContent('Bim\Db\Iblock\HighloadblockIntegrate', 'Delete', array( $hlblock['NAME'] ));
+        return implode(PHP_EOL, $return);
     }
 
 

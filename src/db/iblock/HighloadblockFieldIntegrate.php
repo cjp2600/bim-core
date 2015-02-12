@@ -140,60 +140,41 @@ class HighloadblockFieldIntegrate {
 
     /**
      * Функция удаляет поле сущности highload инфоблока
-     * @param string entityName - название сущности highload инфоблока - req
-     * @param string fieldName - Название поля req
+     * @param $entityName
+     * @param $fieldName
+     * @param bool $isRevert
+     * @return array
+     * @throws \Exception
+     * @internal param entityName $string - название сущности highload инфоблока - req
+     * @internal param fieldName $string - Название поля req
      * Summary:
      * 2 required
      * return array - массив массив с флагом успешности удаления или с текстом возникшей в процессе ошибки
-     * @return array
      */
-	function Delete( $entityName, $fieldName, $isRevert = false) {
-        global $RESPONSE;
-
-        $result = array('type' => 'success');
-        try{
-            if ( empty( $entityName ) ) {
-                throw new \Exception('entityName is required');
-            }
-
-            if ( empty( $fieldName ) ) {
-                throw new \Exception('fieldName is required.');
-            }
-
-            $userFieldEntity = self::_getEntityId( $entityName );
-
-            $typeEntityDbRes = CUserTypeEntity::GetList(array(), array(
-                "ENTITY_ID" => $userFieldEntity,
-                "FIELD_NAME" => $fieldName,
-            ));
-            if ( $typeEntityDbRes === false || !$typeEntityDbRes->SelectedRowsCount() ) {
-                throw new \Exception( 'Hlblock field with name = "' . $fieldName .'" not found.' );
-            }
-            $hlBlockFieldData = $typeEntityDbRes->Fetch();
-            if (!$isRevert) {
-                $fieldRevert = new HighloadblockFieldRevertIntegrate();
-                if( !$fieldRevert->Add( $entityName, $hlBlockFieldData ) ) {
-                    throw new \Exception( 'Cant create "Hlblock field add revert" operation' );
-                }
-            }
-
-            $userType = new CUserTypeEntity;
-            if ( !$userType->Delete( $hlBlockFieldData['ID'] ) ) {
-                throw new \Exception( 'Not delete Hlblock field' );
-            }
-
-            $result['ID'] = $hlBlockFieldData['ID'];
-
-
-        }catch ( \Exception $e ){
-            $result = array('type' => 'error', 'error_text' => $e->getMessage() );
-
+	function Delete( $entityName, $fieldName, $isRevert = false)
+    {
+        if ( empty( $entityName ) ) {
+            throw new \Exception('entityName is required');
         }
 
-        return $RESPONSE[] = $result;
+        if ( empty( $fieldName ) ) {
+            throw new \Exception('fieldName is required.');
+        }
 
-
-
+        $userFieldEntity = self::_getEntityId( $entityName );
+        $typeEntityDbRes = CUserTypeEntity::GetList(array(), array(
+            "ENTITY_ID" => $userFieldEntity,
+            "FIELD_NAME" => $fieldName,
+        ));
+        if ( $typeEntityDbRes === false || !$typeEntityDbRes->SelectedRowsCount() ) {
+            throw new \Exception( 'Hlblock field with name = "' . $fieldName .'" not found.' );
+        }
+        $hlBlockFieldData = $typeEntityDbRes->Fetch();
+        $userType = new CUserTypeEntity;
+        if ( !$userType->Delete( $hlBlockFieldData['ID'] ) ) {
+            throw new \Exception( 'Not delete Hlblock field' );
+        }
+        return $hlBlockFieldData['ID'];
 	}
 
     /**
