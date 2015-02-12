@@ -30,20 +30,9 @@ class InfoCommand extends BaseCommand {
 
         # for fun :)
         $this->padding('
-              ___                       ___
-             /\  \          ___        /\__\
-            /::\  \        /\  \      /::|  |
-           /:/\:\  \       \:\  \    /:|:|  |
-          /::\~\:\__\      /::\__\  /:/|:|__|__
-         /:/\:\ \:|__|  __/:/\/__/ /:/ |::::\__\
-         \:\~\:\/:/  / /\/:/  /    \/__/~~/:/  /
-          \:\ \::/  /  \::/__/           /:/  /
-           \:\/:/  /    \:\__\          /:/  /
-            \::/__/      \/__/         /:/  /
-             ~~                        \/__/
 
-         Bitrix migration manager v.0.0.1
-         https://github.com/cjp2600/bim-core.git
+         Bitrix migration (BIM) v.0.0.1
+         https://github.com/cjp2600/bim-core
         ');
 
         $this->info("About bitrix project:");
