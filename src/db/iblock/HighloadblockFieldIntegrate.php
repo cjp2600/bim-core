@@ -162,6 +162,23 @@ class HighloadblockFieldIntegrate {
             throw new \Exception('fieldName is required.');
         }
 
+        $filter = array('NAME' => $entityName);
+        $hlBlockDbRes = HL\HighloadBlockTable::getList(array(
+            "filter" => $filter
+        ));
+        if ( !$hlBlockDbRes->getSelectedRowsCount() ) {
+            throw new \Exception('Not found highloadBlock with entityName = ' . $entityName );
+        }
+        $hlBlockRow = $hlBlockDbRes->fetch();
+
+        $entity = HL\HighloadBlockTable::compileEntity($hlBlockRow);
+        $entityDataClass = $entity->getDataClass();
+
+        $obList = $entityDataClass::getList();
+        if ( $obList->getSelectedRowsCount() > 0) {
+            throw new \Exception('Unable to remove a highloadBlock['.$entityName.'], because it has elements');
+        }
+
         $userFieldEntity = self::_getEntityId( $entityName );
         $typeEntityDbRes = \CUserTypeEntity::GetList(array(), array(
             "ENTITY_ID" => $userFieldEntity,
