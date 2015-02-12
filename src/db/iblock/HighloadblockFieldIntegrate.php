@@ -152,7 +152,7 @@ class HighloadblockFieldIntegrate {
      * 2 required
      * return array - массив массив с флагом успешности удаления или с текстом возникшей в процессе ошибки
      */
-	function Delete( $entityName, $fieldName, $isRevert = false)
+	function Delete( $entityName, $fieldName)
     {
         if ( empty( $entityName ) ) {
             throw new \Exception('entityName is required');
@@ -184,15 +184,14 @@ class HighloadblockFieldIntegrate {
             "ENTITY_ID" => $userFieldEntity,
             "FIELD_NAME" => $fieldName,
         ));
-        if ( $typeEntityDbRes === false || !$typeEntityDbRes->SelectedRowsCount() ) {
-            throw new \Exception( 'Hlblock field with name = "' . $fieldName .'" not found.' );
+        if ($typeEntityDbRes->SelectedRowsCount() > 0 ) {
+            $hlBlockFieldData = $typeEntityDbRes->Fetch();
+            $userType = new \CUserTypeEntity;
+            if (!$userType->Delete($hlBlockFieldData['ID'])) {
+                throw new \Exception('Not delete Hlblock field');
+            }
+            return $hlBlockFieldData['ID'];
         }
-        $hlBlockFieldData = $typeEntityDbRes->Fetch();
-        $userType = new \CUserTypeEntity;
-        if ( !$userType->Delete( $hlBlockFieldData['ID'] ) ) {
-            throw new \Exception( 'Not delete Hlblock field' );
-        }
-        return $hlBlockFieldData['ID'];
 	}
 
     /**
