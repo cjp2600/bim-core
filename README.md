@@ -1,6 +1,10 @@
 
 # <a name="about"></a>Bitrix Migration (BIM)
 
+[![Latest Stable Version](https://poser.pugx.org/cjp2600/bim-core/v/stable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Total Downloads](https://poser.pugx.org/cjp2600/bim-core/downloads.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Latest Unstable Version](https://poser.pugx.org/cjp2600/bim-core/v/unstable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![License](https://poser.pugx.org/cjp2600/bim-core/license.svg)](https://packagist.org/packages/cjp2600/bim-core)
+
+Версионная миграция структуры БД для **[1С Битрикс CMS](http://bitrix.ru)**
+
 - [Установка](#install)
   * [Автоматическая установка](#auto)
   * [Ручная установка](#hand)
@@ -15,10 +19,6 @@
     * [Iblock](#iblock)
     * [IblockProperty](#iblockproperty)
     * [Highloadblock](#hlblock)
-
-[![Latest Stable Version](https://poser.pugx.org/cjp2600/bim-core/v/stable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Total Downloads](https://poser.pugx.org/cjp2600/bim-core/downloads.svg)](https://packagist.org/packages/cjp2600/bim-core) [![Latest Unstable Version](https://poser.pugx.org/cjp2600/bim-core/v/unstable.svg)](https://packagist.org/packages/cjp2600/bim-core) [![License](https://poser.pugx.org/cjp2600/bim-core/license.svg)](https://packagist.org/packages/cjp2600/bim-core)
-
-Версионная миграция структуры БД для **[1С Битрикс CMS](http://bitrix.ru)**
 
 # <a name="install"></a>1 Установка
 
