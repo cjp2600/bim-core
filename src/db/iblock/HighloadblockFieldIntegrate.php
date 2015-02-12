@@ -2,6 +2,7 @@
 
 namespace Bim\Db\Iblock;
 
+\CModule::IncludeModule("highloadblock");
 use Bitrix\Highloadblock as HL;
 
 /*
@@ -162,7 +163,7 @@ class HighloadblockFieldIntegrate {
         }
 
         $userFieldEntity = self::_getEntityId( $entityName );
-        $typeEntityDbRes = CUserTypeEntity::GetList(array(), array(
+        $typeEntityDbRes = \CUserTypeEntity::GetList(array(), array(
             "ENTITY_ID" => $userFieldEntity,
             "FIELD_NAME" => $fieldName,
         ));
@@ -170,7 +171,7 @@ class HighloadblockFieldIntegrate {
             throw new \Exception( 'Hlblock field with name = "' . $fieldName .'" not found.' );
         }
         $hlBlockFieldData = $typeEntityDbRes->Fetch();
-        $userType = new CUserTypeEntity;
+        $userType = new \CUserTypeEntity;
         if ( !$userType->Delete( $hlBlockFieldData['ID'] ) ) {
             throw new \Exception( 'Not delete Hlblock field' );
         }
