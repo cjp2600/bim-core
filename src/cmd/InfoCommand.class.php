@@ -30,7 +30,6 @@ class InfoCommand extends BaseCommand {
 
         # for fun :)
         $this->padding('
-
          Bitrix migration (BIM) v.0.0.1
          https://github.com/cjp2600/bim-core
         ');
