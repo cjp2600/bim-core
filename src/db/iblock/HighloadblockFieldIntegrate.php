@@ -29,40 +29,37 @@ class HighloadblockFieldIntegrate {
 	3 required
 	* return array - массив массив с флагом успешности добаления или с текстом возникшей в процессе ошибки
 	*/
-	function Add($entityName, $fields )
+    function Add($entityName, $fields)
     {
-        if ( empty( $entityName ) || empty( $fields ) ) {
+        if (empty($entityName) || empty($fields)) {
             throw new \Exception('entityName or fields is empty');
         }
-
-        if ( empty( $fields['FIELD_NAME'] ) ) {
+        if (empty($fields['FIELD_NAME'])) {
             throw new \Exception('Field FIELD_NAME is required.');
         }
-
-        if ( empty( $fields['USER_TYPE_ID'] ) ) {
+        if (empty($fields['USER_TYPE_ID'])) {
             throw new \Exception('Field USER_TYPE_ID is required.');
         }
-        if ( isset( $fields['ID'] ) ) {
-            unset( $fields['ID'] );
+        if (isset($fields['ID'])) {
+            unset($fields['ID']);
         }
-
-        $userFieldEntity = self::_getEntityId( $entityName );
+        $userFieldEntity = self::_getEntityId($entityName);
         $fields['ENTITY_ID'] = $userFieldEntity;
 
         $typeEntityDbRes = \CUserTypeEntity::GetList(array(), array(
             "ENTITY_ID" => $fields["ENTITY_ID"],
             "FIELD_NAME" => $fields["FIELD_NAME"],
         ));
-        if ( $typeEntityDbRes !== false && $typeEntityDbRes->SelectedRowsCount() ) {
-            throw new \Exception( 'Hlblock field with name = "' . $fields["FIELD_NAME"] .'" already exist.' );
+        if ($typeEntityDbRes !== false && $typeEntityDbRes->SelectedRowsCount()) {
+            throw new \Exception('Hlblock field with name = "' . $fields["FIELD_NAME"] . '" already exist.');
         }
         $UserType = new \CUserTypeEntity;
         $ID = $UserType->Add($fields);
-        if ( !(int) $ID ) {
-            throw new \Exception( 'Not added Hlblock field' );
+        if (!(int)$ID) {
+            throw new \Exception('Not added Hlblock field');
         }
         return $ID;
-	}
+    }
 
 
 	/*
@@ -86,66 +83,45 @@ class HighloadblockFieldIntegrate {
 	2 required
 	* return array - массив массив с флагом успешности изменения или с текстом возникшей в процессе ошибки
 	*/
-	function Update($entityName, $fieldName, $fields, $isRevert = false){
-        global $RESPONSE;
-
-        $result = array('type' => 'success');
-        try{
-            if ( empty( $entityName ) ) {
-                throw new \Exception('entityName is required');
-            }
-
-            if ( empty( $fieldName ) ) {
-                throw new \Exception('fieldName is required.');
-            }
-
-            if ( isset( $fields['ID'] ) ) {
-                unset( $fields['ID'] );
-            }
-
-            $userFieldEntity = self::_getEntityId( $entityName );
-            $fields['ENTITY_ID'] = $userFieldEntity;
-
-            $typeEntityDbRes = CUserTypeEntity::GetList(array(), array(
-                "ENTITY_ID" => $userFieldEntity,
-                "FIELD_NAME" => $fieldName,
-            ));
-            if ( $typeEntityDbRes === false || !$typeEntityDbRes->SelectedRowsCount() ) {
-                throw new \Exception( 'Hlblock field with name = "' . $fieldName .'" not found.' );
-            }
-            $hlBlockFieldData = $typeEntityDbRes->Fetch();
-            if (!$isRevert) {
-                $fieldRevert = new HighloadblockFieldRevertIntegrate();
-                if( !$fieldRevert->Update( $entityName, $hlBlockFieldData['ID'] ) ) {
-                    throw new \Exception( 'Cant create "Hlblock field update revert" operation' );
-                }
-            }
-            $userType = new CUserTypeEntity;
-            if ( !$userType->Update( $hlBlockFieldData['ID'], $fields) ) {
-                throw new \Exception( 'Not update Hlblock field' );
-            }
-
-            $result['ID'] = $hlBlockFieldData['ID'];
-
-
-        }catch ( \Exception $e ){
-            $result = array('type' => 'error', 'error_text' => $e->getMessage() );
-
+    function Update($entityName, $fieldName, $fields)
+    {
+        if (empty($entityName)) {
+            throw new \Exception('entityName is required');
         }
 
-        return $RESPONSE[] = $result;
+        if (empty($fieldName)) {
+            throw new \Exception('fieldName is required.');
+        }
 
+        if (isset($fields['ID'])) {
+            unset($fields['ID']);
+        }
+        $userFieldEntity = self::_getEntityId($entityName);
+        $fields['ENTITY_ID'] = $userFieldEntity;
 
-	}
+        $typeEntityDbRes = CUserTypeEntity::GetList(array(), array(
+            "ENTITY_ID" => $userFieldEntity,
+            "FIELD_NAME" => $fieldName,
+        ));
+        if ($typeEntityDbRes === false || !$typeEntityDbRes->SelectedRowsCount()) {
+            throw new \Exception('Hlblock field with name = "' . $fieldName . '" not found.');
+        }
+        $hlBlockFieldData = $typeEntityDbRes->Fetch();
+        $userType = new CUserTypeEntity;
+        if (!$userType->Update($hlBlockFieldData['ID'], $fields)) {
+            throw new \Exception('Not update Hlblock field');
+        }
+        return $hlBlockFieldData['ID'];
+    }
 
 
     /**
      * Функция удаляет поле сущности highload инфоблока
      * @param $entityName
      * @param $fieldName
-     * @param bool $isRevert
      * @return array
      * @throws \Exception
+     * @internal param bool $isRevert
      * @internal param entityName $string - название сущности highload инфоблока - req
      * @internal param fieldName $string - Название поля req
      * Summary:
