@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Bitrix Migration (BIM) : Bitrix, bim, migration, db">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Bitrix Migration (BIM)</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/cjp2600/bim-core">View on GitHub</a>
+
+          <h1 id="project_title">Bitrix Migration (BIM)</h1>
+          <h2 id="project_tagline">Bitrix, bim, migration, db</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/cjp2600/bim-core/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/cjp2600/bim-core/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="bitrix-migration-bim" class="anchor" href="#bitrix-migration-bim" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="about"></a>Bitrix Migration (BIM)</h1>
+
+<p><a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/v/stable.svg" alt="Latest Stable Version"></a> <a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/downloads.svg" alt="Total Downloads"></a> <a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/v/unstable.svg" alt="Latest Unstable Version"></a> <a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/license.svg" alt="License"></a></p>
+
+<p>Версионная миграция структуры БД для <strong><a href="http://bitrix.ru">1С Битрикс CMS</a></strong></p>
+
+<ul>
+<li>
+<a href="#install">Установка</a>
+
+<ul>
+<li><a href="#auto">Автоматическая установка</a></li>
+<li><a href="#hand">Ручная установка</a></li>
+</ul>
+</li>
+<li><a href="#prop">Настройка</a></li>
+<li><a href="#up">Выполнение - bim up</a></li>
+<li><a href="#down">Отмена - bim down</a></li>
+<li><a href="#ls">Вывод списка - bim ls</a></li>
+<li>
+<a href="#gen">Создание - bim gen</a>
+
+<ul>
+<li><a href="#gen_empty">Создание пустой миграции</a></li>
+<li>
+<a href="#gen_nal">Создание миграционного кода по наличию</a>
+
+<ul>
+<li><a href="#iblocktype">IblockType</a></li>
+<li><a href="#iblock">Iblock</a></li>
+<li><a href="#iblockproperty">IblockProperty</a></li>
+<li><a href="#hlblock">Highloadblock</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="1-Установка" class="anchor" href="#1-%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="install"></a>1 Установка</h1>
+
+<h3>
+<a id="11-Автоматическая-установка" class="anchor" href="#11-%D0%90%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="auto"></a>1.1 Автоматическая установка</h3>
+
+<p>Для установки и инициализации bim для bitrix проекта необходимо выполнить следующиие действия из корня проекта:</p>
+
+<ul>
+<li>Установить Composer:</li>
+</ul>
+
+<pre><code>curl -s https://getcomposer.org/installer | php
+</code></pre>
+
+<ul>
+<li>Выполнить установочный скрипт:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php -r <span class="pl-s1"><span class="pl-pds">"</span>readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install');<span class="pl-pds">"</span></span> <span class="pl-k">|</span> php</pre></div>
+
+<blockquote>
+<p>Автоматические действия установщика:</p>
+
+<ol>
+<li>Добавление файла <strong>bim</strong> в корень проекта.</li>
+<li>Инициализация <strong>composer autoloader</strong> в файле <strong>init.php</strong>
+</li>
+<li>Создание файла <strong>composer.json</strong> в корне проекта со ссылкой на <strong>bim</strong> репозиторий <strong>"require": { "cjp2600/bim-core": "dev-master"}</strong>
+</li>
+</ol>
+</blockquote>
+
+<h3>
+<a id="12-Ручная-установка" class="anchor" href="#12-%D0%A0%D1%83%D1%87%D0%BD%D0%B0%D1%8F-%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="hand"></a>1.2 Ручная установка</h3>
+
+<p>Для ручной установки bim необходимо:</p>
+
+<ul>
+<li>Установить Composer:</li>
+</ul>
+
+<pre><code>curl -s https://getcomposer.org/installer | php
+</code></pre>
+
+<ul>
+<li>Создать файл bim (без расширения) в корне bitrix проекта с содержимым:</li>
+</ul>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c">#!/usr/bin/php</span></span>
+<span class="pl-s2"><span class="pl-k">&lt;</span>?<span class="pl-c1">php</span></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-s3">ini_set</span>(<span class="pl-s1"><span class="pl-pds">'</span>max_execution_time<span class="pl-pds">'</span></span>, <span class="pl-c1">36000</span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-s3">define</span>(<span class="pl-s1"><span class="pl-pds">"</span>NO_KEEP_STATISTIC<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s2"><span class="pl-s3">define</span>(<span class="pl-s1"><span class="pl-pds">"</span>NO_AGENT_STATISTIC<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s2"><span class="pl-s3">define</span>(<span class="pl-s1"><span class="pl-pds">"</span>NOT_CHECK_PERMISSIONS<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s2"><span class="pl-vo">$_SERVER</span>[<span class="pl-s1"><span class="pl-pds">"</span>DOCUMENT_ROOT<span class="pl-pds">"</span></span>] <span class="pl-k">=</span> <span class="pl-s3">dirname</span>(<span class="pl-c1">__FILE__</span>);</span>
+<span class="pl-s2"><span class="pl-k">require</span>(<span class="pl-vo">$_SERVER</span>[<span class="pl-s1"><span class="pl-pds">"</span>DOCUMENT_ROOT<span class="pl-pds">"</span></span>] <span class="pl-k">.</span> <span class="pl-s1"><span class="pl-pds">"</span>/bitrix/modules/main/include/prolog_before.php<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-s3">\Bim\</span><span class="pl-s3">Migration</span><span class="pl-k">::</span>init();</span>
+<span class="pl-s2"></span></pre></div>
+
+<ul>
+<li>Добавть инициализацию composer (в файл init.php добавить запись):</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre><span class="pl-k">if</span> (file_exists(<span class="pl-vo">$_SERVER</span>[<span class="pl-s1"><span class="pl-pds">'</span>DOCUMENT_ROOT<span class="pl-pds">'</span></span>] <span class="pl-s3">.</span> <span class="pl-s1"><span class="pl-pds">'</span>/vendor/autoload.php<span class="pl-pds">'</span></span>))
+    require_once <span class="pl-vo">$_SERVER</span>[<span class="pl-s1"><span class="pl-pds">'</span>DOCUMENT_ROOT<span class="pl-pds">'</span></span>] <span class="pl-s3">.</span> <span class="pl-s1"><span class="pl-pds">'</span>/vendor/autoload.php<span class="pl-pds">'</span></span><span class="pl-k">;</span></pre></div>
+
+<ul>
+<li>Создать в корне сайта файл <strong>composer.json</strong> с содержимым:</li>
+</ul>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s1"><span class="pl-pds">"</span>require<span class="pl-pds">"</span></span>: {
+        <span class="pl-s1"><span class="pl-pds">"</span>cjp2600/bim-core<span class="pl-pds">"</span></span>: <span class="pl-s1"><span class="pl-pds">"</span>dev-master<span class="pl-pds">"</span></span>
+    }
+}</pre></div>
+
+<ul>
+<li>В <strong>.gitignore</strong> добавить запись:</li>
+</ul>
+
+<pre><code>/vendor
+*.lock
+</code></pre>
+
+<h1>
+<a id="2-Настройка" class="anchor" href="#2-%D0%9D%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>2 <a name="prop"></a>Настройка</h1>
+
+<p>Для начала работы обновляем <strong>composer</strong> и создаем миграционную таблицу в БД:</p>
+
+<div class="highlight highlight-bash"><pre>php composer.phar update</pre></div>
+
+<p>Создаём таблицу миграций : </p>
+
+<div class="highlight highlight-bash"><pre>php bim init</pre></div>
+
+<h1>
+<a id="3-Выполнение-миграций-bim-up" class="anchor" href="#3-%D0%92%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BC%D0%B8%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D0%B9-bim-up" aria-hidden="true"><span class="octicon octicon-link"></span></a>3 <a name="up"></a>Выполнение миграций [BIM UP]</h1>
+
+<ul>
+<li>Общее выполнение:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim up</pre></div>
+
+<p>Выполняет полный список не выполненых либо ранее отмененных миграционных классов отсортированых по названию (<strong>timestamp</strong>).</p>
+
+<ul>
+<li>Еденичное выполнение:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim up 1423660766</pre></div>
+
+<p>Выполняет указанную в праметрах миграцию.</p>
+
+<ul>
+<li>Выполнение по временному периоду:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim up --from=<span class="pl-s1"><span class="pl-pds">"</span>29.01.2015 00:01<span class="pl-pds">"</span></span> --to=<span class="pl-s1"><span class="pl-pds">"</span>29.01.2015 23:55<span class="pl-pds">"</span></span></pre></div>
+
+<ul>
+<li>Выполнение по тегу:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim up --tag=iws-123</pre></div>
+
+<p>Выполняет все миграции где найден указанный тег в описании.</p>
+
+<p>Например:</p>
+
+<blockquote>
+<p>Description: add new migration #iws-123</p>
+</blockquote>
+
+<h1>
+<a id="4-Отмена-выполненых-миграций--bim-down" class="anchor" href="#4-%D0%9E%D1%82%D0%BC%D0%B5%D0%BD%D0%B0-%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D1%8B%D1%85-%D0%BC%D0%B8%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D0%B9--bim-down" aria-hidden="true"><span class="octicon octicon-link"></span></a>4 <a name="down"></a>Отмена выполненых миграций  [BIM DOWN]</h1>
+
+<ul>
+<li>Общая отмена:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim down</pre></div>
+
+<p>Отменяет весь список выполненных миграционных классов.</p>
+
+<ul>
+<li>Еденичная отмена:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim down 1423660766</pre></div>
+
+<p>Отменяет указанную в праметрах миграцию.</p>
+
+<ul>
+<li>Отмена по временному периоду:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim down --from=<span class="pl-s1"><span class="pl-pds">"</span>29.01.2015 00:01<span class="pl-pds">"</span></span> --to=<span class="pl-s1"><span class="pl-pds">"</span>29.01.2015 23:55<span class="pl-pds">"</span></span></pre></div>
+
+<ul>
+<li>Отмена по тегу:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim up --tag=iws-123</pre></div>
+
+<p>Отменяет все миграции где найден указанный тег в описании.</p>
+
+<p>Например:</p>
+
+<blockquote>
+<p>Description: add new migration #iws-123</p>
+</blockquote>
+
+<h1>
+<a id="5-Вывод-списка-миграций-bim-ls" class="anchor" href="#5-%D0%92%D1%8B%D0%B2%D0%BE%D0%B4-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0-%D0%BC%D0%B8%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D0%B9-bim-ls" aria-hidden="true"><span class="octicon octicon-link"></span></a>5 <a name="ls"></a>Вывод списка миграций [BIM LS]</h1>
+
+<ul>
+<li>Общей список:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim ls</pre></div>
+
+<ul>
+<li>Список выполненных миграций:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim ls --a</pre></div>
+
+<ul>
+<li>Список отменённых миграций:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim ls --n</pre></div>
+
+<ul>
+<li>Список миграций за определённый период времени:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim ls --from=<span class="pl-s1"><span class="pl-pds">"</span>29.01.2015 00:01<span class="pl-pds">"</span></span> --to=<span class="pl-s1"><span class="pl-pds">"</span>29.01.2015 23:55<span class="pl-pds">"</span></span> </pre></div>
+
+<ul>
+<li>Список миграций по тегу:</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>php bim ls --tag=iws-123</pre></div>
+
+<h1>
+<a id="6-Создание-новых-миграций-bim-gen" class="anchor" href="#6-%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BD%D0%BE%D0%B2%D1%8B%D1%85-%D0%BC%D0%B8%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D0%B9-bim-gen" aria-hidden="true"><span class="octicon octicon-link"></span></a>6 <a name="gen"></a>Создание новых миграций [BIM GEN]</h1>
+
+<p>Существует два способа создания миграций:</p>
+
+<h2>
+<a id="1-Создание-пустой-миграции" class="anchor" href="#1-%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D1%83%D1%81%D1%82%D0%BE%D0%B9-%D0%BC%D0%B8%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D0%B8" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="gen_empty"></a>1) Создание пустой миграции:</h2>
+
+<p>Создается пустой шаблон миграционного класса. Структура класса определена интерфейсом <em>Bim/Revision</em> и включает следующие
+обязательные методы:</p>
+
+<ul>
+<li>
+<em>up();</em> - выполнение</li>
+<li>
+<em>down();</em> - отмена</li>
+<li>
+<em>getDescription();</em> - получения описания.</li>
+<li>
+<em>getAuthor();</em> - получение автора.</li>
+</ul>
+
+<p>Дополнительно запрашивается:</p>
+
+<ul>
+<li>[Description]</li>
+</ul>
+
+<p><strong>Пример:</strong></p>
+
+<div class="highlight highlight-bash"><pre>php bim gen</pre></div>
+
+<p>Также возможно передать description опционально:</p>
+
+<div class="highlight highlight-bash"><pre>php bim gen --d=<span class="pl-s1"><span class="pl-pds">"</span>new description #iws-123<span class="pl-pds">"</span></span></pre></div>
+
+<blockquote>
+<p>Далее создается файл миграции вида: */[migrations_path]/[timestamp].php</p>
+
+<p>Например: /migrations/123412434.php</p>
+</blockquote>
+
+<h2>
+<a id="2-Создание-миграционного-кода-по-наличию" class="anchor" href="#2-%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BC%D0%B8%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE-%D0%BA%D0%BE%D0%B4%D0%B0-%D0%BF%D0%BE-%D0%BD%D0%B0%D0%BB%D0%B8%D1%87%D0%B8%D1%8E" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="gen_nal"></a>2) Создание миграционного кода по наличию:</h2>
+
+<p>Создается код развертывания/отката существующего элемента схемы bitrix БД.
+На данный момент доступно генерация по наличию для следующих элементов bitrix БД:</p>
+
+<h3>
+<a id="21-iblocktype--php-bim-gen-iblocktypeadddelete-" class="anchor" href="#21-iblocktype--php-bim-gen-iblocktypeadddelete-" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.1 <a name="iblocktype"></a>IblockType <em>( php bim gen IblockType:[add|delete] )</em>:</h3>
+
+<p>Создается Миграционный код "<strong>Типа ИБ</strong>" включая созданные для него <em>(UserFields, IBlock, IblockProperty)</em></p>
+
+<p>Дополнительно запрашивается:</p>
+
+<ul>
+<li>[IBLOCK_TYPE_ID]</li>
+<li>[Description]</li>
+</ul>
+
+<p><strong>Пример:</strong></p>
+
+<div class="highlight highlight-bash"><pre>php bim gen IblockType:add</pre></div>
+
+<p>Также возможно передать iblock type id и description опционально:</p>
+
+<div class="highlight highlight-bash"><pre>php bim gen IblockType:add --typeId=catalog --d=<span class="pl-s1"><span class="pl-pds">"</span>new description #iws-123<span class="pl-pds">"</span></span></pre></div>
+
+<h3>
+<a id="22-iblock--php-bim-gen-iblockadddelete-" class="anchor" href="#22-iblock--php-bim-gen-iblockadddelete-" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="iblock"></a>2.2 Iblock <em>( php bim gen Iblock:[add|delete] )</em>:</h3>
+
+<p>Создается Миграционный код "<strong>ИБ</strong>" включая созданные для него <em>(IblockProperty)</em></p>
+
+<p>Дополнительно запрашивается:</p>
+
+<ul>
+<li>[IBLOCK_CODE]</li>
+<li>[Description]</li>
+</ul>
+
+<p><strong>Пример:</strong></p>
+
+<div class="highlight highlight-bash"><pre>php bim gen Iblock:add</pre></div>
+
+<p>Также возможно передать iblock code и description опционально:</p>
+
+<div class="highlight highlight-bash"><pre>php bim gen Iblock:add --code=goods --d=<span class="pl-s1"><span class="pl-pds">"</span>new description #iws-123<span class="pl-pds">"</span></span></pre></div>
+
+<h3>
+<a id="23-iblockproperty--php-bim-gen-iblockpropertyadddelete-" class="anchor" href="#23-iblockproperty--php-bim-gen-iblockpropertyadddelete-" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="iblockproperty"></a>2.3 IblockProperty <em>( php bim gen IblockProperty:[add|delete] )</em>:</h3>
+
+<p>Создается Миграционный код "<strong>Свойства ИБ</strong>"</p>
+
+<p>Дополнительно запрашивается:</p>
+
+<ul>
+<li>[IBLOCK_CODE]</li>
+<li>[PROPERTY_CODE]</li>
+<li>[Description]</li>
+</ul>
+
+<p><strong>Пример:</strong></p>
+
+<div class="highlight highlight-bash"><pre>php bim gen IblockProperty:add</pre></div>
+
+<p>Также возможно передать iblock code, property code и description опционально:</p>
+
+<div class="highlight highlight-bash"><pre>php bim gen IblockProperty:add --code=goods --propertyCode=NEW_ITEM --d=<span class="pl-s1"><span class="pl-pds">"</span>new description #iws-123<span class="pl-pds">"</span></span></pre></div>
+
+<h3>
+<a id="24-hlblock--php-bim-gen-hlblockadddelete-" class="anchor" href="#24-hlblock--php-bim-gen-hlblockadddelete-" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="hlblock"></a>2.4 Hlblock <em>( php bim gen Hlblock:[add|delete] )</em>:</h3>
+
+<p>Создается Миграционный код "<strong>Highloadblock</strong>" включая созданные для него <em>(UserFields)</em></p>
+
+<p>Дополнительно запрашивается:</p>
+
+<ul>
+<li>[HLBLOCK_ID]</li>
+<li>[Description]</li>
+</ul>
+
+<p><strong>Пример:</strong></p>
+
+<div class="highlight highlight-bash"><pre>php bim gen Hlblock:add</pre></div>
+
+<p>Также возможно передать hlblock id и description опционально:</p>
+
+<div class="highlight highlight-bash"><pre>php bim gen IHlblock:add --id=82 --d=<span class="pl-s1"><span class="pl-pds">"</span>new description #iws-123<span class="pl-pds">"</span></span></pre></div>
+
+<blockquote>
+<p>Обратите внимание!</p>
+
+<p>что миграционные классы созданные по наличию, выполняются автоматически.</p>
+</blockquote>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Bitrix Migration (BIM) maintained by <a href="https://github.com/cjp2600">cjp2600</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
