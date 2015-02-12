@@ -19,6 +19,7 @@
     * [Iblock](#iblock)
     * [IblockProperty](#iblockproperty)
     * [Highloadblock](#hlblock)
+- [Информация о проекте - bim info](#info)
 
 # <a name="install"></a>1 Установка
 
@@ -293,4 +294,17 @@ php bim gen IHlblock:add --id=82 --d="new description #iws-123"
 > Обратите внимание!
 
 > что миграционные классы созданные по наличию, выполняются автоматически.
+
+# <a name="info"></a>7 Информация о проекет [BIM INFO]
+
+Информация о текущем bitrix проекте:
+
+- Название проекта
+- Версия bitrix
+- Редакция bitrix
+
+**Пример:**
+``` bash  
+php bim info
+``` 
  
