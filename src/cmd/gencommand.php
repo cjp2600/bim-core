@@ -143,17 +143,15 @@ class GenCommand extends BaseCommand {
             $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
         }
 
-        # set
         $autoTag = "add";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->gen_obj->generateAddCode($iblocktypeId),
-                $this->gen_obj->generateDeleteCode($iblocktypeId),
-                $desc." #".$autoTag,
-                get_current_user()
-            ),$autoTag);
+        $desc = $desc. " #".$autoTag;
+        $this->_save(
+            $this->gen_obj->generateAddCode($iblocktypeId),
+            $this->gen_obj->generateDeleteCode($iblocktypeId)
+            ,$desc,
+            $autoTag
+        );
+
     }
 
     /**
@@ -187,17 +185,16 @@ class GenCommand extends BaseCommand {
             $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
         }
 
-        # set
+
         $autoTag = "delete";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->gen_obj->generateDeleteCode($iblocktypeId),
-                $this->gen_obj->generateAddCode($iblocktypeId),
-                $desc." #".$autoTag,
-                get_current_user()
-            ),$autoTag);
+        $desc = $desc. " #".$autoTag;
+        $this->_save(
+            $this->gen_obj->generateDeleteCode($iblocktypeId),
+            $this->gen_obj->generateAddCode($iblocktypeId)
+            ,$desc,
+            $autoTag
+        );
+
     }
 
 
@@ -234,7 +231,7 @@ class GenCommand extends BaseCommand {
             }
         }
 
-        if (!$this->isMulti()) {
+
 
             # get description options
             $desc = (isset($options['d'])) ? $options['d'] : "";
@@ -243,35 +240,15 @@ class GenCommand extends BaseCommand {
                 $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
             }
 
-            # set
-            $autoTag = "add";
-            $name_migration = $this->getMigrationName();
-            $this->saveTemplate($name_migration,
-                $this->setTemplate(
-                    $name_migration,
-                    $this->gen_obj->generateAddCode($code),
-                    $this->gen_obj->generateDeleteCode($code),
-                    $desc . " #" . $autoTag,
-                    get_current_user()
-                ), $autoTag);
+        $autoTag = "add";
+        $desc = $desc. " #".$autoTag;
+        $this->_save(
+            $this->gen_obj->generateAddCode($code),
+            $this->gen_obj->generateDeleteCode($code)
+            ,$desc,
+            $autoTag
+        );
 
-        } else {
-
-            $title = $this->color('>', \ConsoleKit\Colors::YELLOW)." IblockAdd - [".$code."]";
-            if (!in_array($title,$this->getMultiHeaders())) {
-
-                # multi
-                $this->setMultiHeaders($title);
-                $this->setMultiAddReturn($this->gen_obj->generateAddCode($code));
-                $this->setMultiDeleteReturn($this->gen_obj->generateDeleteCode($code));
-
-            } else {
-
-                throw new Exception("[".$code."] all ready exists");
-
-            }
-
-        }
     }
 
     /**
@@ -306,17 +283,15 @@ class GenCommand extends BaseCommand {
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
 
-        # set
         $autoTag = "delete";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->gen_obj->generateDeleteCode($code),
-                $this->gen_obj->generateAddCode($code),
-                $desc. " #". $autoTag,
-                get_current_user()
-            ), $autoTag);
+        $desc = $desc. " #".$autoTag;
+        $this->_save(
+            $this->gen_obj->generateDeleteCode($code),
+            $this->gen_obj->generateAddCode($code)
+            ,$desc,
+            $autoTag
+        );
+
     }
 
     /**
@@ -383,17 +358,15 @@ class GenCommand extends BaseCommand {
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
 
-        # set
         $autoTag = "add";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->gen_obj->generateAddCode($params),
-                $this->gen_obj->generateDeleteCode($params),
-                $desc." #".$autoTag,
-                get_current_user()
-            ),$autoTag);
+        $desc = $desc. " #".$autoTag;
+        $this->_save(
+            $this->gen_obj->generateAddCode($params),
+            $this->gen_obj->generateDeleteCode($params)
+            ,$desc,
+            $autoTag
+        );
+
     }
 
 
@@ -453,17 +426,15 @@ class GenCommand extends BaseCommand {
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
 
-        # set
         $autoTag = "delete";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->gen_obj->generateDeleteCode($params),
-                $this->gen_obj->generateAddCode($params),
-                $desc . " #".$autoTag,
-                get_current_user()
-            ),$autoTag);
+        $desc = $desc. " #".$autoTag;
+        $this->_save(
+            $this->gen_obj->generateDeleteCode($params),
+            $this->gen_obj->generateAddCode($params)
+            ,$desc,
+            $autoTag
+        );
+
     }
 
     /**
@@ -505,17 +476,16 @@ class GenCommand extends BaseCommand {
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
 
-        # set
+
         $autoTag = "add";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->gen_obj->generateAddCode($hlId),
-                $this->gen_obj->generateDeleteCode($hlId),
-                $desc . " #".$autoTag,
-                get_current_user()
-            ),$autoTag);
+        $desc = $desc. " #".$autoTag;
+        $this->_save(
+            $this->gen_obj->generateAddCode($hlId),
+            $this->gen_obj->generateDeleteCode($hlId)
+            ,$desc,
+            $autoTag
+        );
+
     }
 
     /**
@@ -549,17 +519,16 @@ class GenCommand extends BaseCommand {
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
 
-        # set
-        $autoTag = "add";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->gen_obj->generateAddCode($hlId),
-                $this->gen_obj->generateDeleteCode($hlId),
-                $desc . " #".$autoTag,
-                get_current_user()
-            ),$autoTag);
+
+        $autoTag = "delete";
+        $desc = $desc. " #".$autoTag;
+        $this->_save(
+            $this->gen_obj->generateDeleteCode($hlId),
+            $this->gen_obj->generateAddCode($hlId)
+            ,$desc,
+            $autoTag
+        );
+
     }
 
     /**
@@ -610,15 +579,13 @@ class GenCommand extends BaseCommand {
 
         # set
         $autoTag = "add";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->gen_obj->generateAddCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId)),
-                $this->gen_obj->generateDeleteCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId)),
-                $desc . " #".$autoTag,
-                get_current_user()
-            ),$autoTag);
+        $desc = $desc. " #".$autoTag;
+        $this->_save(
+            $this->gen_obj->generateAddCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId)),
+            $this->gen_obj->generateDeleteCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId))
+            ,$desc,
+            $autoTag
+        );
     }
 
 
@@ -668,16 +635,13 @@ class GenCommand extends BaseCommand {
         }
 
         # set
-        $autoTag = "multi revision";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                implode(PHP_EOL,$this->getMultiAddReturn()),
-                implode(PHP_EOL,$this->getMultiDeleteReturn()),
-                $desc . " #" . $autoTag,
-                get_current_user()
-            ));
+        $autoTag = "multi";
+        $desc = $desc . " #" . $autoTag;
+        $this->_save(
+            implode(PHP_EOL,$this->getMultiAddReturn()),
+            implode(PHP_EOL,$this->getMultiDeleteReturn())
+            ,$desc
+        );
     }
 
 
@@ -708,16 +672,44 @@ class GenCommand extends BaseCommand {
         $down_data = array();
 
         $name_method = "other";
-        # set
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->setTemplateMethod(strtolower($name_method), 'create', $up_data),
-                $this->setTemplateMethod(strtolower($name_method), 'create', $down_data, "down"),
-                $desc." #custom",
-                get_current_user()
-            ));
+        $desc = $desc." #custom";
+
+        $this->_save(
+            $this->setTemplateMethod(strtolower($name_method), 'create', $up_data),
+            $this->setTemplateMethod(strtolower($name_method), 'create', $down_data, "down")
+            ,$desc
+        );
+    }
+
+    /**
+     * _save
+     * @param $up_content
+     * @param $down_content
+     * @param bool $tag
+     * @param $desc
+     */
+    private function _save($up_content,$down_content,$desc,$tag = false)
+    {
+
+        if (!$this->isMulti()) {
+
+            $name_migration = $this->getMigrationName();
+            $this->saveTemplate($name_migration,
+                $this->setTemplate(
+                    $name_migration,
+                    $up_content,
+                    $down_content,
+                    $desc,
+                    get_current_user()
+                ), $tag);
+
+        } else {
+            $db = debug_backtrace();
+            $this->setMultiHeaders($db['function']);
+            $this->setMultiAddReturn($up_content);
+            $this->setMultiDeleteReturn($down_content);
+
+        }
     }
 
     /**
