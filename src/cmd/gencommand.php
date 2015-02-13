@@ -60,6 +60,9 @@ class GenCommand extends BaseCommand {
 
     # generate object
     private $gen_obj = null;
+    private $isMulti = false;
+    private $multiAddReturn = array();
+    private $multiDeleteReturn = array();
 
     /**
      * execute
@@ -71,7 +74,13 @@ class GenCommand extends BaseCommand {
     public function execute(array $args, array $options = array())
     {
         if (isset($args[0])) {
-            #chemethod
+
+            #if gen multi command generator
+            if (strtolower($args[0]) == "multi"){
+                $this->multiCommands($args,$options);
+            }
+
+            # single command generator
             if (strstr($args[0], ':')) {
                 $ex = explode(":",$args[0]);
                 $this->setGenObj(Bim\Db\Lib\CodeGenerator::buildHandler(ucfirst($ex[0])));
@@ -219,24 +228,33 @@ class GenCommand extends BaseCommand {
             }
         }
 
-        # get description options
-        $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
-        }
+        if (!$this->isMulti()) {
 
-        # set
-        $autoTag = "add";
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                $this->gen_obj->generateAddCode($code),
-                $this->gen_obj->generateDeleteCode($code),
-                $desc." #".$autoTag,
-                get_current_user()
-            ),$autoTag);
+            # get description options
+            $desc = (isset($options['d'])) ? $options['d'] : "";
+            if (empty($desc)) {
+                $desk = "Type Description of migration file. Example: #TASK-124";
+                $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
+            }
+
+            # set
+            $autoTag = "add";
+            $name_migration = $this->getMigrationName();
+            $this->saveTemplate($name_migration,
+                $this->setTemplate(
+                    $name_migration,
+                    $this->gen_obj->generateAddCode($code),
+                    $this->gen_obj->generateDeleteCode($code),
+                    $desc . " #" . $autoTag,
+                    get_current_user()
+                ), $autoTag);
+
+        } else {
+
+            $this->setMultiAddReturn($this->gen_obj->generateAddCode($code));
+            $this->setMultiDeleteReturn($this->gen_obj->generateDeleteCode($code));
+
+        }
     }
 
     /**
@@ -586,6 +604,38 @@ class GenCommand extends BaseCommand {
             ),$autoTag);
     }
 
+
+    /**
+     *
+     *
+     * MultiCommands
+     *
+     *
+     */
+
+    public function multiCommands(array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $do = true;
+        while ($do) {
+            $desk = "Put generation commands:";
+            $command = $dialog->ask($desk . " " . $this->color('php bim gen >', \ConsoleKit\Colors::MAGENTA), '', false);
+            if (!empty($command)) {
+
+                if ($command != "/") {
+                    $this->setMulti(true);
+                    $this->execute(array($command));
+                } else {
+                    $do = false;
+                }
+
+            }
+        }
+
+
+    }
+
+
     /**
      *
      *
@@ -639,6 +689,54 @@ class GenCommand extends BaseCommand {
     public function setGenObj($gen_obj)
     {
         $this->gen_obj = $gen_obj;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMulti()
+    {
+        return $this->isMulti;
+    }
+
+    /**
+     * @param boolean $isMulti
+     */
+    public function setMulti($isMulti)
+    {
+        $this->isMulti = $isMulti;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMultiAddReturn()
+    {
+        return (array) $this->multiAddReturn;
+    }
+
+    /**
+     * @param array $multiAddReturn
+     */
+    public function setMultiAddReturn($multiAddReturn)
+    {
+        $this->multiAddReturn[] = $multiAddReturn;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMultiDeleteReturn()
+    {
+        return (array) $this->multiDeleteReturn;
+    }
+
+    /**
+     * @param array $multiDeleteReturn
+     */
+    public function setMultiDeleteReturn($multiDeleteReturn)
+    {
+        $this->multiDeleteReturn[] = $multiDeleteReturn;
     }
 
 }
