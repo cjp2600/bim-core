@@ -579,8 +579,8 @@ class GenCommand extends BaseCommand {
         $this->saveTemplate($name_migration,
             $this->setTemplate(
                 $name_migration,
-                $this->gen_obj->generateAddCode(array("hlblockid" => $hlId,"hlFieldId"=>$hlFieldId)),
-                $this->gen_obj->generateDeleteCode(array("hlblockid" => $hlId,"hlFieldId"=>$hlFieldId)),
+                $this->gen_obj->generateAddCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId)),
+                $this->gen_obj->generateDeleteCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId)),
                 $desc . " #".$autoTag,
                 get_current_user()
             ),$autoTag);
