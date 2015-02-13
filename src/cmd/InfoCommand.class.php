@@ -39,7 +39,7 @@ class InfoCommand extends BaseCommand {
         } else {
             $info_text = PHP_EOL.'Bitrix migration (BIM)'.PHP_EOL;
             foreach ((array) $dataPack as $key => $val) {
-                $info_text .= Colors::colorize($key, Colors::YELLOW).": ".$val.PHP_EOL;
+                $info_text .= Colors::colorize(ucfirst($key), Colors::YELLOW).": ".$val.PHP_EOL;
             }
             $info_text .= PHP_EOL;
         }
