@@ -637,11 +637,15 @@ class GenCommand extends BaseCommand {
         # set
         $autoTag = "multi";
         $desc = $desc . " #" . $autoTag;
-        $this->_save(
-            implode(PHP_EOL,$this->getMultiAddReturn()),
-            implode(PHP_EOL,$this->getMultiDeleteReturn())
-            ,$desc
-        );
+        $name_migration = $this->getMigrationName();
+        $this->saveTemplate($name_migration,
+            $this->setTemplate(
+                $name_migration,
+                implode(PHP_EOL,$this->getMultiAddReturn()),
+                implode(PHP_EOL,$this->getMultiDeleteReturn()),
+                $desc,
+                get_current_user()
+            ));
     }
 
 
