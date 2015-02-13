@@ -32,6 +32,7 @@ class HighloadblockFieldGen extends \Bim\Db\Lib\CodeGenerator
         $return = "";
         $hlblockData = $this->ownerItemDbData['hlblockData'];
         if ($hlFieldData = $this->ownerItemDbData['hlFieldData']) {
+            unset($hlFieldData['ENTITY_ID']);
             $return = $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Add', array($hlblockData['NAME'], $hlFieldData));
         }
         return $return;
