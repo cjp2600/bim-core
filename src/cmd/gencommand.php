@@ -669,7 +669,7 @@ class GenCommand extends BaseCommand {
 
         } else {
             $db = debug_backtrace();
-            $this->setMultiHeaders($this->color('>',\ConsoleKit\Colors::YELLOW)." ".$db[0]['function']);
+            $this->setMultiHeaders($this->color('>',\ConsoleKit\Colors::YELLOW)." ".$db[1]['function']);
             $this->setMultiAddReturn($up_content);
             $this->setMultiDeleteReturn($down_content);
 
