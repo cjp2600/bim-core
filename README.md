@@ -19,6 +19,7 @@
     * [Iblock](#iblock)
     * [IblockProperty](#iblockproperty)
     * [Highloadblock](#hlblock)
+    * [HighloadblockField](#hlblockfield)
 - [Информация о проекте - bim info](#info)
 
 # <a name="install"></a>1 Установка
@@ -289,6 +290,23 @@ php bim gen Hlblock:add
 php bim gen IHlblock:add --id=82 --d="new description #iws-123"
 ``` 
 
+### <a name="hlblockfield"></a>2.4 HlblockField *( php bim gen HlblockField:[add|delete] )*:
+
+Создается Миграционный код "**HighloadblockField (UserField)**"
+
+Дополнительно запрашивается:
+- [HLBLOCK_ID]
+- [USER_FIELD_ID]
+- [Description]
+
+**Пример:**
+``` bash  
+php bim gen HlblockField:add
+``` 
+Также возможно передать hlblock id, hlblock field id и description опционально:
+``` bash  
+php bim gen IHlblock:add --hlblockid=93 --hlFieldId=582 --d="new description #iws-123"
+```
 
 
 > Обратите внимание!
