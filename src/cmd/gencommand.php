@@ -80,22 +80,25 @@ class GenCommand extends BaseCommand {
             #if gen multi command generator
             if (strtolower($args[0]) == "multi"){
                 $this->multiCommands($args,$options);
+            } else {
+
+                # single command generator
+                if (strstr($args[0], ':')) {
+                    $ex = explode(":", $args[0]);
+                    $this->setGenObj(Bim\Db\Lib\CodeGenerator::buildHandler(ucfirst($ex[0])));
+                    $methodName = ucfirst($ex[0]) . ucfirst($ex[1]);
+                } else {
+                    throw new Exception("Improperly formatted command. Example: php bim gen iblock:add");
+                }
+                $method = "gen" . $methodName;
+                if (method_exists($this, $method)) {
+                    $this->{$method}($args, $options);
+                } else {
+                    throw new Exception("Missing command, see help Example: php bim help gen");
+                }
+
             }
 
-            # single command generator
-            if (strstr($args[0], ':')) {
-                $ex = explode(":",$args[0]);
-                $this->setGenObj(Bim\Db\Lib\CodeGenerator::buildHandler(ucfirst($ex[0])));
-                $methodName = ucfirst($ex[0]).ucfirst($ex[1]);
-            } else {
-                throw new Exception("Improperly formatted command. Example: php bim gen iblock:add");
-            }
-            $method = "gen" . $methodName;
-            if (method_exists($this,$method)) {
-                $this->{$method}($args, $options);
-            } else {
-                throw new Exception("Missing command, see help Example: php bim help gen");
-            }
         } else {
             $this->createOther($args,$options);
         }
@@ -253,7 +256,8 @@ class GenCommand extends BaseCommand {
 
         } else {
 
-            $this->setMultiHeaders("IblockAdd");
+            # multi
+            $this->setMultiHeaders($this->color('>', \ConsoleKit\Colors::YELLOW)." IblockAdd - [".$code."]");
             $this->setMultiAddReturn($this->gen_obj->generateAddCode($code));
             $this->setMultiDeleteReturn($this->gen_obj->generateDeleteCode($code));
 
