@@ -35,7 +35,7 @@ class InfoCommand extends BaseCommand {
         }
 
         if (is_null($dataPack)) {
-            $info_text = PHP_EOL.'Bitrix migration (BIM) v.0.0.1'.PHP_EOL.'http://cjp2600.github.io/bim-core'.PHP_EOL;
+            $info_text = PHP_EOL.'Bitrix migration (BIM) '.PHP_EOL.'http://cjp2600.github.io/bim-core'.PHP_EOL;
         } else {
             $info_text = PHP_EOL;
             foreach ((array) $item as $key => $val) {
