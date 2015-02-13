@@ -615,7 +615,7 @@ class GenCommand extends BaseCommand {
                             get_current_user()
                         ),$it);
 
-
+                        sleep(2); # sleep 2 seconds
                 $i++;}
             }
         }
