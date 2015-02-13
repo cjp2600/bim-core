@@ -38,7 +38,7 @@ abstract class CodeGenerator
                 return new HighloadblockGen();
             break;
 
-            case 'HighloadblockField':
+            case 'HlblockField':
                 return new HighloadblockFieldGen();
             break;
 

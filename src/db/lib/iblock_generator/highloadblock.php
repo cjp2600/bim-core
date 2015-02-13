@@ -58,7 +58,7 @@ class HighloadblockGen extends \Bim\Db\Lib\CodeGenerator
      * @return string
      * @throws \Exception
      */
-    public function generateDeleteCode( $hlblockId )
+    public function generateDeleteCode($hlblockId)
     {
         $hlblock = HL\HighloadBlockTable::getById($hlblockId)->fetch();
         if (!$hlblock) {

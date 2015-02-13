@@ -16,24 +16,27 @@ class HighloadblockFieldGen extends \Bim\Db\Lib\CodeGenerator
         \CModule::IncludeModule("highloadblock");
     }
 
+
     /**
      * generateAddCode
      * @param array $params
      * @return string
      * @throws \Exception
      */
-    public function generateAddCode( $params )
+    public function generateAddCode($params)
     {
-        $this->checkParams( $params );
+        $hlblockId = $params['hlblockId'];
+        $hlFieldId = $params['hlFieldId'];
 
-        $code = '<?php'.PHP_EOL.'/*  Добавляем поля сущностей highload инфоблока */'.PHP_EOL.PHP_EOL;
+        $this->checkParams($params);
+        $return = "";
         $hlblockData = $this->ownerItemDbData['hlblockData'];
-        foreach( $this->ownerItemDbData['hlFieldData'] as $hlFieldData  ){
-
-            $code = $code . $this->buildCode('HighloadblockFieldIntegrate', 'Add', array( $hlblockData['NAME'], $hlFieldData ) ) .PHP_EOL.PHP_EOL;
+        if ($hlFieldData = $this->ownerItemDbData['hlFieldData']) {
+            $return = $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Add', array($hlblockData['NAME'], $hlFieldData));
         }
-        return $code;
+        return $return;
     }
+
 
     /**
      * generateUpdateCode
@@ -46,22 +49,24 @@ class HighloadblockFieldGen extends \Bim\Db\Lib\CodeGenerator
         // UPDATE
     }
 
+
     /**
      * generateDeleteCode
      * @param array $params
      * @return string
      * @throws \Exception
      */
-    public function generateDeleteCode( $params )
+    public function generateDeleteCode($params)
     {
-        $this->checkParams( $params );
-        $code = '<?php'.PHP_EOL.'/*  Удаляем  поля сущностей highload инфоблока   */'.PHP_EOL.PHP_EOL;
+        $this->checkParams($params);
+        $return = "";
         $hlblockData = $this->ownerItemDbData['hlblockData'];
-        foreach( $this->ownerItemDbData['hlFieldData'] as $hlFieldData  ){
-            $code = $code . $this->buildCode('HighloadblockFieldIntegrate', 'Delete', array( $hlblockData['NAME'], $hlFieldData['FIELD_NAME'] ) ) .PHP_EOL.PHP_EOL;
+        if ($hlFieldData = $this->ownerItemDbData['hlFieldData']) {
+            $return = $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Delete', array($hlblockData['NAME'], $hlFieldData['FIELD_NAME']));
         }
-        return $code;
+        return $return;
     }
+
 
     /**
      * checkParams
@@ -82,17 +87,15 @@ class HighloadblockFieldGen extends \Bim\Db\Lib\CodeGenerator
             throw new \Exception('В системе не найден highload инфоблок с id = ' . $params['hlblockId']);
         }
         $this->ownerItemDbData['hlblockData'] = $hlblock;
-        foreach ($params['hlFieldId'] as $hlFieldId) {
-            $userFieldData = \CUserTypeEntity::GetByID($hlFieldId);
+        if ($params['hlFieldId']) {
+            $userFieldData = \CUserTypeEntity::GetByID($params['hlFieldId']);
             if ($userFieldData === false || empty($userFieldData)) {
-                throw new \Exception('Не найдено пользовательское поле с id = ' . $hlFieldId);
+                throw new \Exception('Не найдено пользовательское поле с id = ' . $params['hlFieldId']);
             }
-            $this->ownerItemDbData['hlFieldData'][] = $userFieldData;
+            $this->ownerItemDbData['hlFieldData'] = $userFieldData;
         }
     }
 
 
-
 }
-
 ?>

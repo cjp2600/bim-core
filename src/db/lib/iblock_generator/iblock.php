@@ -14,6 +14,7 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
         \CModule::IncludeModule('iblock');
     }
 
+
     /**
      * generateAddCode
      * @param array $IblockCode
@@ -50,6 +51,8 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
             return false;
         }
     }
+
+
     /**
      * метод для генерации кода обновления инфоблока
      * @param $params array
@@ -68,6 +71,7 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
         }
         return $code;
     }
+
 
     /**
      * метод для генерации кода удаления  инфоблока
@@ -90,4 +94,5 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
     {
         // TODO: Implement checkParams() method.
     }
+
 }

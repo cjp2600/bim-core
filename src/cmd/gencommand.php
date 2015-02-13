@@ -484,6 +484,65 @@ class GenCommand extends BaseCommand {
     }
 
     /**
+     * genHlblockFieldAdd
+     * @param array $args
+     * @param array $options
+     */
+    public function genHlblockFieldAdd (array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $hlId = (isset($options['hlblockid'])) ? $options['hlblockid'] : false;
+
+        if (!$hlId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id Highloadblock - no default/required";
+                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById( $hlId )->fetch();
+                if ( $hlblock ) {
+                    $do = false;
+                } else {
+                    $this->error('Highloadblock with id = "' . $hlId . '" not exist.');
+                }
+            }
+        }
+
+        $hlFieldId =  (isset($options['hlFieldId'])) ? $options['hlFieldId'] : false;
+        if (!$hlFieldId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id HighloadblockField (UserField) - no default/required";
+                $hlFieldId = $dialog->ask($desk . PHP_EOL . $this->color('[USER_FIELD_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $userFieldData = \CUserTypeEntity::GetByID($hlFieldId);
+                if ($userFieldData === false || empty($userFieldData)) {
+                    $this->error('UserField with id = "' . $hlFieldId . '" not exist.');
+                } else {
+                    $do = false;
+                }
+            }
+        }
+
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+        if (empty($desc)) {
+            $desk = "Type Description of migration file. Example: #TASK-124";
+            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
+        }
+
+        # set
+        $autoTag = "add";
+        $name_migration = $this->getMigrationName();
+        $this->saveTemplate($name_migration,
+            $this->setTemplate(
+                $name_migration,
+                $this->gen_obj->generateAddCode(array("hlblockid" => $hlId,"hlFieldId"=>$hlFieldId)),
+                $this->gen_obj->generateDeleteCode(array("hlblockid" => $hlId,"hlFieldId"=>$hlFieldId)),
+                $desc . " #".$autoTag,
+                get_current_user()
+            ),$autoTag);
+    }
+
+    /**
      *
      *
      * Other

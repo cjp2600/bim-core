@@ -14,11 +14,9 @@ class IblockPropertyGen extends \Bim\Db\Lib\CodeGenerator
     }
 
     /**
-     * метод для генерации кода добавления нового свойства инфоблока
+     * generateAddCode
      * @param array $params
-     * @return mixed
-     * @internal param array $ch
-     * @internal param array $params
+     * @return bool|string
      */
     public function generateAddCode( $params )
     {
