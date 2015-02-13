@@ -120,6 +120,8 @@ abstract class BaseCommand extends Command {
      * @param $needUp
      * @param $save_file
      * @param $migration
+     * @throws Exception
+     * @throws \Bim\Db\Entity\Exception
      */
     public function autoUpMethod($needUp,$save_file,$migration)
     {
@@ -134,13 +136,12 @@ abstract class BaseCommand extends Command {
                 try {
                     # call up function
                     if (false !== $migrationClass::up()) {
-                        $obSelect = Bim\Db\Entity\MigrationsTable::getList(array("filter" => array("id" => $migration)));
-                        if (!$obSelect->fetch()) {
-                            $ob = Bim\Db\Entity\MigrationsTable::add(array(
-                                "id" => $migration
-                            ));
-                            if ($ob->isSuccess()) {
+
+                        if (!Bim\Db\Entity\MigrationsTable::isExistsInTable($migration)) {
+                            if (Bim\Db\Entity\MigrationsTable::add($migration)) {
                                 $this->writeln($this->color("     - applied   : " . $migration, Colors::GREEN));
+                            } else {
+                                throw new Exception("add in migration table error");
                             }
                         }
                     } else {
@@ -151,15 +152,15 @@ abstract class BaseCommand extends Command {
                 }
             }
         } else {
-            $obSelect = Bim\Db\Entity\MigrationsTable::getList(array("filter" => array("id" => $migration)));
-            if (!$obSelect->fetch()) {
-                $ob = Bim\Db\Entity\MigrationsTable::add(array(
-                    "id" => $migration
-                ));
-                if ($ob->isSuccess()) {
+
+            if (!Bim\Db\Entity\MigrationsTable::isExistsInTable($migration)) {
+                if (Bim\Db\Entity\MigrationsTable::add($migration)) {
                     $this->writeln($this->color("     - applied   : " . $migration, Colors::GREEN));
+                } else {
+                    throw new Exception("add in migration table error");
                 }
             }
+
         }
         $time_end = microtime(true);
         $time = $time_end - $time_start;
@@ -332,17 +333,8 @@ abstract class BaseCommand extends Command {
     public function checkInDb($migration_id)
     {
         # check migration table
-        $this->checkMigrationTable();
-        $obMigration = Bim\Db\Entity\MigrationsTable::getList(array(
-            "filter" => array(
-                "id" => $migration_id
-            )
-        ));
-        if ($arMigration = $obMigration->fetch()){
-            # This Bitrix - Babe
-            if ($arMigration['id'] == $migration_id){
-                return true;
-            }
+        if (Bim\Db\Entity\MigrationsTable::isExistsInTable($migration_id)) {
+            return true;
         }
         return false;
     }

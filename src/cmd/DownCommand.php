@@ -112,12 +112,15 @@ class DownCommand extends BaseCommand
                 if ((method_exists($mig[0], "down"))) {
                     try {
                         if (false !== $mig[0]::down()) {
-                            $obSelect = Bim\Db\Entity\MigrationsTable::getList(array("filter" => array("id" => $id)));
-                            if ($obSelect->fetch()) {
-                                $ob = Bim\Db\Entity\MigrationsTable::delete($id);
-                                if ($ob->isSuccess()) {
+
+                            if (Bim\Db\Entity\MigrationsTable::isExistsInTable($id)) {
+
+                                if (Bim\Db\Entity\MigrationsTable::delete($id)) {
                                     $this->writeln($this->color("     - revert   : " . $mig[2], Colors::GREEN));
+                                } else {
+                                    throw new Exception("Error delete in migration table");
                                 }
+
                             }
                         } else {
                             $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Down return false)", Colors::YELLOW));

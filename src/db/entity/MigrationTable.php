@@ -6,50 +6,74 @@ use Bitrix\Main\Localization\Loc;
 
 /**
  * Class MigrationsTable
- *
- * Fields:
- * <ul>
- * <li> id string(255) mandatory
- * <li> migration string(255) mandatory
- * <li> content string mandatory
- * </ul>
- *
- * @package Bitrix\Migrations
- **/
-
-class MigrationsTable extends Entity\DataManager
+ * @package Bim\Db\Entity
+ */
+class MigrationsTable
 {
-    public static function getFilePath()
-    {
-        return __FILE__;
-    }
-
+    /**
+     * getTableName
+     * @return string
+     */
     public static function getTableName()
     {
         return 'bim_migrations';
     }
 
-    public static function getMap()
+    /**
+     * isExistsInTable
+     * @param $id
+     * @return bool
+     * @throws Exception
+     */
+    public static function isExistsInTable($id)
     {
-        return array(
-            'id' => array(
-                'primary' => true,
-                'data_type' => 'string',
-                'required' => true,
-                'validation' => array(__CLASS__, 'validateId'),
-            )
-        );
+        global $DB;
+        if ($result = $DB->Query("SELECT 'id' FROM " . self::getTableName() . " WHERE id = '" . $id . "'", true)) {
+            if ($result->AffectedRowsCount()) {
+                return true;
+            }
+        } else {
+            throw new Exception($DB->GetErrorMessage());
+        }
+        return false;
     }
-    public static function validateId()
+
+    /**
+     * add
+     * @param $id
+     * @return bool
+     * @throws Exception
+     */
+    public static function add($id)
     {
-        return array(
-            new Entity\Validator\Length(null, 255),
-        );
+        global $DB;
+        if (!self::isExistsInTable($id)) {
+            $DB->Add(self::getTableName(),array(
+                "id" => $id
+            ));
+            if (self::isExistsInTable($id)){
+                return true;
+            }
+        }
+        return false;
     }
-    public static function validateMigration()
+
+    /**
+     * delete
+     * @param $id
+     * @return bool
+     * @throws Exception
+     */
+    public static function delete($id)
     {
-        return array(
-            new Entity\Validator\Length(null, 255),
-        );
+        global $DB;
+        if ($result = $DB->Query("DELETE FROM " . self::getTableName() . " WHERE id = '" . $id . "'", true)) {
+            return true;
+        } else {
+            throw new Exception($DB->GetErrorMessage());
+        }
+        return false;
     }
+
+
 }
