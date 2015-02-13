@@ -484,6 +484,50 @@ class GenCommand extends BaseCommand {
     }
 
     /**
+     * genHlblockDelete
+     * @param array $args
+     * @param array $options
+     */
+    public function genHlblockDelete (array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $hlId = (isset($options['id'])) ? $options['id'] : false;
+
+        if (!$hlId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id Highloadblock - no default/required";
+                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById( $hlId )->fetch();
+                if ( $hlblock ) {
+                    $do = false;
+                } else {
+                    $this->error('Highloadblock with id = "' . $hlId . '" not exist.');
+                }
+            }
+        }
+
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+        if (empty($desc)) {
+            $desk = "Type Description of migration file. Example: #TASK-124";
+            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
+        }
+
+        # set
+        $autoTag = "add";
+        $name_migration = $this->getMigrationName();
+        $this->saveTemplate($name_migration,
+            $this->setTemplate(
+                $name_migration,
+                $this->gen_obj->generateAddCode($hlId),
+                $this->gen_obj->generateDeleteCode($hlId),
+                $desc . " #".$autoTag,
+                get_current_user()
+            ),$autoTag);
+    }
+
+    /**
      * genHlblockFieldAdd
      * @param array $args
      * @param array $options
