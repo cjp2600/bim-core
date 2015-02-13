@@ -625,7 +625,7 @@ class GenCommand extends BaseCommand {
     /**
      *
      *
-     * MultiCommands
+     * MultiCommands !
      *
      *
      */
@@ -650,6 +650,8 @@ class GenCommand extends BaseCommand {
                 } else {
                     $do = false;
                 }
+            } else {
+                $do = false;
             }
         }
 
@@ -666,7 +668,7 @@ class GenCommand extends BaseCommand {
         }
 
         # set
-        $autoTag = "multi";
+        $autoTag = "multi revision";
         $name_migration = $this->getMigrationName();
         $this->saveTemplate($name_migration,
             $this->setTemplate(
@@ -675,7 +677,7 @@ class GenCommand extends BaseCommand {
                 implode(PHP_EOL,$this->getMultiDeleteReturn()),
                 $desc . " #" . $autoTag,
                 get_current_user()
-            ), "add");
+            ));
     }
 
 
