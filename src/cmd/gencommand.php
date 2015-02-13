@@ -138,10 +138,6 @@ class GenCommand extends BaseCommand {
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
-        }
 
         $autoTag = "add";
         $desc = $desc. " #".$autoTag;
@@ -180,11 +176,6 @@ class GenCommand extends BaseCommand {
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
-        }
-
 
         $autoTag = "delete";
         $desc = $desc. " #".$autoTag;
@@ -231,14 +222,8 @@ class GenCommand extends BaseCommand {
             }
         }
 
-
-
-            # get description options
-            $desc = (isset($options['d'])) ? $options['d'] : "";
-            if (empty($desc)) {
-                $desk = "Type Description of migration file. Example: #TASK-124";
-                $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
-            }
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
 
         $autoTag = "add";
         $desc = $desc. " #".$autoTag;
@@ -278,10 +263,6 @@ class GenCommand extends BaseCommand {
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
-        }
 
         $autoTag = "delete";
         $desc = $desc. " #".$autoTag;
@@ -353,10 +334,6 @@ class GenCommand extends BaseCommand {
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
-        }
 
         $autoTag = "add";
         $desc = $desc. " #".$autoTag;
@@ -421,10 +398,6 @@ class GenCommand extends BaseCommand {
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
-        }
 
         $autoTag = "delete";
         $desc = $desc. " #".$autoTag;
@@ -471,11 +444,6 @@ class GenCommand extends BaseCommand {
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
-        }
-
 
         $autoTag = "add";
         $desc = $desc. " #".$autoTag;
@@ -514,11 +482,6 @@ class GenCommand extends BaseCommand {
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
-        }
-
 
         $autoTag = "delete";
         $desc = $desc. " #".$autoTag;
@@ -572,10 +535,6 @@ class GenCommand extends BaseCommand {
 
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
-        }
 
         # set
         $autoTag = "add";
@@ -666,11 +625,6 @@ class GenCommand extends BaseCommand {
     {
         # get description options
         $desc = (isset($options['d'])) ? $options['d'] : "";
-        if (empty($desc)) {
-            $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
-            $desk = "Type Description of migration file. Example: #TASK-124";
-            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
-        }
 
         $up_data = array();
         $down_data = array();
@@ -694,6 +648,12 @@ class GenCommand extends BaseCommand {
      */
     private function _save($up_content,$down_content,$desc,$tag = false)
     {
+
+        if (empty($desc)) {
+            $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+            $desk = "Type Description of migration file. Example: #TASK-124";
+            $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
+        }
 
         if (!$this->isMulti()) {
 
