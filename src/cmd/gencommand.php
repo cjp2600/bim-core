@@ -58,11 +58,13 @@
  */
 class GenCommand extends BaseCommand {
 
-    # generate object
+    const END_LOOP_SYMPOL = "/";
+
     private $gen_obj = null;
     private $isMulti = false;
     private $multiAddReturn = array();
     private $multiDeleteReturn = array();
+    private $multiHeaders = array();
 
     /**
      * execute
@@ -251,6 +253,7 @@ class GenCommand extends BaseCommand {
 
         } else {
 
+            $this->setMultiHeaders("IblockAdd");
             $this->setMultiAddReturn($this->gen_obj->generateAddCode($code));
             $this->setMultiDeleteReturn($this->gen_obj->generateDeleteCode($code));
 
@@ -618,18 +621,27 @@ class GenCommand extends BaseCommand {
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
         $do = true;
         while ($do) {
+
+            $headers = $this->getMultiHeaders();
+            if (!empty($headers)){
+                $this->padding(implode(PHP_EOL,$headers));
+            }
+
             $desk = "Put generation commands:";
             $command = $dialog->ask($desk . " " . $this->color('php bim gen >', \ConsoleKit\Colors::MAGENTA), '', false);
             if (!empty($command)) {
-
-                if ($command != "/") {
+                if ($command != self::END_LOOP_SYMPOL) {
                     $this->setMulti(true);
                     $this->execute(array($command));
                 } else {
                     $do = false;
                 }
-
             }
+        }
+
+        $addItems = $this->getMultiAddReturn();
+        if (empty($addItems)){
+            return true;
         }
 
         # get description options
@@ -649,7 +661,7 @@ class GenCommand extends BaseCommand {
                 implode(PHP_EOL,$this->getMultiDeleteReturn()),
                 $desc . " #" . $autoTag,
                 get_current_user()
-            ), $autoTag);
+            ), "add");
     }
 
 
@@ -754,6 +766,23 @@ class GenCommand extends BaseCommand {
     public function setMultiDeleteReturn($multiDeleteReturn)
     {
         $this->multiDeleteReturn[] = $multiDeleteReturn;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMultiHeaders()
+    {
+        return $this->multiHeaders;
+    }
+
+    /**
+     * @param $multiHeaders
+     * @internal param array $multiHeders
+     */
+    public function setMultiHeaders($multiHeaders)
+    {
+        $this->multiHeaders[] = $multiHeaders;
     }
 
 }
