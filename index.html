@@ -19,7 +19,6 @@
         <p>Bitrix, bim, migration, db, битрикс</p>
 
         <p class="view"><a href="https://github.com/cjp2600/bim-core">View the Project on GitHub <small>cjp2600/bim-core</small></a></p>
-          <p><a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/v/stable.svg" alt="Latest Stable Version"></a> <a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/downloads.svg" alt="Total Downloads"></a> <a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/v/unstable.svg" alt="Latest Unstable Version"></a> <a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/license.svg" alt="License"></a></p>
 
 
         <ul>
@@ -29,7 +28,11 @@
         </ul>
       </header>
       <section>
+        <h1>
+<a id="bitrix-migration-bim" class="anchor" href="#bitrix-migration-bim" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="about"></a>Bitrix Migration (BIM)</h1>
 
+<p><a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/v/stable.svg" alt="Latest Stable Version"></a> <a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/downloads.svg" alt="Total Downloads"></a> <a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/v/unstable.svg" alt="Latest Unstable Version"></a> <a href="https://packagist.org/packages/cjp2600/bim-core"><img src="https://poser.pugx.org/cjp2600/bim-core/license.svg" alt="License"></a></p>
 
 <p>Версионная миграция структуры БД для <strong><a href="http://bitrix.ru">1С Битрикс CMS</a></strong></p>
 
@@ -59,6 +62,7 @@
 <li><a href="#iblock">Iblock</a></li>
 <li><a href="#iblockproperty">IblockProperty</a></li>
 <li><a href="#hlblock">Highloadblock</a></li>
+<li><a href="#hlblockfield">HighloadblockField</a></li>
 </ul>
 </li>
 </ul>
@@ -412,6 +416,28 @@
 <p>Также возможно передать hlblock id и description опционально:</p>
 
 <div class="highlight highlight-bash"><pre>php bim gen IHlblock:add --id=82 --d=<span class="pl-s1"><span class="pl-pds">"</span>new description #iws-123<span class="pl-pds">"</span></span></pre></div>
+
+<h3>
+<a id="24-hlblockfield--php-bim-gen-hlblockfieldadddelete-" class="anchor" href="#24-hlblockfield--php-bim-gen-hlblockfieldadddelete-" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<a name="hlblockfield"></a>2.4 HlblockField <em>( php bim gen HlblockField:[add|delete] )</em>:</h3>
+
+<p>Создается Миграционный код "<strong>HighloadblockField (UserField)</strong>"</p>
+
+<p>Дополнительно запрашивается:</p>
+
+<ul>
+<li>[HLBLOCK_ID]</li>
+<li>[USER_FIELD_ID]</li>
+<li>[Description]</li>
+</ul>
+
+<p><strong>Пример:</strong></p>
+
+<div class="highlight highlight-bash"><pre>php bim gen HlblockField:add</pre></div>
+
+<p>Также возможно передать hlblock id, hlblock field id и description опционально:</p>
+
+<div class="highlight highlight-bash"><pre>php bim gen IHlblock:add --hlblockid=93 --hlFieldId=582 --d=<span class="pl-s1"><span class="pl-pds">"</span>new description #iws-123<span class="pl-pds">"</span></span></pre></div>
 
 <blockquote>
 <p>Обратите внимание!</p>
