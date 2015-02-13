@@ -593,18 +593,32 @@ class GenCommand extends BaseCommand {
             $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
         }
 
-        # set
-        $autoTag = "multi";
-        $desc = $desc . " #" . $autoTag;
-        $name_migration = $this->getMigrationName();
-        $this->saveTemplate($name_migration,
-            $this->setTemplate(
-                $name_migration,
-                implode(PHP_EOL,$this->getMultiAddReturn()),
-                implode(PHP_EOL,$this->getMultiDeleteReturn()),
-                $desc,
-                get_current_user()
-            ));
+        $up = $this->getMultiAddReturn();
+        $down = $this->getMultiDeleteReturn();
+
+        if (count($up) == count($down)) {
+
+            foreach (array("add","delete") as $it) {
+
+                $i=0;
+                foreach ($up[$it] as $row) {
+                    # set
+                    $autoTag = $it;
+                    $desc = $desc . " #" . $autoTag;
+                    $name_migration = $this->getMigrationName();
+                    $this->saveTemplate($name_migration,
+                        $this->setTemplate(
+                            $name_migration,
+                            $row,
+                            $down[$it][$i],
+                            $desc,
+                            get_current_user()
+                        ),$it);
+
+
+                $i++;}
+            }
+        }
     }
 
 
@@ -668,10 +682,11 @@ class GenCommand extends BaseCommand {
                 ), $tag);
 
         } else {
+
             $db = debug_backtrace();
             $this->setMultiHeaders($this->color('>',\ConsoleKit\Colors::YELLOW)." ".$db[1]['function']);
-            $this->setMultiAddReturn($up_content);
-            $this->setMultiDeleteReturn($down_content);
+            $this->setMultiAddReturn($up_content,$tag);
+            $this->setMultiDeleteReturn($down_content,$tag);
 
         }
     }
@@ -719,9 +734,9 @@ class GenCommand extends BaseCommand {
     /**
      * @param array $multiAddReturn
      */
-    public function setMultiAddReturn($multiAddReturn)
+    public function setMultiAddReturn($multiAddReturn,$type = "add")
     {
-        $this->multiAddReturn[] = $multiAddReturn;
+        $this->multiAddReturn[$type][] = $multiAddReturn;
     }
 
     /**
@@ -735,9 +750,9 @@ class GenCommand extends BaseCommand {
     /**
      * @param array $multiDeleteReturn
      */
-    public function setMultiDeleteReturn($multiDeleteReturn)
+    public function setMultiDeleteReturn($multiDeleteReturn,$type = "add")
     {
-        $this->multiDeleteReturn[] = $multiDeleteReturn;
+        $this->multiDeleteReturn[$type][] = $multiDeleteReturn;
     }
 
     /**
