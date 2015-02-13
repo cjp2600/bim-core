@@ -23,16 +23,34 @@ class InfoCommand extends BaseCommand {
         $info_text = $MESS["EPILOG_ADMIN_SM_".$vendor]." (".SM_VERSION.")";
         $return[] = Colors::colorize('Version:', Colors::YELLOW)." ".$info_text;
 
+        $url = "https://packagist.org/search.json?q=bim";
+        $json = file_get_contents($url);
+        $data = json_decode($json);
+
+        $dataPack = null;
+        foreach ($data->results as $item) {
+            if ($item->name == "cjp2600/bim-core"){
+                $dataPack = $item;
+            }
+        }
+
+        if (is_null($dataPack)) {
+            $info_text = PHP_EOL.'Bitrix migration (BIM) v.0.0.1'.PHP_EOL.'http://cjp2600.github.io/bim-core'.PHP_EOL;
+        } else {
+            $info_text = PHP_EOL;
+            foreach ((array) $item as $key => $val) {
+                $info_text .= Colors::colorize($key, Colors::YELLOW).": ".$val.PHP_EOL;
+            }
+            $info_text .= PHP_EOL;
+        }
+
         # edition
         $return[] = Colors::colorize('Edition:', Colors::YELLOW)." ".$this->checkRedaction();
 
         $this->info("About bim:");
 
         # for fun :)
-        $this->padding('
-         Bitrix migration (BIM) v.0.0.1
-         http://cjp2600.github.io/bim-core
-        ');
+        $this->padding($info_text);
 
         $this->info("About bitrix project:");
 
