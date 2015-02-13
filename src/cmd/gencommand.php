@@ -632,7 +632,24 @@ class GenCommand extends BaseCommand {
             }
         }
 
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+        if (empty($desc)) {
+            $desk = "Type Description of migration file. Example: #TASK-124";
+            $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
+        }
 
+        # set
+        $autoTag = "multi";
+        $name_migration = $this->getMigrationName();
+        $this->saveTemplate($name_migration,
+            $this->setTemplate(
+                $name_migration,
+                implode(PHP_EOL,$this->getMultiAddReturn()),
+                implode(PHP_EOL,$this->getMultiDeleteReturn()),
+                $desc . " #" . $autoTag,
+                get_current_user()
+            ), $autoTag);
     }
 
 
