@@ -58,7 +58,7 @@
  */
 class GenCommand extends BaseCommand {
 
-    const END_LOOP_SYMPOL = "/";
+    const END_LOOP_SYMPOL = "";
 
     private $gen_obj = null;
     private $isMulti = false;
@@ -213,6 +213,7 @@ class GenCommand extends BaseCommand {
      * createIblock
      * @param array $args
      * @param array $options
+     * @throws Exception
      */
     public function genIblockAdd(array $args, array $options = array())
     {
@@ -256,10 +257,19 @@ class GenCommand extends BaseCommand {
 
         } else {
 
-            # multi
-            $this->setMultiHeaders($this->color('>', \ConsoleKit\Colors::YELLOW)." IblockAdd - [".$code."]");
-            $this->setMultiAddReturn($this->gen_obj->generateAddCode($code));
-            $this->setMultiDeleteReturn($this->gen_obj->generateDeleteCode($code));
+            $title = $this->color('>', \ConsoleKit\Colors::YELLOW)." IblockAdd - [".$code."]";
+            if (!in_array($title,$this->getMultiHeaders())) {
+
+                # multi
+                $this->setMultiHeaders($title);
+                $this->setMultiAddReturn($this->gen_obj->generateAddCode($code));
+                $this->setMultiDeleteReturn($this->gen_obj->generateDeleteCode($code));
+
+            } else {
+
+                throw new Exception("[".$code."] all ready exists");
+
+            }
 
         }
     }
