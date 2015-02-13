@@ -4,20 +4,20 @@ namespace Bim\Db\Lib;
 
 /**
  * Class IblockGen
- * класс для генерации кода изменений в инфоблоке:
+ * @package Bim\Db\Lib
  */
 class IblockGen extends \Bim\Db\Lib\CodeGenerator
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         \CModule::IncludeModule('iblock');
     }
 
     /**
-     * метод для генерации кода добавления нового  инфоблока
+     * generateAddCode
      * @param array $IblockCode
-     * @return mixed
-     * @internal param array $params
+     * @return bool|string
      */
     public function generateAddCode($IblockCode)
     {
@@ -36,8 +36,9 @@ class IblockGen extends \Bim\Db\Lib\CodeGenerator
                     unset($arIblockProperty['IBLOCK_ID']);
                     $arIblockProperty['IBLOCK_CODE'] = $item['CODE'];
                     $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(), array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
-                    while ($arPropertyValues = $dbPropertyValues->Fetch())
+                    while ($arPropertyValues = $dbPropertyValues->Fetch()) {
                         unset($arPropertyValues['PROPERTY_ID']);
+                    }
                     $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
                     $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
                 }
