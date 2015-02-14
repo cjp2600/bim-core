@@ -83,7 +83,7 @@ class IblockPropertyIntegrate {
         if ($iId) {
             return $iId;
         } else {
-            throw new \Exception(__CLASS__ . '::' . __METHOD__ . ' ' . $objCIBlockProperty->LAST_ERROR);
+            throw new \Exception(__METHOD__ . ' ' . $objCIBlockProperty->LAST_ERROR);
         }
         return false;
     }
@@ -93,20 +93,21 @@ class IblockPropertyIntegrate {
      * @param $sIBlockCode
      * @param $sPropertyCode
      * @return array
+     * @throws \Exception
      */
     public function Delete($sIBlockCode, $sPropertyCode)
     {
-        global $RESPONSE;
-        $rsProperty = CIBlockProperty::GetList(array(), array('IBLOCK_CODE' => $sIBlockCode, 'CODE' => $sPropertyCode));
+        $rsProperty = \CIBlockProperty::GetList(array(), array('IBLOCK_CODE' => $sIBlockCode, 'CODE' => $sPropertyCode));
         if ($arProperty = $rsProperty->Fetch()) {
-            if (CIBlockProperty::Delete($arProperty['ID'])) {
-                return $RESPONSE[] = array('type' => 'success');
+            if (\CIBlockProperty::Delete($arProperty['ID'])) {
+                return true;
             } else {
-                return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Iblock property delete error!');
+                throw new \Exception(__METHOD__ . "Iblock property delete error!");
             }
         } else {
-            return $RESPONSE[] = array('type' => 'error', 'error_text' => 'Not find property with code ' . $sPropertyCode);
+            throw new \Exception(__METHOD__ . 'Not find property with code ' . $sPropertyCode);
         }
+        return false;
     }
 
 }
