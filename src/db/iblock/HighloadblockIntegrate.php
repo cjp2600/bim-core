@@ -65,6 +65,13 @@ class HighloadblockIntegrate
         if ($obList->getSelectedRowsCount() > 0) {
             throw new \Exception('Unable to remove a highloadBlock[' . $entityName . '], because it has elements');
         }
+
+        # delete all Fields
+        $obHl = \CUserTypeEntity::GetList(array(), array("ENTITY_ID" => "HLBLOCK_" . $hlBlockRow['ID']));
+        while ($arHl = $obHl->Fetch()) {
+            \CUserTypeEntity::Delete($arHl['ID']);
+        }
+
         $delResult = HL\HighloadBlockTable::delete($hlBlockRow['ID']);
         if (!$delResult->isSuccess()) {
             throw new \Exception($delResult->getErrorMessages());
