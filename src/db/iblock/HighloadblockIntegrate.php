@@ -33,7 +33,7 @@ class HighloadblockIntegrate
         );
         $addResult = HL\HighloadBlockTable::add($addFields);
         if (!$addResult->isSuccess()) {
-            throw new \Exception(print_r($addResult->getErrorMessages(),true));
+            throw new \Exception(implode(", ",$addResult->getErrorMessages()));
         }
         return true;
     }
@@ -77,7 +77,7 @@ class HighloadblockIntegrate
 
         $delResult = HL\HighloadBlockTable::delete($hlBlockRow['ID']);
         if (!$delResult->isSuccess()) {
-            throw new \Exception(print_r($delResult->getErrorMessages(),true));
+            throw new \Exception( implode(", ",$delResult->getErrorMessages()) );
         }
         return true;
     }
