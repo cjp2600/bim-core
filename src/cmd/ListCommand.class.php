@@ -22,6 +22,8 @@ use ConsoleKit\Colors;
  * 5) Display list of migrations with tag:
  *              Example: php bim ls --tag=iws-123
  *
+ *
+ * Documentation: http://cjp2600.github.io/bim-core/
  * .
  */
 class ListCommand extends BaseCommand

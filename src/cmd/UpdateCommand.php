@@ -18,6 +18,8 @@ use ConsoleKit\Colors;
  * 4) Applied list of new migrations with tag (sort by timestamp name):
  *              Example: php bim up --tag=iws-123
  *
+ *
+ * Documentation: http://cjp2600.github.io/bim-core/
  * .
  */
 class UpdateCommand extends BaseCommand

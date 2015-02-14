@@ -6,6 +6,8 @@ use Bitrix\Highloadblock as HL;
 
 /**
  * Class HighloadblockIntegrate
+ *
+ * Documentation: http://cjp2600.github.io/bim-core/
  * @package Bim\Db\Iblock
  */
 class HighloadblockIntegrate

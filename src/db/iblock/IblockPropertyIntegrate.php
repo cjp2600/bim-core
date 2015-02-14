@@ -3,6 +3,8 @@ namespace Bim\Db\Iblock;
 
 /**
  * Class IblockPropertyIntegrate
+ *
+ * Documentation: http://cjp2600.github.io/bim-core/
  * @package Bim\Db\Iblock
  */
 class IblockPropertyIntegrate {

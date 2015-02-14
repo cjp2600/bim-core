@@ -1,18 +1,11 @@
 <?php
-/**
- * Created for the project "bim-core"
- *
- * @author: Stanislav Semenov (CJP2600)
- * @email: cjp2600@ya.ru
- *
- * @date: 22.01.2015
- * @time: 7:48
- */
-
 namespace Bim;
 
 use ConsoleKit\Console;
-
+/**
+ * Bitrix Migration (BIM)
+ * Documentation: http://cjp2600.github.io/bim-core/
+ */
 class Migration {
 
     public static function init()

@@ -2,7 +2,11 @@
 
 use ConsoleKit\Colors;
 /**
- * Getting information about the project.
+ * .
+ * TGetting information about the project.
+ *
+ * Documentation: http://cjp2600.github.io/bim-core/
+ *
  */
 class InfoCommand extends BaseCommand {
 

@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * .
+ * init BIM migrations.
+ *
+ * Documentation: http://cjp2600.github.io/bim-core/
+ *
+ */
 class InitCommand extends BaseCommand
 {
     public function execute(array $args, array $options = array())

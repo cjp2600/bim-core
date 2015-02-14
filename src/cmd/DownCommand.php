@@ -18,7 +18,9 @@ use ConsoleKit\Colors;
  * 4) Revert list of applied migrations with tag (sort by timestamp name):
  *              Example: php bim down --tag=iws-123
  *
- * .
+ * Documentation: http://cjp2600.github.io/bim-core/
+ *
+ * ==========================================================================================
  */
 class DownCommand extends BaseCommand
 {

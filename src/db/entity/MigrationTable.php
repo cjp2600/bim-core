@@ -6,6 +6,8 @@ use Bitrix\Main\Localization\Loc;
 
 /**
  * Class MigrationsTable
+ *
+ * Documentation: http://cjp2600.github.io/bim-core/
  * @package Bim\Db\Entity
  */
 class MigrationsTable
