@@ -102,20 +102,16 @@ class UpdateCommand extends BaseCommand
                     try {
                         # call up function
                         if (false !== $mig[0]::up()) {
-
                             if (!Bim\Db\Entity\MigrationsTable::isExistsInTable($id)) {
-
                                 if (Bim\Db\Entity\MigrationsTable::add($id)) {
                                     $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
                                 } else {
                                     throw new Exception("add in migration table error");
                                 }
-
                             }
                         } else {
                             $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
                         }
-
                     } catch (Exception $e) {
                         $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(" . $e->getMessage() . ")", Colors::YELLOW));
                     }
