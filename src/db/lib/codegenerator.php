@@ -1,19 +1,17 @@
 <?php
 
 namespace Bim\Db\Lib;
+
 /**
  * Class CodeGenerator
- * абстрактный класс для генерацияя кода изменений в модулях:
- * iblock, main, sale, subscribe, form, advertising, catalog, currency
- *
+ * @package Bim\Db\Lib
  */
 abstract class CodeGenerator
 {
-    /* данные объекта из базы, для к-го делается генерация */
     protected $ownerItemDbData = null;
 
     /**
-     * "фабричный метод" используется для инстанцирования обработчика генерации  кода
+     * buildHandler
      * @param $type
      * @return CurrencyRatesGen|PostingGen|RubricGen
      * @throws \Exception
