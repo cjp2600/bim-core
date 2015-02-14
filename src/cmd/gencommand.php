@@ -92,7 +92,6 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
 
         $autoTag = "add";
-        $desc = $desc. " #".$autoTag;
         $this->_save(
             $this->gen_obj->generateAddCode($iblocktypeId),
             $this->gen_obj->generateDeleteCode($iblocktypeId)
@@ -130,7 +129,6 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
 
         $autoTag = "delete";
-        $desc = $desc. " #".$autoTag;
         $this->_save(
             $this->gen_obj->generateDeleteCode($iblocktypeId),
             $this->gen_obj->generateAddCode($iblocktypeId)
@@ -178,7 +176,6 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
 
         $autoTag = "add";
-        $desc = $desc. " #".$autoTag;
         $this->_save(
             $this->gen_obj->generateAddCode($code),
             $this->gen_obj->generateDeleteCode($code)
@@ -217,7 +214,6 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
 
         $autoTag = "delete";
-        $desc = $desc. " #".$autoTag;
         $this->_save(
             $this->gen_obj->generateDeleteCode($code),
             $this->gen_obj->generateAddCode($code)
@@ -288,7 +284,6 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
 
         $autoTag = "add";
-        $desc = $desc. " #".$autoTag;
         $this->_save(
             $this->gen_obj->generateAddCode($params),
             $this->gen_obj->generateDeleteCode($params)
@@ -352,7 +347,6 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
 
         $autoTag = "delete";
-        $desc = $desc. " #".$autoTag;
         $this->_save(
             $this->gen_obj->generateDeleteCode($params),
             $this->gen_obj->generateAddCode($params)
@@ -398,7 +392,6 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
 
         $autoTag = "add";
-        $desc = $desc. " #".$autoTag;
         $this->_save(
             $this->gen_obj->generateAddCode($hlId),
             $this->gen_obj->generateDeleteCode($hlId)
@@ -436,7 +429,6 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
 
         $autoTag = "delete";
-        $desc = $desc. " #".$autoTag;
         $this->_save(
             $this->gen_obj->generateDeleteCode($hlId),
             $this->gen_obj->generateAddCode($hlId)
@@ -490,7 +482,6 @@ class GenCommand extends BaseCommand {
 
         # set
         $autoTag = "add";
-        $desc = $desc. " #".$autoTag;
         $this->_save(
             $this->gen_obj->generateAddCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId)),
             $this->gen_obj->generateDeleteCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId))
@@ -619,6 +610,9 @@ class GenCommand extends BaseCommand {
             $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
             $desk = "Type Description of migration file. Example: #TASK-124";
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
+        }
+        if ($tag) {
+            $desc = $desc . " #" . $tag;
         }
 
         if (!$this->isMulti()) {
