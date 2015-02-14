@@ -69,7 +69,10 @@ class HighloadblockIntegrate
         # delete all Fields
         $obHl = \CUserTypeEntity::GetList(array(), array("ENTITY_ID" => "HLBLOCK_" . $hlBlockRow['ID']));
         while ($arHl = $obHl->Fetch()) {
-            \CUserTypeEntity::Delete($arHl['ID']);
+
+            $obUF = new \CUserTypeEntity();
+            $obUF->Delete($arHl['ID']);
+
         }
 
         $delResult = HL\HighloadBlockTable::delete($hlBlockRow['ID']);
