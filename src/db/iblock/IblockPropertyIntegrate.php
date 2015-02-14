@@ -1,6 +1,6 @@
 <?php
 namespace Bim\Db\Iblock;
-
+\CModule::IncludeModule("iblock");
 /**
  * Class IblockPropertyIntegrate
  *
