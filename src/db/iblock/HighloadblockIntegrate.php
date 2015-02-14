@@ -33,7 +33,7 @@ class HighloadblockIntegrate
         );
         $addResult = HL\HighloadBlockTable::add($addFields);
         if (!$addResult->isSuccess()) {
-            throw new \Exception($addResult->getErrorMessages());
+            throw new \Exception(print_r($addResult->getErrorMessages(),true));
         }
         return true;
     }
