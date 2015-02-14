@@ -104,7 +104,7 @@ class MigrationsTable
         global $DB;
         $errors = false;
         if ( !$DB->Query("SELECT 'id' FROM " . self::getTableName(), true) ) {
-            $errors = $DB->RunSQLBatch(__DIR__.'/../db/install/install.sql');
+            $errors = $DB->RunSQLBatch(__DIR__.'/../install/install.sql');
         } else {
             return false;
         }
