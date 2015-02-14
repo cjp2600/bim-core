@@ -330,19 +330,5 @@ abstract class BaseCommand extends Command {
         return false;
     }
 
-    /**
-     * checkMigrationTable
-     * @throws Exception
-     */
-    public function checkMigrationTable()
-    {
-        global $DB;
-        if ( !$DB->Query("SELECT 'id' FROM bim_migrations", true) ) {
-            throw new Exception("Migration table not found, run init command. Example: php bim init");
-        }
-    }
-
-
-
 
 }
