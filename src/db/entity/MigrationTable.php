@@ -18,7 +18,8 @@ class MigrationsTable
      */
     public static function getTableName()
     {
-        return 'bim_migrations';
+        $conf = new \Noodlehaus\Config(__DIR__."/../../config/bim.json");
+        return $conf->get("migration_table");
     }
 
     /**

@@ -1,3 +1,4 @@
 {
-  "migration_path": "migrations"
+  "migration_path": "migrations",
+  "migration_table": "bim_migrations"
 }
