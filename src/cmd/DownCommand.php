@@ -27,6 +27,7 @@ class DownCommand extends BaseCommand
     public function execute(array $args, array $options = array())
     {
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
+        krsort($list); #по убыванию
         if (!empty($list)) {
             foreach ($list as $id => $data) {
                 $row  = $data['file'];

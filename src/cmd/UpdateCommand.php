@@ -27,6 +27,7 @@ class UpdateCommand extends BaseCommand
     public function execute(array $args, array $options = array())
     {
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
+        ksort($list); # по возрастанию
         if (!empty($list)) {
             foreach ($list as $id => $data) {
                 $row  = $data['file'];
