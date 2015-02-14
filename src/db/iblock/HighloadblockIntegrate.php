@@ -77,7 +77,7 @@ class HighloadblockIntegrate
 
         $delResult = HL\HighloadBlockTable::delete($hlBlockRow['ID']);
         if (!$delResult->isSuccess()) {
-            throw new \Exception($delResult->getErrorMessages());
+            throw new \Exception(print_r($delResult->getErrorMessages(),true));
         }
         return true;
     }
