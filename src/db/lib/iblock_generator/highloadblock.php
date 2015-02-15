@@ -37,13 +37,15 @@ class HighloadblockGen extends \Bim\Db\Lib\CodeGenerator
             unset($arFullData['ENTITY_ID']);
 
             if ($arFullData['USER_TYPE_ID'] == "iblock_element" && (isset($arFullData['SETTINGS']['IBLOCK_ID']))) {
-                $iblockId = $arFullData['SETTINGS']['IBLOCK_ID'];
-                unset($arFullData['SETTINGS']['IBLOCK_ID']);
-                $rsIBlock = \CIBlock::GetList(array(), array('ID' => $iblockId));
-                if ($arIBlock = $rsIBlock->Fetch()) {
-                    $arFullData['SETTINGS']['IBLOCK_CODE'] = $arIBlock['CODE'];
-                } else {
-                    throw new \Exception(' Not found iblock with id ' . $iblockId);
+                if (!empty($arFullData['SETTINGS']['IBLOCK_ID'])) {
+                    $iblockId = $arFullData['SETTINGS']['IBLOCK_ID'];
+                    unset($arFullData['SETTINGS']['IBLOCK_ID']);
+                    $rsIBlock = \CIBlock::GetList(array(), array('ID' => $iblockId));
+                    if ($arIBlock = $rsIBlock->Fetch()) {
+                        $arFullData['SETTINGS']['IBLOCK_CODE'] = $arIBlock['CODE'];
+                    } else {
+                        throw new \Exception(' Not found iblock with id ' . $iblockId);
+                    }
                 }
             }
 
