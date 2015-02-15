@@ -590,10 +590,8 @@ class GenCommand extends BaseCommand {
 
                 } else {
                     $this->setMultiCurrentCommand(null);
-                    $do = false;
                 }
             }
-
         }
 
         $addItems = $this->getMultiAddReturn();
