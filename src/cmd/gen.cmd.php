@@ -616,19 +616,16 @@ class GenCommand extends BaseCommand {
                 $i=0;
                 foreach ($up[$it] as $row) {
                     # set
-                    $autoTag = $it;
-                    $desc = $desc . " #" . $autoTag;
-                    $name_migration = $this->getMigrationName();
+                    $in_desc = $desc . " #" . $it;
+                    $name_migration = $this->getMigrationName() + rand(5,60);
                     $this->saveTemplate($name_migration,
                         $this->setTemplate(
                             $name_migration,
                             $row,
                             $down[$it][$i],
-                            $desc,
+                            $in_desc,
                             get_current_user()
                         ),$it);
-
-                        sleep(2); # sleep 2 seconds
                 $i++;}
             }
         }
