@@ -657,7 +657,6 @@ class GenCommand extends BaseCommand {
         $down_data = array();
 
         $name_method = "other";
-        $desc = $desc." #custom";
 
         $this->_save(
             $this->setTemplateMethod(strtolower($name_method), 'create', $up_data),
@@ -681,11 +680,12 @@ class GenCommand extends BaseCommand {
             $desk = "Type Description of migration file. Example: #TASK-124";
             $desc = $dialog->ask($desk.PHP_EOL.$this->color('Description:',\ConsoleKit\Colors::BLUE), "",false);
         }
-        if ($tag) {
-            $desc = $desc . " #" . $tag;
-        }
 
         if (!$this->isMulti()) {
+
+            if ($tag) {
+                $desc = $desc . " #" . $tag;
+            }
 
             $name_migration = $this->getMigrationName();
             $this->saveTemplate($name_migration,

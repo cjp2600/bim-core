@@ -81,7 +81,7 @@ class HighloadblockFieldIntegrate {
         $entity = HL\HighloadBlockTable::compileEntity($hlBlockRow);
         $entityDataClass = $entity->getDataClass();
 
-        $obList = $entityDataClass::getList();
+        $obList = $entityDataClass::getList(array("select"=>array("ID")));
         if ($obList->getSelectedRowsCount() > 0) {
             throw new \Exception('Unable to remove a highloadBlock[ ' . $entityName . ' ], because it has elements');
         }
