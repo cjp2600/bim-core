@@ -34,6 +34,19 @@ class HighloadblockFieldGen extends \Bim\Db\Lib\CodeGenerator
         if ($hlFieldData = $this->ownerItemDbData['hlFieldData']) {
             unset($hlFieldData['ID']);
             unset($hlFieldData['ENTITY_ID']);
+
+            # add iblock code to
+            if ($hlFieldData['USER_TYPE_ID'] == "iblock_element" && (isset($hlFieldData['SETTINGS']['IBLOCK_ID']))) {
+                $iblockId = $hlFieldData['SETTINGS']['IBLOCK_ID'];
+                unset($hlFieldData['SETTINGS']['IBLOCK_ID']);
+                $rsIBlock = \CIBlock::GetList(array(), array('ID' => $iblockId));
+                if ($arIBlock = $rsIBlock->Fetch()) {
+                    $hlFieldData['SETTINGS']['IBLOCK_CODE'] = $arIBlock['CODE'];
+                } else {
+                    throw new \Exception(' Not found iblock with id ' . $iblockId);
+                }
+            }
+
             $return = $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Add', array($hlblockData['NAME'], $hlFieldData));
         }
         return $return;

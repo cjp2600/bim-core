@@ -44,6 +44,18 @@ class HighloadblockFieldIntegrate {
         if ($typeEntityDbRes !== false && $typeEntityDbRes->SelectedRowsCount()) {
             throw new \Exception('Hlblock field with name = "' . $fields["FIELD_NAME"] . '" already exist.');
         }
+
+        #if
+        if ($fields['USER_TYPE_ID'] == "iblock_element" && (isset($fields['SETTINGS']['IBLOCK_CODE']))) {
+            unset($fields['SETTINGS']['IBLOCK_CODE']);
+            $rsIBlock = \CIBlock::GetList(array(), array('CODE' => $fields['SETTINGS']['IBLOCK_CODE']));
+            if ($arIBlock = $rsIBlock->Fetch()) {
+                $fields['SETTINGS']['IBLOCK_ID'] = $arIBlock['ID'];
+            } else {
+                throw new \Exception(__METHOD__ . ' Not found iblock with code ' . $fields['SETTINGS']['IBLOCK_CODE']);
+            }
+        }
+
         $UserType = new \CUserTypeEntity;
         $ID = $UserType->Add($fields);
         if (!(int)$ID) {
