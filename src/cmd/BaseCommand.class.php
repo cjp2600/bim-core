@@ -101,14 +101,21 @@ abstract class BaseCommand extends Command {
         fwrite($newFile, $template);
         fclose($newFile);
 
-        #if need up
-        if ($needUp){
-            $this->autoUpMethod($needUp,$save_file,$filename);
+        if (file_exists($save_file)) {
+
+            #if need up
+            if ($needUp){
+                $this->autoUpMethod($needUp,$save_file,$filename);
+            }
+
+            # output
+            $this->writeln("Create new migration file: ");
+            $this->success($save_file);
+
+        } else {
+            throw new Exception("Failed to create the migration file ".$save_file);
         }
 
-        # output
-        $this->writeln("Create new migration file: ");
-        $this->success($save_file);
     }
 
     /**
