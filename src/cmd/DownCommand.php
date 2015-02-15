@@ -129,7 +129,14 @@ class DownCommand extends BaseCommand
                             $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Down return false)", Colors::YELLOW));
                         }
                     } catch (Exception $e) {
-                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(" . $e->getMessage() . ")", Colors::YELLOW));
+
+                        if ((isset($options['debug']))) {
+                            $debug = "[" . $e->getFile() . ">" . $e->getLine() . "] ";
+                        } else {
+                            $debug = "";
+                        }
+
+                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( ".$debug."" . $e->getMessage() . ")", Colors::YELLOW));
                     }
                 }
             }
