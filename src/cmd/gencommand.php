@@ -533,7 +533,7 @@ class GenCommand extends BaseCommand {
         $desc = (isset($options['d'])) ? $options['d'] : "";
 
         # set
-        $autoTag = "add";
+        $autoTag = "delete";
         $this->_save(
             $this->gen_obj->generateDeleteCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId)),
             $this->gen_obj->generateAddCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId))
