@@ -84,6 +84,7 @@ abstract class BaseCommand extends Command {
      * @param $filename
      * @param $template
      * @param bool $needUp
+     * @throws Exception
      */
     public function saveTemplate($filename,$template,$needUp = false)
     {
@@ -91,6 +92,10 @@ abstract class BaseCommand extends Command {
         if (!file_exists($migration_path)){
             mkdir($migration_path, 0777);
         }
+        if (!is_writable($migration_path)){
+            throw new Exception("No permission to create a migration file in the folder ".$migration_path);
+        }
+
         $save_file = $migration_path.$filename.'.php';
         $newFile = fopen($save_file, 'w');
         fwrite($newFile, $template);
