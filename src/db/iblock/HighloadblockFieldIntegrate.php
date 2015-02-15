@@ -46,7 +46,7 @@ class HighloadblockFieldIntegrate {
         }
 
         #if
-        if ($fields['USER_TYPE_ID'] == "iblock_element" && (isset($fields['SETTINGS']['IBLOCK_CODE']))) {
+        if ( ($fields['USER_TYPE_ID'] == "iblock_element" || $fields['USER_TYPE_ID'] == "iblock_section") && (isset($fields['SETTINGS']['IBLOCK_CODE']))) {
             unset($fields['SETTINGS']['IBLOCK_CODE']);
             $rsIBlock = \CIBlock::GetList(array(), array('CODE' => $fields['SETTINGS']['IBLOCK_CODE']));
             if ($arIBlock = $rsIBlock->Fetch()) {

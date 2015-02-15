@@ -36,7 +36,7 @@ class HighloadblockFieldGen extends \Bim\Db\Lib\CodeGenerator
             unset($hlFieldData['ENTITY_ID']);
 
             # add iblock code to
-            if ($hlFieldData['USER_TYPE_ID'] == "iblock_element" && (isset($hlFieldData['SETTINGS']['IBLOCK_ID']))) {
+            if (($hlFieldData['USER_TYPE_ID'] == "iblock_element" || $hlFieldData['USER_TYPE_ID'] == "iblock_section") && (isset($hlFieldData['SETTINGS']['IBLOCK_ID']))) {
                 if (!empty($hlFieldData['SETTINGS']['IBLOCK_ID'])) {
                     $iblockId = $hlFieldData['SETTINGS']['IBLOCK_ID'];
                     unset($hlFieldData['SETTINGS']['IBLOCK_ID']);

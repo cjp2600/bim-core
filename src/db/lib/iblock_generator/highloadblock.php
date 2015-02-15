@@ -36,7 +36,7 @@ class HighloadblockGen extends \Bim\Db\Lib\CodeGenerator
             unset($arFullData['ID']);
             unset($arFullData['ENTITY_ID']);
 
-            if ($arFullData['USER_TYPE_ID'] == "iblock_element" && (isset($arFullData['SETTINGS']['IBLOCK_ID']))) {
+            if ( ($arFullData['USER_TYPE_ID'] == "iblock_element" || $arFullData['USER_TYPE_ID'] == "iblock_section" ) && (isset($arFullData['SETTINGS']['IBLOCK_ID']))) {
                 if (!empty($arFullData['SETTINGS']['IBLOCK_ID'])) {
                     $iblockId = $arFullData['SETTINGS']['IBLOCK_ID'];
                     unset($arFullData['SETTINGS']['IBLOCK_ID']);
