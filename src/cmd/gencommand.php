@@ -1,12 +1,10 @@
 <?php
 
 /**
- * ======================================================
  * --  > BIM GEN | Command to create the migration classes.
  *
  *  Documentation: http://cjp2600.github.io/bim-core/
  *
- * ======================================================
  */
 class GenCommand extends BaseCommand {
 
@@ -17,6 +15,7 @@ class GenCommand extends BaseCommand {
     private $multiAddReturn = array();
     private $multiDeleteReturn = array();
     private $multiHeaders = array();
+    private $multiCurrentCommand = null;
 
     /**
      * execute
@@ -492,7 +491,7 @@ class GenCommand extends BaseCommand {
 
 
     /**
-     * genHlblockFieldAdd
+     * genHlblockFieldDelete
      * @param array $args
      * @param array $options
      */
@@ -563,18 +562,38 @@ class GenCommand extends BaseCommand {
                 $this->padding(implode(PHP_EOL,$headers));
             }
 
-            $desk = "Put generation commands:";
-            $command = $dialog->ask($desk . " " . $this->color('php bim gen >', \ConsoleKit\Colors::MAGENTA), '', false);
-            if (!empty($command)) {
-                if ($command != self::END_LOOP_SYMPOL) {
-                    $this->setMulti(true);
-                    $this->execute(array($command));
+            $current_command = $this->getMultiCurrentCommand();
+
+            if (is_null($current_command)) {
+
+                $desk = "Put generation commands:";
+                $command = $dialog->ask($desk . " " . $this->color('php bim gen >', \ConsoleKit\Colors::MAGENTA), '', false);
+                if (!empty($command)) {
+                    if ($command != self::END_LOOP_SYMPOL) {
+                        $this->setMulti(true);
+                        $this->setMultiCurrentCommand($command);
+                        $this->execute(array($command));
+                    } else {
+                        $do = false;
+                    }
                 } else {
                     $do = false;
                 }
+
             } else {
-                $do = false;
+                $ask = $dialog->ask("You want to repeat command (".$this->color($current_command, \ConsoleKit\Colors::MAGENTA).")", 'Y', true);
+                if (strtolower($ask) == "y") {
+
+                    $this->setMulti(true);
+                    $this->setMultiCurrentCommand($current_command);
+                    $this->execute(array($current_command));
+
+                } else {
+                    $this->setMultiCurrentCommand(null);
+                    $do = false;
+                }
             }
+
         }
 
         $addItems = $this->getMultiAddReturn();
@@ -769,6 +788,22 @@ class GenCommand extends BaseCommand {
     public function setMultiHeaders($multiHeaders)
     {
         $this->multiHeaders[] = $multiHeaders;
+    }
+
+    /**
+     * @return null
+     */
+    public function getMultiCurrentCommand()
+    {
+        return $this->multiCurrentCommand;
+    }
+
+    /**
+     * @param null $multiCurrentCommand
+     */
+    public function setMultiCurrentCommand($multiCurrentCommand)
+    {
+        $this->multiCurrentCommand = $multiCurrentCommand;
     }
 
 }
