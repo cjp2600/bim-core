@@ -492,6 +492,59 @@ class GenCommand extends BaseCommand {
 
 
     /**
+     * genHlblockFieldAdd
+     * @param array $args
+     * @param array $options
+     */
+    public function genHlblockFieldDelete (array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $hlId = (isset($options['hlblockid'])) ? $options['hlblockid'] : false;
+
+        if (!$hlId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id Highloadblock - no default/required";
+                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById( $hlId )->fetch();
+                if ( $hlblock ) {
+                    $do = false;
+                } else {
+                    $this->error('Highloadblock with id = "' . $hlId . '" not exist.');
+                }
+            }
+        }
+
+        $hlFieldId =  (isset($options['hlFieldId'])) ? $options['hlFieldId'] : false;
+        if (!$hlFieldId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id HighloadblockField (UserField) - no default/required";
+                $hlFieldId = $dialog->ask($desk . PHP_EOL . $this->color('[USER_FIELD_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $userFieldData = \CUserTypeEntity::GetByID($hlFieldId);
+                if ($userFieldData === false || empty($userFieldData)) {
+                    $this->error('UserField with id = "' . $hlFieldId . '" not exist.');
+                } else {
+                    $do = false;
+                }
+            }
+        }
+
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+
+        # set
+        $autoTag = "add";
+        $this->_save(
+            $this->gen_obj->generateDeleteCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId)),
+            $this->gen_obj->generateAddCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId))
+            ,$desc,
+            $autoTag
+        );
+    }
+
+
+    /**
      *
      *
      * MultiCommands !
