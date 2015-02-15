@@ -617,7 +617,7 @@ class GenCommand extends BaseCommand {
                 foreach ($up[$it] as $row) {
                     # set
                     $in_desc = $desc . " #" . $it;
-                    $name_migration = $this->getMigrationName() + rand(5,60);
+                    $name_migration = $this->getMigrationName() + ($i * 60);
                     $this->saveTemplate($name_migration,
                         $this->setTemplate(
                             $name_migration,
