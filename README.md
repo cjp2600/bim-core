@@ -20,6 +20,7 @@
     * [IblockProperty](#iblockproperty)
     * [Highloadblock](#hlblock)
     * [HighloadblockField](#hlblockfield)
+  * [Тегирование миграций](#tag)
 - [Информация о проекте - bim info](#info)
 
 # <a name="install"></a>1 Установка
@@ -315,6 +316,21 @@ php bim gen IHlblock:add --hlblockid=93 --hlFieldId=582 --d="new description #iw
 
 > ####Режим multi####
 > Так же доступен режим массовой генерации по наличию: **php bim gen multi**
+
+
+## <a name="tag"></a> Тегирование миграций:
+
+При создании нового миграционного класса существует возможность выставления тега в комментарии к миграции для дальнейшей более удобной отмены либо выполнения группы миграций связанных одним тегом.
+
+**Формат**: #[название]
+
+**Пример:**
+Как вариант применения, вставлять тег номера задачи из трекера.
+
+``` bash
+[Description]: #IWS-242 Add new Iblock[services]
+```
+
 
 # <a name="info"></a>7 Информация о проекет [BIM INFO]
 
