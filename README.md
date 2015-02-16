@@ -20,6 +20,7 @@
     * [IblockProperty](#iblockproperty)
     * [Highloadblock](#hlblock)
     * [HighloadblockField](#hlblockfield)
+  * [Режим multi - bim gen multi](#multi)
   * [Тегирование миграций](#tag)
 - [Информация о проекте - bim info](#info)
 
@@ -314,9 +315,17 @@ php bim gen IHlblock:add --hlblockid=93 --hlFieldId=582 --d="new description #iw
 
 > что миграционные классы созданные по наличию, выполняются автоматически.
 
-> ####Режим multi####
-> Так же доступен режим массовой генерации по наличию: **php bim gen multi**
 
+## <a name="multi"></a> Режим multi [BIM GEN MULTI]:
+
+Так же доступен режим массовой генерации по наличию. Данный способ удобен при созданиие миграций по наличию для множества одинаковых элементов.
+Например для нескольких UserFields.
+
+**Пример:**
+
+``` bash
+php bim gen multi
+```
 
 ## <a name="tag"></a> Тегирование миграций:
 
