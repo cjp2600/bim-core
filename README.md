@@ -313,6 +313,9 @@ php bim gen IHlblock:add --hlblockid=93 --hlFieldId=582 --d="new description #iw
 
 > что миграционные классы созданные по наличию, выполняются автоматически.
 
+> ####Режим multi####
+> Так же доступен режим массовой генерации по наличию: **php bim gen multi**
+
 # <a name="info"></a>7 Информация о проекет [BIM INFO]
 
 Информация о текущем bitrix проекте:
