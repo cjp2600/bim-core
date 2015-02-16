@@ -134,10 +134,6 @@ php bim up --tag=iws-123
 ```
 Выполняет все миграции где найден указанный тег в описании.
 
-Например:
-
-> Description: add new migration #iws-123
-
 
 # 4 <a name="down"></a>Отмена выполненых миграций  [BIM DOWN]
 
