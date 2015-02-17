@@ -15,11 +15,14 @@
 - [Создание - bim gen](#gen)
   * [Создание пустой миграции](#gen_empty)
   * [Создание миграционного кода по наличию](#gen_nal)
+    * **Информационные блоки**
     * [IblockType](#iblocktype)
     * [Iblock](#iblock)
     * [IblockProperty](#iblockproperty)
     * [Highloadblock](#hlblock)
     * [HighloadblockField](#hlblockfield)
+    * **Главный модуль**
+    
   * [Режим multi - bim gen multi](#multi)
   * [Тегирование миграций](#tag)
 - [Информация о проекте - bim info](#info)
