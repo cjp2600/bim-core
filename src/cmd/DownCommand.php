@@ -26,6 +26,8 @@ class DownCommand extends BaseCommand
 {
     public function execute(array $args, array $options = array())
     {
+        global $DB;
+
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
         krsort($list); #по убыванию
         if (!empty($list)) {
@@ -114,13 +116,22 @@ class DownCommand extends BaseCommand
                 include_once "" . $mig[1] . "";
                 if ((method_exists($mig[0], "down"))) {
                     try {
+
+                        $DB->StartTransaction();
+
                         if (false !== $mig[0]::down()) {
 
                             if (Bim\Db\Entity\MigrationsTable::isExistsInTable($id)) {
 
                                 if (Bim\Db\Entity\MigrationsTable::delete($id)) {
+
+                                    $DB->Commit();
+
                                     $this->writeln($this->color("     - revert   : " . $mig[2], Colors::GREEN));
                                 } else {
+
+                                    $DB->Rollback();
+
                                     throw new Exception("Error delete in migration table");
                                 }
 
@@ -135,6 +146,8 @@ class DownCommand extends BaseCommand
                         } else {
                             $debug = "";
                         }
+
+                        $DB->Rollback();
 
                         $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( ".$debug."" . $e->getMessage() . ")", Colors::YELLOW));
                     }

@@ -26,6 +26,7 @@ class UpdateCommand extends BaseCommand
 {
     public function execute(array $args, array $options = array())
     {
+        global $DB;
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
         ksort($list); # по возрастанию
         if (!empty($list)) {
@@ -103,12 +104,21 @@ class UpdateCommand extends BaseCommand
                 # check bim migration.
                 if ((method_exists($mig[0], "up"))) {
                     try {
+
+                        $DB->StartTransaction();
+
                         # call up function
                         if (false !== $mig[0]::up()) {
                             if (!Bim\Db\Entity\MigrationsTable::isExistsInTable($id)) {
                                 if (Bim\Db\Entity\MigrationsTable::add($id)) {
+
+                                    $DB->Commit();
+
                                     $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
                                 } else {
+
+                                    $DB->Rollback();
+
                                     throw new Exception("add in migration table error");
                                 }
                             }
@@ -122,6 +132,8 @@ class UpdateCommand extends BaseCommand
                         } else {
                             $debug = "";
                         }
+
+                        $DB->Rollback();
 
                         $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( ".$debug."". $e->getMessage() . ")", Colors::YELLOW));
                     }
