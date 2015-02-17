@@ -113,12 +113,11 @@ class UpdateCommand extends BaseCommand
                                 if (Bim\Db\Entity\MigrationsTable::add($id)) {
 
                                     $DB->Commit();
-
                                     $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
+
                                 } else {
 
                                     $DB->Rollback();
-
                                     throw new Exception("add in migration table error");
                                 }
                             }
