@@ -118,7 +118,6 @@ class DownCommand extends BaseCommand
                     try {
 
                         $DB->StartTransaction();
-
                         if (false !== $mig[0]::down()) {
 
                             if (Bim\Db\Entity\MigrationsTable::isExistsInTable($id)) {
@@ -126,12 +125,10 @@ class DownCommand extends BaseCommand
                                 if (Bim\Db\Entity\MigrationsTable::delete($id)) {
 
                                     $DB->Commit();
-
                                     $this->writeln($this->color("     - revert   : " . $mig[2], Colors::GREEN));
                                 } else {
 
                                     $DB->Rollback();
-
                                     throw new Exception("Error delete in migration table");
                                 }
 
@@ -148,7 +145,6 @@ class DownCommand extends BaseCommand
                         }
 
                         $DB->Rollback();
-
                         $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( ".$debug."" . $e->getMessage() . ")", Colors::YELLOW));
                     }
                 }
