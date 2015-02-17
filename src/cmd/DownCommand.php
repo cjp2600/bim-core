@@ -123,11 +123,9 @@ class DownCommand extends BaseCommand
                             if (Bim\Db\Entity\MigrationsTable::isExistsInTable($id)) {
 
                                 if (Bim\Db\Entity\MigrationsTable::delete($id)) {
-
                                     $DB->Commit();
                                     $this->writeln($this->color("     - revert   : " . $mig[2], Colors::GREEN));
                                 } else {
-
                                     $DB->Rollback();
                                     throw new Exception("Error delete in migration table");
                                 }
