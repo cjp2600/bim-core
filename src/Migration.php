@@ -1,6 +1,7 @@
 <?php
 namespace Bim;
 
+use Bim\Db\Entity\MigrationsTable;
 use ConsoleKit\Console;
 /**
  * Bitrix Migration (BIM)
@@ -12,6 +13,11 @@ class Migration {
     {
         $conf = new \Noodlehaus\Config(__DIR__."/config/commands.json");
         $console = new Console($conf->get("commands"));
+
+        # check migration table.
+        MigrationsTable::checkMigrationTable();
+
+        # run commands
         $console->run();
     }
 }
