@@ -9,6 +9,10 @@ use ConsoleKit\Console;
  */
 class Migration {
 
+    /**
+     * init bim applications
+     * @throws \Exception
+     */
     public static function init()
     {
         $conf = new \Noodlehaus\Config(__DIR__."/config/commands.json");
@@ -20,4 +24,5 @@ class Migration {
         # run commands
         $console->run();
     }
+
 }
