@@ -116,12 +116,9 @@ class DownCommand extends BaseCommand
                 include_once "" . $mig[1] . "";
                 if ((method_exists($mig[0], "down"))) {
                     try {
-
                         $DB->StartTransaction();
                         if (false !== $mig[0]::down()) {
-
                             if (Bim\Db\Entity\MigrationsTable::isExistsInTable($id)) {
-
                                 if (Bim\Db\Entity\MigrationsTable::delete($id)) {
                                     $DB->Commit();
                                     $this->writeln($this->color("     - revert   : " . $mig[2], Colors::GREEN));
@@ -129,19 +126,16 @@ class DownCommand extends BaseCommand
                                     $DB->Rollback();
                                     throw new Exception("Error delete in migration table");
                                 }
-
                             }
                         } else {
                             $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Down return false)", Colors::YELLOW));
                         }
                     } catch (Exception $e) {
-
                         if ((isset($options['debug']))) {
                             $debug = "[" . $e->getFile() . ">" . $e->getLine() . "] ";
                         } else {
                             $debug = "";
                         }
-
                         $DB->Rollback();
                         $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( ".$debug."" . $e->getMessage() . ")", Colors::YELLOW));
                     }
