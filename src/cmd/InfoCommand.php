@@ -50,12 +50,10 @@ class InfoCommand extends BaseCommand {
 
         # edition
         $return[] = Colors::colorize('Edition:', Colors::YELLOW)." ".$this->checkRedaction();
-
         $this->info("About bitrix project:");
 
         # display
         $this->padding(implode(PHP_EOL,$return));
-
         $this->info("About bim:");
 
         # for fun :)

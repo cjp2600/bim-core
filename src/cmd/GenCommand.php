@@ -6,7 +6,8 @@
  *  Documentation: http://cjp2600.github.io/bim-core/
  *
  */
-class GenCommand extends BaseCommand {
+class GenCommand extends BaseCommand
+{
 
     const END_LOOP_SYMPOL = "";
 
@@ -537,6 +538,90 @@ class GenCommand extends BaseCommand {
         $this->_save(
             $this->gen_obj->generateDeleteCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId)),
             $this->gen_obj->generateAddCode(array("hlblockId" => $hlId,"hlFieldId"=>$hlFieldId))
+            ,$desc,
+            $autoTag
+        );
+    }
+
+
+    /**
+     *
+     *
+     * Group !
+     *
+     *
+     */
+    /**
+     * genGroupAdd
+     * @param array $args
+     * @param array $options
+     */
+    public function genGroupAdd (array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $groupId = (isset($options['id'])) ? $options['id'] : false;
+
+        if (!$groupId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id Group - no default/required";
+
+                $groupId = $dialog->ask($desk . PHP_EOL . $this->color('[GROUP_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+
+                $groupDbRes = \CGroup::GetList($by = 'id', $order = 'desc', array('ID' => $groupId));
+                if ($groupDbRes === false || !$groupDbRes->SelectedRowsCount()) {
+                    $this->error('Group with id = "' . $groupId . '" not exist.');
+                } else {
+                    $do = false;
+                }
+
+            }
+        }
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+
+        $autoTag = "add";
+        $this->_save(
+            $this->gen_obj->generateAddCode($groupId),
+            $this->gen_obj->generateDeleteCode($groupId)
+            ,$desc,
+            $autoTag
+        );
+    }
+
+    /**
+     * genGroupDelete
+     * @param array $args
+     * @param array $options
+     */
+    public function genGroupDelete (array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $groupId = (isset($options['id'])) ? $options['id'] : false;
+
+        if (!$groupId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id Group - no default/required";
+
+                $groupId = $dialog->ask($desk . PHP_EOL . $this->color('[GROUP_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+
+                $groupDbRes = \CGroup::GetList($by = 'id', $order = 'desc', array('ID' => $groupId));
+                if ($groupDbRes === false || !$groupDbRes->SelectedRowsCount()) {
+                    $this->error('Group with id = "' . $groupId . '" not exist.');
+                } else {
+                    $do = false;
+                }
+
+            }
+        }
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+
+        $autoTag = "delete";
+        $this->_save(
+            $this->gen_obj->generateDeleteCode($groupId),
+            $this->gen_obj->generateAddCode($groupId)
             ,$desc,
             $autoTag
         );

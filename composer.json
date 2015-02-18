@@ -37,6 +37,7 @@
 		    "src/db/lib/subscribe_generator",
 		    "src/db/entity",
 			"src/db/iblock",
+			"src/db/main",
 		    "src/cmd"
 		]
 	},

@@ -1,6 +1,7 @@
 <?php
 
 use ConsoleKit\Colors;
+
 /**
  * .
  * That command applied a new list of migration.
@@ -31,17 +32,17 @@ class UpdateCommand extends BaseCommand
         ksort($list); # по возрастанию
         if (!empty($list)) {
             foreach ($list as $id => $data) {
-                $row  = $data['file'];
+                $row = $data['file'];
                 $name = $data['name'];
 
                 # check in db
                 $is_new = (!$this->checkInDb($id));
-                $class_name = "Migration".$id;
+                $class_name = "Migration" . $id;
 
                 if ($is_new) {
-                    $return_array_new[$id] = array($class_name,"" . $this->getMigrationPath() . $row . "",$name, $data['tags']);
+                    $return_array_new[$id] = array($class_name, "" . $this->getMigrationPath() . $row . "", $name, $data['tags']);
                 } else {
-                    $return_array_apply[$id] =  array($class_name,"" . $this->getMigrationPath() . $row . "",$name, $data['tags']);
+                    $return_array_apply[$id] = array($class_name, "" . $this->getMigrationPath() . $row . "", $name, $data['tags']);
                 }
             }
 
@@ -52,30 +53,30 @@ class UpdateCommand extends BaseCommand
                     $f_id = $options['id'];
                 } else {
                     $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
-                    $f_id  = $dialog->ask('Type migration id:', $f_id);
+                    $f_id = $dialog->ask('Type migration id:', $f_id);
                 }
-            } else if (isset($args[0])){
+            } else if (isset($args[0])) {
                 if (is_string($args[0])) {
-                    $f_id  = $args[0];
+                    $f_id = $args[0];
                 }
             }
             #check tag list
             $filer_tag = (isset($options['tag'])) ? $options['tag'] : false;
 
-            if ($f_id){
+            if ($f_id) {
                 if (isset ($return_array_new[$f_id])) {
                     $return_array_new = array($f_id => $return_array_new[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
-                        throw new Exception("Migration ".$f_id . " - is already applied");
+                        throw new Exception("Migration " . $f_id . " - is already applied");
                     } else {
-                        throw new Exception("Migration ".$f_id . " - is not found in new migrations list");
+                        throw new Exception("Migration " . $f_id . " - is not found in new migrations list");
                     }
                 }
             }
             # check to tag list
             if ($filer_tag) {
-                $this->padding("up migration for tag : ".$filer_tag);
+                $this->padding("up migration for tag : " . $filer_tag);
                 $newArrayList = array();
                 foreach ($return_array_new as $id => $mig) {
                     if (!empty($mig[3])) {
@@ -91,7 +92,7 @@ class UpdateCommand extends BaseCommand
                 }
             }
 
-            if (empty($return_array_new)){
+            if (empty($return_array_new)) {
                 $this->info("New migrations list is empty.");
                 return false;
             }
@@ -99,24 +100,22 @@ class UpdateCommand extends BaseCommand
             $time_start = microtime(true);
             $this->info(" -> Start applying migration:");
             $this->writeln('');
-            foreach ( $return_array_new as $id => $mig) {
+            foreach ($return_array_new as $id => $mig) {
                 include_once "" . $mig[1] . "";
                 # check bim migration.
                 if ((method_exists($mig[0], "up"))) {
                     try {
-
+                        # start transaction
                         $DB->StartTransaction();
-
                         # call up function
                         if (false !== $mig[0]::up()) {
                             if (!Bim\Db\Entity\MigrationsTable::isExistsInTable($id)) {
                                 if (Bim\Db\Entity\MigrationsTable::add($id)) {
-
+                                    # commit transaction
                                     $DB->Commit();
                                     $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
-
                                 } else {
-
+                                    # rollback transaction
                                     $DB->Rollback();
                                     throw new Exception("add in migration table error");
                                 }
@@ -125,23 +124,21 @@ class UpdateCommand extends BaseCommand
                             $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
                         }
                     } catch (Exception $e) {
-
                         if ((isset($options['debug']))) {
                             $debug = "[" . $e->getFile() . ">" . $e->getLine() . "] ";
                         } else {
                             $debug = "";
                         }
-
+                        # rollback transaction
                         $DB->Rollback();
-
-                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( ".$debug."". $e->getMessage() . ")", Colors::YELLOW));
+                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( " . $debug . "" . $e->getMessage() . ")", Colors::YELLOW));
                     }
                 }
             }
             $time_end = microtime(true);
             $time = $time_end - $time_start;
             $this->writeln('');
-            $this->info(" -> ".round($time, 2)."s");
+            $this->info(" -> " . round($time, 2) . "s");
         }
     }
 

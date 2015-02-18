@@ -15,11 +15,14 @@
 - [Создание - bim gen](#gen)
   * [Создание пустой миграции](#gen_empty)
   * [Создание миграционного кода по наличию](#gen_nal)
+    * Модуль (iblock,highloadblock)
     * [IblockType](#iblocktype)
     * [Iblock](#iblock)
     * [IblockProperty](#iblockproperty)
     * [Highloadblock](#hlblock)
     * [HighloadblockField](#hlblockfield)
+    * Модуль (main)
+    * [Group](#main_group)
   * [Режим multi - bim gen multi](#multi)
   * [Тегирование миграций](#tag)
 - [Информация о проекте - bim info](#info)
@@ -286,7 +289,7 @@ php bim gen Hlblock:add
 php bim gen IHlblock:add --id=82 --d="new description #iws-123"
 ``` 
 
-### <a name="hlblockfield"></a>2.4 HlblockField *( php bim gen HlblockField:[add|delete] )*:
+### <a name="hlblockfield"></a>2.5 HlblockField *( php bim gen HlblockField:[add|delete] )*:
 
 Создается Миграционный код "**HighloadblockField (UserField)**"
 
@@ -302,6 +305,23 @@ php bim gen HlblockField:add
 Также возможно передать hlblock id, hlblock field id и description опционально:
 ``` bash  
 php bim gen IHlblock:add --hlblockid=93 --hlFieldId=582 --d="new description #iws-123"
+```
+
+### <a name="main_group"></a>2.6 Group *( php bim gen Group:[add|delete] )*:
+
+Создается Миграционный код "**Group (Группы пользователей)**"
+
+Дополнительно запрашивается:
+- [GROUP_ID]
+- [Description]
+
+**Пример:**
+``` bash  
+php bim gen Group:add
+``` 
+Также возможно передать group id, и description опционально:
+``` bash  
+php bim gen Group:add --id=5 --d="new description #iws-123"
 ```
 
 
