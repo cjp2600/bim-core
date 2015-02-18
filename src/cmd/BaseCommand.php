@@ -336,10 +336,7 @@ abstract class BaseCommand extends Command {
     public function checkInDb($migration_id)
     {
         # check migration table
-        if (Bim\Db\Entity\MigrationsTable::isExistsInTable($migration_id)) {
-            return true;
-        }
-        return false;
+        return Bim\Db\Entity\MigrationsTable::isExistsInTable($migration_id);
     }
 
 
