@@ -2,13 +2,14 @@
 
 namespace Bim\Db\Lib;
 
+use Bim\Db\Lib\CodeGenerator;
 use \Bitrix\Highloadblock as HL;
 
 /**
  * Class HighloadblockGen
  * @package Bim\Db\Lib
  */
-class HighloadblockGen extends \Bim\Db\Lib\CodeGenerator
+class HighloadblockGen extends CodeGenerator
 {
 
     public function __construct(){

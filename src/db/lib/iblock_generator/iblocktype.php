@@ -1,12 +1,13 @@
 <?php
 
 namespace Bim\Db\Lib;
+use Bim\Db\Lib\CodeGenerator;
 
 /**
  * Class IblockTypeGen
  * @package Bim\Db\Lib
  */
-class IblockTypeGen extends \Bim\Db\Lib\CodeGenerator
+class IblockTypeGen extends CodeGenerator
 {
 
     public function __construct(){
