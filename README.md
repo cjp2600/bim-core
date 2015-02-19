@@ -23,6 +23,7 @@
     * [HighloadblockField](#hlblockfield)
     * Модуль (main)
     * [Group](#main_group)
+    * [Site](#main_site)
   * [Режим multi - bim gen multi](#multi)
   * [Тегирование миграций](#tag)
 - [Информация о проекте - bim info](#info)
@@ -322,6 +323,23 @@ php bim gen Group:add
 Также возможно передать group id, и description опционально:
 ``` bash  
 php bim gen Group:add --id=5 --d="new description #iws-123"
+```
+
+### <a name="main_site"></a>2.7 Site *( php bim gen Site:[add|delete] )*:
+
+Создается Миграционный код "**Site (Сайты)**"
+
+Дополнительно запрашивается:
+- [SITE_ID]
+- [Description]
+
+**Пример:**
+``` bash  
+php bim gen Site:add
+``` 
+Также возможно передать site id, и description опционально:
+``` bash  
+php bim gen Site:add --id=s1 --d="new description #iws-123"
 ```
 
 
