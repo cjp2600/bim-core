@@ -627,6 +627,84 @@ class GenCommand extends BaseCommand
         );
     }
 
+    /**
+     * genSiteAdd
+     * @param array $args
+     * @param array $options
+     */
+    public function genSiteAdd (array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $siteId = (isset($options['id'])) ? $options['id'] : false;
+
+        if (!$siteId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id Site - no default/required";
+
+                $siteId = $dialog->ask($desk . PHP_EOL . $this->color('[SITE_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+
+                $obSite = new \CSite;
+                $dbSite = $obSite->GetList($by = "sort", $order = "desc", array('ID' => $siteId));
+                if ($dbSite === false || !$dbSite->SelectedRowsCount()) {
+                    $this->error('Site with id = "' . $siteId . '" not exist.');
+                } else {
+                    $do = false;
+                }
+
+            }
+        }
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+
+        $autoTag = "add";
+        $this->_save(
+            $this->gen_obj->generateAddCode($siteId),
+            $this->gen_obj->generateDeleteCode($siteId)
+            ,$desc,
+            $autoTag
+        );
+    }
+
+    /**
+     * genSiteDelete
+     * @param array $args
+     * @param array $options
+     */
+    public function genSiteDelete (array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $siteId = (isset($options['id'])) ? $options['id'] : false;
+
+        if (!$siteId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id Site - no default/required";
+
+                $siteId = $dialog->ask($desk . PHP_EOL . $this->color('[SITE_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+
+                $obSite = new \CSite;
+                $dbSite = $obSite->GetList($by = "sort", $order = "desc", array('ID' => $siteId));
+                if ($dbSite === false || !$dbSite->SelectedRowsCount()) {
+                    $this->error('Site with id = "' . $siteId . '" not exist.');
+                } else {
+                    $do = false;
+                }
+
+            }
+        }
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+
+        $autoTag = "delete";
+        $this->_save(
+            $this->gen_obj->generateDeleteCode($siteId),
+            $this->gen_obj->generateAddCode($siteId)
+            ,$desc,
+            $autoTag
+        );
+    }
+
 
     /**
      *
