@@ -1,5 +1,8 @@
 <?php
 
+namespace Bim\Db\Lib;
+use Bim\Db\Lib\CodeGenerator;
+
 /**
  * Class SiteGen
  */
@@ -23,6 +26,7 @@ class SiteGen extends CodeGenerator
     /**
      * generateUpdateCode
      * @param $params
+     * @return mixed|void
      */
     public function generateUpdateCode( $params )
     {
@@ -46,8 +50,9 @@ class SiteGen extends CodeGenerator
 
     /**
      * checkParams
-     * @param $siteId
-     * @throws Exception
+     * @param array $siteId
+     * @return mixed|void
+     * @throws \Exception
      */
     public function checkParams( $siteId  )
     {
