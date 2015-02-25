@@ -9,10 +9,10 @@
   * [Автоматическая установка](#auto)
   * [Ручная установка](#hand)
 - [Настройка](#prop)
-- [Выполнение - **bim** up](#up)
-- [Отмена - **bim** down](#down)
-- [Вывод списка - **bim** ls](#ls)
-- [Создание - **bim** gen](#gen)
+- [Выполнение - bim up](#up)
+- [Отмена - bim down](#down)
+- [Вывод списка - bim ls](#ls)
+- [Создание - bim gen](#gen)
   * [Создание пустой миграции](#gen_empty)
   * [Создание миграционного кода по наличию](#gen_nal)
     * Модуль (iblock,highloadblock)
@@ -24,15 +24,15 @@
     * Модуль (main)
     * [Group](#main_group)
     * [Site](#main_site)
-  * [Режим multi - **bim** gen multi](#multi)
+  * [Режим multi - bim gen multi](#multi)
   * [Тегирование миграций](#tag)
-- [Информация о проекте - **bim** info](#info)
+- [Информация о проекте - bim info](#info)
 
 # <a name="install"></a>1 Установка
 
 ### <a name="auto"></a>1.1 Автоматическая установка 
 
-Для установки и инициализации **bim** для bitrix проекта необходимо выполнить следующиие действия из корня проекта:
+Для установки и инициализации bim для bitrix проекта необходимо выполнить следующиие действия из корня проекта:
 
 - Установить Composer:
 ```    
@@ -45,13 +45,13 @@ php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install')
 ```
 > Автоматические действия установщика:
 
-> 1. Добавление файла **bim** в корень проекта.
+> 1. Добавление файла bim в корень проекта.
 > 2. Инициализация **composer autoloader** в файле **init.php**
-> 3. Создание файла **composer.json** в корне проекта со ссылкой на **bim** репозиторий **"require": { "cjp2600/bim-core": "dev-master"}**
+> 3. Создание файла **composer.json** в корне проекта со ссылкой на bim репозиторий **"require": { "cjp2600/bim-core": "dev-master"}**
 
 ### <a name="hand"></a>1.2 Ручная установка 
 
-Для ручной установки **bim** необходимо:
+Для ручной установки bim необходимо:
 
 - Установить Composer:
    
@@ -59,7 +59,7 @@ php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install')
 curl -s https://getcomposer.org/installer | php
 ```
 
-- Создать файл **bim** (без расширения) в корне bitrix проекта с содержимым:
+- Создать файл bim (без расширения) в корне bitrix проекта с содержимым:
 ```php
 #!/usr/bin/php
 <?php
@@ -110,7 +110,7 @@ php composer.phar update
 Создаём таблицу миграций : 
 
 ```bash
-php **bim** init
+php bim init
 ```
 
 
@@ -118,23 +118,23 @@ php **bim** init
 
 - Общее выполнение:
 ```bash
-php **bim** up
+php bim up
 ```
 Выполняет полный список не выполненых либо ранее отмененных миграционных классов отсортированых по названию (**timestamp**).
 
 - Еденичное выполнение:
 ```bash
-php **bim** up 1423660766
+php bim up 1423660766
 ```
 Выполняет указанную в праметрах миграцию.
 
 - Выполнение по временному периоду:
 ```bash
-php **bim** up --from="29.01.2015 00:01" --to="29.01.2015 23:55"
+php bim up --from="29.01.2015 00:01" --to="29.01.2015 23:55"
 ```
 - Выполнение по тегу:
 ```bash
-php **bim** up --tag=iws-123
+php bim up --tag=iws-123
 ```
 Выполняет все миграции где найден указанный тег в описании.
 
@@ -143,23 +143,23 @@ php **bim** up --tag=iws-123
 
 - Общая отмена:
 ```bash
-php **bim** down
+php bim down
 ```
 Отменяет весь список выполненных миграционных классов.
 
 - Еденичная отмена:
 ``` bash
-php **bim** down 1423660766
+php bim down 1423660766
 ```
 Отменяет указанную в праметрах миграцию.
 
 - Отмена по временному периоду:
 ```bash
-php **bim** down --from="29.01.2015 00:01" --to="29.01.2015 23:55"
+php bim down --from="29.01.2015 00:01" --to="29.01.2015 23:55"
 ```
 - Отмена по тегу:
 ```bash
-php **bim** up --tag=iws-123
+php bim up --tag=iws-123
 ```
 Отменяет все миграции где найден указанный тег в описании.
 
@@ -167,23 +167,23 @@ php **bim** up --tag=iws-123
 # 5 <a name="ls"></a>Вывод списка миграций [BIM LS]
 - Общей список:
 ```bash
-php **bim** ls
+php bim ls
 ```
 - Список выполненных миграций:
 ```bash
-php **bim** ls --a
+php bim ls --a
 ```
 - Список отменённых миграций:
 ```bash
-php **bim** ls --n
+php bim ls --n
 ```
 - Список миграций за определённый период времени:
 ```bash
-php **bim** ls --from="29.01.2015 00:01" --to="29.01.2015 23:55" 
+php bim ls --from="29.01.2015 00:01" --to="29.01.2015 23:55" 
 ```
 - Список миграций по тегу:
 ```bash
-php **bim** ls --tag=iws-123
+php bim ls --tag=iws-123
 ```
 
 # 6 <a name="gen"></a>Создание новых миграций [BIM GEN]
@@ -205,11 +205,11 @@ php **bim** ls --tag=iws-123
 **Пример:**
 
 ``` bash
-php **bim** gen
+php bim gen
 ```
 Также возможно передать description опционально:
 ``` bash  
-php **bim** gen --d="new description #iws-123"
+php bim gen --d="new description #iws-123"
 ```
 
 > Далее создается файл миграции вида: */[migrations_path]/[timestamp].php
@@ -221,7 +221,7 @@ php **bim** gen --d="new description #iws-123"
 Создается код развертывания/отката существующего элемента схемы bitrix БД.
 На данный момент доступно генерация по наличию для следующих элементов bitrix БД:
  
-### 2.1 <a name="iblocktype"></a>IblockType *( php **bim** gen IblockType:[add|delete] )*:
+### 2.1 <a name="iblocktype"></a>IblockType *( php bim gen IblockType:[add|delete] )*:
 
 Создается Миграционный код "**Типа ИБ**" включая созданные для него *(UserFields, IBlock, IblockProperty)*
  
@@ -232,13 +232,13 @@ php **bim** gen --d="new description #iws-123"
 **Пример:**
 
 ``` bash 
-php **bim** gen IblockType:add
+php bim gen IblockType:add
 ``` 
 Также возможно передать iblock type id и description опционально:
 ``` bash  
-php **bim** gen IblockType:add --typeId=catalog --d="new description #iws-123"
+php bim gen IblockType:add --typeId=catalog --d="new description #iws-123"
 ``` 
-### <a name="iblock"></a>2.2 Iblock *( php **bim** gen Iblock:[add|delete] )*:
+### <a name="iblock"></a>2.2 Iblock *( php bim gen Iblock:[add|delete] )*:
 
 Создается Миграционный код "**ИБ**" включая созданные для него *(IblockProperty)*
 
@@ -248,14 +248,14 @@ php **bim** gen IblockType:add --typeId=catalog --d="new description #iws-123"
 
 **Пример:**
 ``` bash  
-php **bim** gen Iblock:add
+php bim gen Iblock:add
 ``` 
 Также возможно передать iblock code и description опционально:
 ``` bash  
-php **bim** gen Iblock:add --code=goods --d="new description #iws-123"
+php bim gen Iblock:add --code=goods --d="new description #iws-123"
 ``` 
 
-### <a name="iblockproperty"></a>2.3 IblockProperty *( php **bim** gen IblockProperty:[add|delete] )*:
+### <a name="iblockproperty"></a>2.3 IblockProperty *( php bim gen IblockProperty:[add|delete] )*:
 
 Создается Миграционный код "**Свойства ИБ**"
 
@@ -266,14 +266,14 @@ php **bim** gen Iblock:add --code=goods --d="new description #iws-123"
 
 **Пример:**
 ``` bash  
-php **bim** gen IblockProperty:add
+php bim gen IblockProperty:add
 ``` 
 Также возможно передать iblock code, property code и description опционально:
 ``` bash  
-php **bim** gen IblockProperty:add --code=goods --propertyCode=NEW_ITEM --d="new description #iws-123"
+php bim gen IblockProperty:add --code=goods --propertyCode=NEW_ITEM --d="new description #iws-123"
 ``` 
 
-### <a name="hlblock"></a>2.4 Hlblock *( php **bim** gen Hlblock:[add|delete] )*:
+### <a name="hlblock"></a>2.4 Hlblock *( php bim gen Hlblock:[add|delete] )*:
 
 Создается Миграционный код "**Highloadblock**" включая созданные для него *(UserFields)*
 
@@ -283,14 +283,14 @@ php **bim** gen IblockProperty:add --code=goods --propertyCode=NEW_ITEM --d="new
 
 **Пример:**
 ``` bash  
-php **bim** gen Hlblock:add
+php bim gen Hlblock:add
 ``` 
 Также возможно передать hlblock id и description опционально:
 ``` bash  
-php **bim** gen IHlblock:add --id=82 --d="new description #iws-123"
+php bim gen IHlblock:add --id=82 --d="new description #iws-123"
 ``` 
 
-### <a name="hlblockfield"></a>2.5 HlblockField *( php **bim** gen HlblockField:[add|delete] )*:
+### <a name="hlblockfield"></a>2.5 HlblockField *( php bim gen HlblockField:[add|delete] )*:
 
 Создается Миграционный код "**HighloadblockField (UserField)**"
 
@@ -301,14 +301,14 @@ php **bim** gen IHlblock:add --id=82 --d="new description #iws-123"
 
 **Пример:**
 ``` bash  
-php **bim** gen HlblockField:add
+php bim gen HlblockField:add
 ``` 
 Также возможно передать hlblock id, hlblock field id и description опционально:
 ``` bash  
-php **bim** gen IHlblock:add --hlblockid=93 --hlFieldId=582 --d="new description #iws-123"
+php bim gen IHlblock:add --hlblockid=93 --hlFieldId=582 --d="new description #iws-123"
 ```
 
-### <a name="main_group"></a>2.6 Group *( php **bim** gen Group:[add|delete] )*:
+### <a name="main_group"></a>2.6 Group *( php bim gen Group:[add|delete] )*:
 
 Создается Миграционный код "**Group (Группы пользователей)**"
 
@@ -318,14 +318,14 @@ php **bim** gen IHlblock:add --hlblockid=93 --hlFieldId=582 --d="new description
 
 **Пример:**
 ``` bash  
-php **bim** gen Group:add
+php bim gen Group:add
 ``` 
 Также возможно передать group id, и description опционально:
 ``` bash  
-php **bim** gen Group:add --id=5 --d="new description #iws-123"
+php bim gen Group:add --id=5 --d="new description #iws-123"
 ```
 
-### <a name="main_site"></a>2.7 Site *( php **bim** gen Site:[add|delete] )*:
+### <a name="main_site"></a>2.7 Site *( php bim gen Site:[add|delete] )*:
 
 Создается Миграционный код "**Site (Сайты)**"
 
@@ -335,11 +335,11 @@ php **bim** gen Group:add --id=5 --d="new description #iws-123"
 
 **Пример:**
 ``` bash  
-php **bim** gen Site:add
+php bim gen Site:add
 ``` 
 Также возможно передать site id, и description опционально:
 ``` bash  
-php **bim** gen Site:add --id=s1 --d="new description #iws-123"
+php bim gen Site:add --id=s1 --d="new description #iws-123"
 ```
 
 
@@ -356,7 +356,7 @@ php **bim** gen Site:add --id=s1 --d="new description #iws-123"
 **Пример:**
 
 ``` bash
-php **bim** gen multi
+php bim gen multi
 ```
 
 ## <a name="tag"></a> Тегирование миграций:
@@ -383,6 +383,6 @@ php **bim** gen multi
 
 **Пример:**
 ``` bash  
-php **bim** info
+php bim info
 ``` 
  
