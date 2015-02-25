@@ -47,7 +47,7 @@ php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install')
 
 > 1. Добавление файла bim в корень проекта.
 > 2. Инициализация **composer autoloader** в файле **init.php**
-> 3. Создание файла **composer.json** в корне проекта со ссылкой на bim репозиторий **"require": { "cjp2600/bim-core": "dev-master"}**
+> 3. Создание файла **composer.json** в корне проекта со ссылкой на bim репозиторий **"require": { "cjp2600/bim-core": ">=1.0.0"}**
 
 ### <a name="hand"></a>1.2 Ручная установка 
 
@@ -87,7 +87,7 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 ```json
 {
 	"require": {
-		"cjp2600/bim-core": "dev-master"
+		"cjp2600/bim-core": ">=1.0.0"
 	}
 }
 ```
