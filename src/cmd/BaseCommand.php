@@ -296,9 +296,10 @@ abstract class BaseCommand extends Command {
 
     /**
      * translit
-     * @param $text
+     * @param $str
+     * @return string
      */
-    public function translit($text)
+    function translit($str)
     {
         $params = Array(
             "max_len" => "200",
@@ -306,10 +307,56 @@ abstract class BaseCommand extends Command {
             "replace_space" => " ",
             "replace_other" => " ",
             "delete_repeat_replace" => "true",
-            "safe_chars"=> "#_-[]()"
+            "safe_chars" => "#_-[]()"
         );
 
-        return \CUtil::translit($text, "ru", $params);
+        $rus = array('А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я');
+        $lat = array('A', 'B', 'V', 'G', 'D', 'E', 'E', 'Gh', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', 'C', 'Ch', 'Sh', 'Sch', 'Y', 'Y', 'Y', 'E', 'Yu', 'Ya', 'a', 'b', 'v', 'g', 'd', 'e', 'e', 'gh', 'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'ch', 'sh', 'sch', 'y', 'y', 'y', 'e', 'yu', 'ya');
+        $str = str_replace($rus, $lat, $str);
+
+        $len = strlen($str);
+        $str_new = '';
+        $last_chr_new = '';
+
+        for ($i = 0; $i < $len; $i++) {
+            $chr = substr($str, $i, 1);
+
+            if (preg_match("/[a-zA-Z0-9]/" . BX_UTF_PCRE_MODIFIER, $chr) || strpos($params["safe_chars"], $chr) !== false) {
+                $chr_new = $chr;
+            } elseif (preg_match("/\\s/" . BX_UTF_PCRE_MODIFIER, $chr)) {
+                if (
+                    !$params["delete_repeat_replace"]
+                    ||
+                    ($i > 0 && $last_chr_new != $params["replace_space"])
+                )
+                    $chr_new = $params["replace_space"];
+                else
+                    $chr_new = '';
+            } else {
+                if (
+                    !$params["delete_repeat_replace"]
+                    ||
+                    ($i > 0 && $i != $len - 1 && $last_chr_new != $params["replace_other"])
+                )
+                    $chr_new = $params["replace_other"];
+                else
+                    $chr_new = '';
+            }
+
+            if (strlen($chr_new)) {
+                if ($params["change_case"] == "L" || $params["change_case"] == "l")
+                    $chr_new = ToLower($chr_new);
+                elseif ($params["change_case"] == "U" || $params["change_case"] == "u")
+                    $chr_new = ToUpper($chr_new);
+
+                $str_new .= $chr_new;
+                $last_chr_new = $chr_new;
+            }
+
+            if (strlen($str_new) >= $params["max_len"])
+                break;
+        }
+        return $str_new;
     }
 
     /**
