@@ -268,10 +268,13 @@ abstract class BaseCommand extends Command {
             # check instance of Revision interface.
             if (new $class_name() instanceof Bim\Revision) {
                 # get description
-                $description = (method_exists($class_name, "getDescription")) ? $this->color_tg($class_name::getDescription()) : "";
+                $description = (method_exists($class_name, "getDescription")) ? $class_name::getDescription() : "";
 
                 #set traslit description (because cli)
                 $description = $this->translit($description);
+
+                # colorize
+                $description = $this->color_tg($description);
 
                     # get tags
                 $tags = (!empty($description)) ? $this->getHashTags($description) : array();
