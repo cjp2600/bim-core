@@ -304,8 +304,9 @@ abstract class BaseCommand extends Command {
             "max_len" => "200",
             "change_case" => "L",
             "replace_space" => " ",
-            "replace_other" => "#",
+            "replace_other" => " ",
             "delete_repeat_replace" => "true",
+            "safe_chars"=> "#_-[]()"
         );
 
         return \CUtil::translit($text, "ru", $params);
