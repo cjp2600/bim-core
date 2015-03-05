@@ -373,7 +373,7 @@ php bim gen multi
 [Description]: #IWS-242 Add new Iblock[services]
 ```
 
-## <a name="tag"></a> Логирование:
+## <a name="logging"></a> Логирование:
 
 Существует возможность логирования информации о состоянии выполнения или отмены миграций.
 
