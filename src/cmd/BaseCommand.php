@@ -269,7 +269,11 @@ abstract class BaseCommand extends Command {
             if (new $class_name() instanceof Bim\Revision) {
                 # get description
                 $description = (method_exists($class_name, "getDescription")) ? $this->color_tg($class_name::getDescription()) : "";
-                # get tags
+
+                #set traslit description (because cli)
+                $description = $this->translit($description);
+
+                    # get tags
                 $tags = (!empty($description)) ? $this->getHashTags($description) : array();
                 # get author
                 $author = (method_exists($class_name, "getAuthor")) ? $class_name::getAuthor() : "";
@@ -285,6 +289,23 @@ abstract class BaseCommand extends Command {
             }
         }
         return $return;
+    }
+
+    /**
+     * translit
+     * @param $text
+     */
+    public function translit($text)
+    {
+        $params = Array(
+            "max_len" => "200",
+            "change_case" => "L",
+            "replace_space" => " ",
+            "replace_other" => "#",
+            "delete_repeat_replace" => "true",
+        );
+
+        return \CUtil::translit($text, "ru", $params);
     }
 
     /**
