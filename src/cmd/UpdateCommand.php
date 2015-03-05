@@ -125,17 +125,17 @@ class UpdateCommand extends BaseCommand
                                     # commit transaction
                                     $DB->Commit();
                                     $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
-                                    $logging_output[] = "     - applied   : " . $mig[2];
+                                    $logging_output[] = "applied   : " . $mig[2];
                                 } else {
                                     # rollback transaction
                                     $DB->Rollback();
-                                    $logging_output[] = "     - error : " . $mig[2] ." - Add in migration table error";
+                                    $logging_output[] = "error : " . $mig[2] ." - Add in migration table error";
                                     throw new Exception("add in migration table error");
                                 }
                             }
                         } else {
                             $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
-                            $logging_output[] = "     - error : " . $mig[2] ." - Method Up return false";
+                            $logging_output[] = "error : " . $mig[2] ." - Method Up return false";
                         }
                     } catch (Exception $e) {
                         if ((isset($options['debug']))) {
@@ -146,7 +146,7 @@ class UpdateCommand extends BaseCommand
                         # rollback transaction
                         $DB->Rollback();
                         $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( " . $debug . "" . $e->getMessage() . ")", Colors::YELLOW));
-                        $logging_output[] = "     - error : " . $mig[2] ."( " . $debug . "" . $e->getMessage() . " )";
+                        $logging_output[] = "error : " . $mig[2] ."( " . $debug . "" . $e->getMessage() . " )";
                     }
                 }
             }
@@ -154,7 +154,7 @@ class UpdateCommand extends BaseCommand
             $time = $time_end - $time_start;
             $this->writeln('');
             $this->info(" -> " . round($time, 2) . "s");
-            $logging_output[] = "End time - ".round($time, 2);
+            $logging_output[] = "End time - ".round($time, 2)."s";
             if ($logging) {
                 $this->logging($logging_output);
             }

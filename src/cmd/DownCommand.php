@@ -134,17 +134,17 @@ class DownCommand extends BaseCommand
                                     # commit transaction
                                     $DB->Commit();
                                     $this->writeln($this->color("     - revert   : " . $mig[2], Colors::GREEN));
-                                    $logging_output[] = "     - revert   : " . $mig[2];
+                                    $logging_output[] = "revert   : " . $mig[2];
                                 } else {
                                     # rollback transaction
                                     $DB->Rollback();
-                                    $logging_output[] = "     - error   : " . $mig[2]." - Error delete in migration table";
+                                    $logging_output[] = "error   : " . $mig[2]." - Error delete in migration table";
                                     throw new Exception("Error delete in migration table");
                                 }
                             }
                         } else {
                             $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Down return false)", Colors::YELLOW));
-                            $logging_output[] = "     - error : " . $mig[2]." - Method Down return false";
+                            $logging_output[] = "error : " . $mig[2]." - Method Down return false";
                         }
                     } catch (Exception $e) {
                         if ((isset($options['debug']))) {
@@ -155,7 +155,7 @@ class DownCommand extends BaseCommand
                         # rollback transaction
                         $DB->Rollback();
                         $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( ".$debug."" . $e->getMessage() . " )", Colors::YELLOW));
-                        $logging_output[] = "     - error : " . $mig[2]." ".$debug. $e->getMessage();
+                        $logging_output[] = "error : " . $mig[2]." ".$debug. $e->getMessage();
                     }
                 }
             }
@@ -164,7 +164,7 @@ class DownCommand extends BaseCommand
             $time = $time_end - $time_start;
             $this->writeln('');
             $this->info(" <- ".round($time, 2)."s");
-            $logging_output[] = "End time - ".round($time, 2);
+            $logging_output[] = "End time - ".round($time, 2)."s";
             if ($logging) {
                 $this->logging($logging_output,"down");
             }

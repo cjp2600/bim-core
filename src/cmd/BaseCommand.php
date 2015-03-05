@@ -309,6 +309,7 @@ abstract class BaseCommand extends Command {
             mkdir($log_path, 0777, true);
         }
         file_put_contents($log_path . '/' . $file_name, $return_message, FILE_APPEND);
+        $this->writeln("Put info to log file > ".Colors::colorize($log_path . '/' . $file_name,Colors::GREEN));
     }
 
     /**
