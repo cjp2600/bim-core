@@ -190,10 +190,7 @@ abstract class BaseCommand extends Command {
      */
     public function clear($text)
     {
-        $text = str_replace("�"," ",$text);
-        $text = str_replace('"',"'",$text);
-        $text = str_replace('/',"",$text);
-        return $text;
+        return trim($text);
     }
 
     /**
@@ -269,14 +266,11 @@ abstract class BaseCommand extends Command {
             if (new $class_name() instanceof Bim\Revision) {
                 # get description
                 $description = (method_exists($class_name, "getDescription")) ? $class_name::getDescription() : "";
-
-                #set traslit description (because cli)
+                # set translit description (because its cli)
                 $description = $this->translit($description);
-
                 # colorize
                 $description = $this->color_tg($description);
-
-                    # get tags
+                # get tags
                 $tags = (!empty($description)) ? $this->getHashTags($description) : array();
                 # get author
                 $author = (method_exists($class_name, "getAuthor")) ? $class_name::getAuthor() : "";
@@ -295,13 +289,41 @@ abstract class BaseCommand extends Command {
     }
 
     /**
+     * logging
+     *
+     * @param array $input_array
+     * @param string $file_name
+     * @param string $type
+     */
+    public function logging( $input_array = array(), $type = "up", $file_name = 'bim.log' )
+    {
+        $conf = new \Noodlehaus\Config(__DIR__ . "/../config/bim.json");
+        $logging_path = $conf->get("logging_path");
+        $return_message = " >> php bim " . $type . " \n";
+        $return_message .= date('d.m.Y H:i:s') . "\n";
+        $return_message .= print_r($input_array, true) . "\n";
+        $return_message .= "\n----------\n\n";
+        $file_name = empty($file_name) ? 'bim.log' : $file_name;
+        $log_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $logging_path . '/' . date("Y") . "/" . date("m") . "/" . date("d");
+        if (!file_exists($log_path)) {
+            mkdir($log_path, 0777, true);
+        }
+        file_put_contents($log_path . '/' . $file_name, $return_message, FILE_APPEND);
+    }
+
+    /**
      * translit
+     *
+     * Analog bitrix Utils::translit
+     * Unfortunately, the standard method does not work as it is necessary for us.
+     * (because its bitrix baby!)
+     *
      * @param $str
      * @return string
      */
-    function translit($str)
+    public function translit($str)
     {
-        $params = Array(
+        $params = array(
             "max_len" => "200",
             "change_case" => "L",
             "replace_space" => " ",
@@ -309,18 +331,21 @@ abstract class BaseCommand extends Command {
             "delete_repeat_replace" => "true",
             "safe_chars" => "#_-[]()"
         );
-
-        $rus = array('А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я');
-        $lat = array('A', 'B', 'V', 'G', 'D', 'E', 'E', 'Gh', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', 'C', 'Ch', 'Sh', 'Sch', 'Y', 'Y', 'Y', 'E', 'Yu', 'Ya', 'a', 'b', 'v', 'g', 'd', 'e', 'e', 'gh', 'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'ch', 'sh', 'sch', 'y', 'y', 'y', 'e', 'yu', 'ya');
-        $str = str_replace($rus, $lat, $str);
-
+        $russian = array(
+            'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф',
+            'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й',
+            'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я');
+        $latin = array(
+            'A', 'B', 'V', 'G', 'D', 'E', 'E', 'Gh', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F',
+            'H', 'C', 'Ch', 'Sh', 'Sch', 'Y', 'Y', 'Y', 'E', 'Yu', 'Ya', 'a', 'b', 'v', 'g', 'd', 'e', 'e', 'gh', 'z', 'i',
+            'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'ch', 'sh', 'sch', 'y', 'y', 'y', 'e',
+            'yu', 'ya');
+        $str = str_replace($russian, $latin, $str);
         $len = strlen($str);
         $str_new = '';
         $last_chr_new = '';
-
         for ($i = 0; $i < $len; $i++) {
             $chr = substr($str, $i, 1);
-
             if (preg_match("/[a-zA-Z0-9]/" . BX_UTF_PCRE_MODIFIER, $chr) || strpos($params["safe_chars"], $chr) !== false) {
                 $chr_new = $chr;
             } elseif (preg_match("/\\s/" . BX_UTF_PCRE_MODIFIER, $chr)) {
@@ -328,33 +353,34 @@ abstract class BaseCommand extends Command {
                     !$params["delete_repeat_replace"]
                     ||
                     ($i > 0 && $last_chr_new != $params["replace_space"])
-                )
+                ) {
                     $chr_new = $params["replace_space"];
-                else
+                } else {
                     $chr_new = '';
+                }
             } else {
                 if (
                     !$params["delete_repeat_replace"]
                     ||
                     ($i > 0 && $i != $len - 1 && $last_chr_new != $params["replace_other"])
-                )
+                ) {
                     $chr_new = $params["replace_other"];
-                else
+                } else {
                     $chr_new = '';
+                }
             }
-
             if (strlen($chr_new)) {
-                if ($params["change_case"] == "L" || $params["change_case"] == "l")
+                if ($params["change_case"] == "L" || $params["change_case"] == "l") {
                     $chr_new = ToLower($chr_new);
-                elseif ($params["change_case"] == "U" || $params["change_case"] == "u")
+                } elseif ($params["change_case"] == "U" || $params["change_case"] == "u") {
                     $chr_new = ToUpper($chr_new);
-
+                }
                 $str_new .= $chr_new;
                 $last_chr_new = $chr_new;
             }
-
-            if (strlen($str_new) >= $params["max_len"])
+            if (strlen($str_new) >= $params["max_len"]) {
                 break;
+            }
         }
         return $str_new;
     }

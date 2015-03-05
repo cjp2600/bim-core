@@ -27,6 +27,11 @@ class DownCommand extends BaseCommand
     public function execute(array $args, array $options = array())
     {
         global $DB;
+
+        # get logging options
+        $logging = (isset($options['logging'])) ? true : false;
+        $logging_output = array();
+
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
         krsort($list); #по убыванию
         if (!empty($list)) {
@@ -69,8 +74,10 @@ class DownCommand extends BaseCommand
                     $return_array_apply = array($f_id => $return_array_apply[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
+                        $logging_output[] = "Migration ".$f_id . " - is already applied";
                         throw new Exception("Migration ".$f_id . " - is already applied");
                     } else {
+                        $logging_output[] = "Migration ".$f_id . " - is not found in applied list";
                         throw new Exception("Migration ".$f_id . " - is not found in applied list");
                     }
                 }
@@ -104,7 +111,11 @@ class DownCommand extends BaseCommand
             }
 
             if (empty($return_array_apply)){
+                $logging_output[] = "Applied migrations list is empty.";
                 $this->info("Applied migrations list is empty.");
+                if ($logging) {
+                    $this->logging($logging_output,"down");
+                }
                 return false;
             }
 
@@ -123,14 +134,17 @@ class DownCommand extends BaseCommand
                                     # commit transaction
                                     $DB->Commit();
                                     $this->writeln($this->color("     - revert   : " . $mig[2], Colors::GREEN));
+                                    $logging_output[] = "     - revert   : " . $mig[2];
                                 } else {
                                     # rollback transaction
                                     $DB->Rollback();
+                                    $logging_output[] = "     - error   : " . $mig[2]." - Error delete in migration table";
                                     throw new Exception("Error delete in migration table");
                                 }
                             }
                         } else {
                             $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Down return false)", Colors::YELLOW));
+                            $logging_output[] = "     - error : " . $mig[2]." - Method Down return false";
                         }
                     } catch (Exception $e) {
                         if ((isset($options['debug']))) {
@@ -140,7 +154,8 @@ class DownCommand extends BaseCommand
                         }
                         # rollback transaction
                         $DB->Rollback();
-                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( ".$debug."" . $e->getMessage() . ")", Colors::YELLOW));
+                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( ".$debug."" . $e->getMessage() . " )", Colors::YELLOW));
+                        $logging_output[] = "     - error : " . $mig[2]." ".$debug. $e->getMessage();
                     }
                 }
             }
@@ -149,6 +164,10 @@ class DownCommand extends BaseCommand
             $time = $time_end - $time_start;
             $this->writeln('');
             $this->info(" <- ".round($time, 2)."s");
+            $logging_output[] = "End time - ".round($time, 2);
+            if ($logging) {
+                $this->logging($logging_output,"down");
+            }
         }
     }
 }

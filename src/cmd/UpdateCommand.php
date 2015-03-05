@@ -28,6 +28,11 @@ class UpdateCommand extends BaseCommand
     public function execute(array $args, array $options = array())
     {
         global $DB;
+
+        # get logging options
+        $logging = (isset($options['logging'])) ? true : false;
+        $logging_output = array();
+
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
         ksort($list); # по возрастанию
         if (!empty($list)) {
@@ -68,8 +73,10 @@ class UpdateCommand extends BaseCommand
                     $return_array_new = array($f_id => $return_array_new[$f_id]);
                 } else {
                     if (isset ($return_array_apply[$f_id])) {
+                        $logging_output[] = "Migration " . $f_id . " - is already applied";
                         throw new Exception("Migration " . $f_id . " - is already applied");
                     } else {
+                        $logging_output[] = "Migration " . $f_id . " - is not found in new migrations list";
                         throw new Exception("Migration " . $f_id . " - is not found in new migrations list");
                     }
                 }
@@ -93,7 +100,11 @@ class UpdateCommand extends BaseCommand
             }
 
             if (empty($return_array_new)) {
+                $logging_output[] = "New migrations list is empty.";
                 $this->info("New migrations list is empty.");
+                if ($logging) {
+                    $this->logging($logging_output);
+                }
                 return false;
             }
 
@@ -114,14 +125,17 @@ class UpdateCommand extends BaseCommand
                                     # commit transaction
                                     $DB->Commit();
                                     $this->writeln($this->color("     - applied   : " . $mig[2], Colors::GREEN));
+                                    $logging_output[] = "     - applied   : " . $mig[2];
                                 } else {
                                     # rollback transaction
                                     $DB->Rollback();
+                                    $logging_output[] = "     - error : " . $mig[2] ." - Add in migration table error";
                                     throw new Exception("add in migration table error");
                                 }
                             }
                         } else {
                             $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
+                            $logging_output[] = "     - error : " . $mig[2] ." - Method Up return false";
                         }
                     } catch (Exception $e) {
                         if ((isset($options['debug']))) {
@@ -132,6 +146,7 @@ class UpdateCommand extends BaseCommand
                         # rollback transaction
                         $DB->Rollback();
                         $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( " . $debug . "" . $e->getMessage() . ")", Colors::YELLOW));
+                        $logging_output[] = "     - error : " . $mig[2] ."( " . $debug . "" . $e->getMessage() . " )";
                     }
                 }
             }
@@ -139,6 +154,10 @@ class UpdateCommand extends BaseCommand
             $time = $time_end - $time_start;
             $this->writeln('');
             $this->info(" -> " . round($time, 2) . "s");
+            $logging_output[] = "End time - ".round($time, 2);
+            if ($logging) {
+                $this->logging($logging_output);
+            }
         }
     }
 
