@@ -26,6 +26,7 @@
     * [Site](#main_site)
   * [Режим multi - bim gen multi](#multi)
   * [Тегирование миграций](#tag)
+  * [Логирование](#logging)
 - [Информация о проекте - bim info](#info)
 
 # <a name="install"></a>1 Установка
@@ -372,6 +373,20 @@ php bim gen multi
 [Description]: #IWS-242 Add new Iblock[services]
 ```
 
+## <a name="tag"></a> Логирование:
+
+Существует возможность логирования информации о состоянии выполнения или отмены миграций.
+
+**Пример:**
+``` bash
+php bim up --logging
+```
+или
+``` bash
+php bim down --logging
+```
+**Примечание:**
+По умолчанию инфомация сохраняется в файл вида **_log/bim/[Year]/[Month]/[Day]/bim.log**
 
 # <a name="info"></a>7 Информация о проекет [BIM INFO]
 
