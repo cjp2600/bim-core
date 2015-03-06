@@ -27,10 +27,10 @@ class IblockTypeGen extends CodeGenerator
         $dbIblockType = $CIblockType->GetByID($IblockTypeId);
         if ($arIblockType = $dbIblockType->GetNext()) {
             $Iblock = new \CIBlock();
-            $dbIblock = $Iblock->GetList(array(), array('TYPE' => $IblockTypeId));
+            $dbIblock = $Iblock->GetList(array(), array('TYPE' => $IblockTypeId,'CHECK_PERMISSIONS'=>'N'));
             while ($arIblock = $dbIblock->GetNext()) {
                 $IblockProperty = new \CIBlockProperty();
-                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $arIblock['CODE']));
+                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $arIblock['CODE'],'CHECK_PERMISSIONS'=>'N'));
                 while ($arIblockProperty = $dbIblockProperty->GetNext()) {
                     $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(), array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
                     while ($arPropertyValues = $dbPropertyValues->Fetch()) {
@@ -49,7 +49,7 @@ class IblockTypeGen extends CodeGenerator
                         }
                     }
                     if (isset($arIblockProperty['LINK_IBLOCK_ID'])) {
-                        $res = \CIBlock::GetByID($arIblockProperty['LINK_IBLOCK_ID']);
+                        $res = \CIBlock::GetList(array(), array("ID"=>$arIblockProperty['LINK_IBLOCK_ID'],'CHECK_PERMISSIONS'=>'N'));
                         if ($ar_res = $res->GetNext()) {
                             unset($arIblockProperty['LINK_IBLOCK_ID']);
                             $arIblockProperty['LINK_IBLOCK_CODE'] = $ar_res['CODE'];

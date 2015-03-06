@@ -163,7 +163,7 @@ class GenCommand extends BaseCommand
             while ($do) {
                 $desk = "Put code information block - no default/required";
                 $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code));
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code,'CHECK_PERMISSIONS'=>'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -201,7 +201,7 @@ class GenCommand extends BaseCommand
             while ($do) {
                 $desk = "Put code information block - no default/required";
                 $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code));
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code,'CHECK_PERMISSIONS'=>'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -247,7 +247,7 @@ class GenCommand extends BaseCommand
             while ($do) {
                 $desk = "Put code information block - no default/required";
                 $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code));
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code,'CHECK_PERMISSIONS'=>'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -309,7 +309,7 @@ class GenCommand extends BaseCommand
             while ($do) {
                 $desk = "Put code information block - no default/required";
                 $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code));
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code,'CHECK_PERMISSIONS'=>'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
