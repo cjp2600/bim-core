@@ -2,25 +2,33 @@
 
 use ConsoleKit\Colors;
 /**
- * .
- * That command revert a applied list of migration.
- * =========================================================================================
+ * =================================================================================
+ * Отмена выполненых миграций  [BIM DOWN]
+ * =================================================================================
  *
- * 1) Revert all list of new migrations (sort by timestamp name):
- *              Example: php bim down
+ * - Общая отмена:
+ * @example php bim down
  *
- * 2) Revert single migration (php bim down [name]):
- *              Example: php bim down 1423573720
+ * Отменяет весь список выполненных миграционных классов.
  *
- * 3) Revert list of applied migrations for a certain period of time (sort by timestamp name):
- *              Example:  php bim down --from="29.01.2015 00:01" --to="29.01.2015 23:55"
+ * - Еденичная отмена:
+ * @example php bim down 1423660766
  *
- * 4) Revert list of applied migrations with tag (sort by timestamp name):
- *              Example: php bim down --tag=iws-123
+ * Отменяет указанную в праметрах миграцию.
  *
- * Documentation: http://cjp2600.github.io/bim-core/
+ * - Отмена по временному периоду:
+ * @example php bim down --from="29.01.2015 00:01" --to="29.01.2015 23:55"
  *
- * ==========================================================================================
+ * - Отмена по тегу:
+ * @example php bim down --tag=iws-123
+ *
+ * Отменяет все миграции где найден указанный тег в описании.
+ *
+ * - Логирование:
+ * @example php bim down --logging
+ *
+ * Documentation: https://github.com/cjp2600/bim-core
+ * =================================================================================
  */
 class DownCommand extends BaseCommand
 {

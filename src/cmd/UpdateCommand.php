@@ -3,25 +3,35 @@
 use ConsoleKit\Colors;
 
 /**
- * .
- * That command applied a new list of migration.
- * =========================================================================================
+ * =================================================================================
+ * Выполнение миграций [BIM UP]
+ * =================================================================================
  *
- * 1) Applied all list of new migrations (sort by timestamp name):
- *              Example: php bim up
+ * - Общее выполнение:
+ * @example:
+ *          php bim up
  *
- * 2) Applied single migration (php bim up [name]):
- *              Example: php bim up 1423573720
+ * Выполняет полный список не выполненых либо ранее отмененных миграционных классов
+ * отсортированых по названию (**timestamp**).
  *
- * 3) Applied list of new migrations for a certain period of time (sort by timestamp name):
- *              Example:  php bim up --from="29.01.2015 00:01" --to="29.01.2015 23:55"
+ * - Еденичное выполнение:
+ * @example php bim up 1423660766
  *
- * 4) Applied list of new migrations with tag (sort by timestamp name):
- *              Example: php bim up --tag=iws-123
+ * Выполняет указанную в праметрах миграцию.
  *
+ * - Выполнение по временному периоду:
+ * @example php bim up --from="29.01.2015 00:01" --to="29.01.2015 23:55"
  *
- * Documentation: http://cjp2600.github.io/bim-core/
- * .
+ * - Выполнение по тегу:
+ * @example php bim up --tag=iws-123
+ *
+ * Выполняет все миграции где найден указанный тег в описании.
+ *
+ * - Логирование:
+ * @example php bim up --logging
+ *
+ * Documentation: https://github.com/cjp2600/bim-core
+ * =================================================================================
  */
 class UpdateCommand extends BaseCommand
 {

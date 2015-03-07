@@ -1,10 +1,12 @@
 <?php
 
 /**
- * --  > BIM GEN | Command to create the migration classes.
+ * =================================================================================
+ * Создание новых миграций [BIM GEN]
+ * =================================================================================
  *
- *  Documentation: http://cjp2600.github.io/bim-core/
- *
+ * Documentation: https://github.com/cjp2600/bim-core#gen
+ * =================================================================================
  */
 class GenCommand extends BaseCommand
 {

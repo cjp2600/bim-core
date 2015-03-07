@@ -2,11 +2,20 @@
 
 use ConsoleKit\Colors;
 /**
- * .
- * TGetting information about the project.
+ * =================================================================================
+ * Информация о проекет [BIM INFO]
+ * =================================================================================
  *
- * Documentation: http://cjp2600.github.io/bim-core/
+ * Информация о текущем bitrix проекте:
  *
+ * - Название проекта
+ * - Версия bitrix
+ * - Редакция bitrix
+ *
+ * @example php bim info
+ *
+ * Documentation: https://github.com/cjp2600/bim-core
+ * =================================================================================
  */
 class InfoCommand extends BaseCommand {
 
