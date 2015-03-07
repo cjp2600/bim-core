@@ -11,7 +11,7 @@
 class GenCommand extends BaseCommand
 {
 
-    const END_LOOP_SYMPOL = "";
+    const END_LOOP_SYMBOL = "";
 
     private $gen_obj = null;
     private $isMulti = false;
@@ -732,7 +732,7 @@ class GenCommand extends BaseCommand
                 $desk = "Put generation commands:";
                 $command = $dialog->ask($desk . " " . $this->color('php bim gen >', \ConsoleKit\Colors::MAGENTA), '', false);
                 if (!empty($command)) {
-                    if ($command != self::END_LOOP_SYMPOL) {
+                    if ($command != self::END_LOOP_SYMBOL) {
                         $this->setMulti(true);
                         $this->setMultiCurrentCommand($command);
                         $this->execute(array($command));
