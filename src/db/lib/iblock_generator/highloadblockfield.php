@@ -41,7 +41,7 @@ class HighloadblockFieldGen extends CodeGenerator
                 if (!empty($hlFieldData['SETTINGS']['IBLOCK_ID'])) {
                     $iblockId = $hlFieldData['SETTINGS']['IBLOCK_ID'];
                     unset($hlFieldData['SETTINGS']['IBLOCK_ID']);
-                    $rsIBlock = \CIBlock::GetList(array(), array('ID' => $iblockId));
+                    $rsIBlock = \CIBlock::GetList(array(), array('ID' => $iblockId,'CHECK_PERMISSIONS'=>'N'));
                     if ($arIBlock = $rsIBlock->Fetch()) {
                         $hlFieldData['SETTINGS']['IBLOCK_CODE'] = $arIBlock['CODE'];
                     } else {

@@ -41,7 +41,7 @@ class HighloadblockGen extends CodeGenerator
                 if (!empty($arFullData['SETTINGS']['IBLOCK_ID'])) {
                     $iblockId = $arFullData['SETTINGS']['IBLOCK_ID'];
                     unset($arFullData['SETTINGS']['IBLOCK_ID']);
-                    $rsIBlock = \CIBlock::GetList(array(), array('ID' => $iblockId));
+                    $rsIBlock = \CIBlock::GetList(array(), array('ID' => $iblockId,'CHECK_PERMISSIONS'=>'N'));
                     if ($arIBlock = $rsIBlock->Fetch()) {
                         $arFullData['SETTINGS']['IBLOCK_CODE'] = $arIBlock['CODE'];
                     } else {

@@ -52,7 +52,7 @@ class IblockPropertyIntegrate {
         );
         if ($arFields['IBLOCK_CODE']) {
             unset($arFields['IBLOCK_ID']);
-            $rsIBlock = \CIBlock::GetList(array(), array('CODE' => $arFields['IBLOCK_CODE']));
+            $rsIBlock = \CIBlock::GetList(array(), array('CODE' => $arFields['IBLOCK_CODE'],'CHECK_PERMISSIONS'=>'N'));
             if ($arIBlock = $rsIBlock->Fetch()) {
                 $arFields['IBLOCK_ID'] = $arIBlock['ID'];
             } else {
@@ -68,7 +68,7 @@ class IblockPropertyIntegrate {
         }
         if ($arFields['LINK_IBLOCK_CODE']) {
             unset($arFields['LINK_IBLOCK_ID']);
-            $rsIBlock = \CIBlock::GetList(array(), array('CODE' => $arFields['LINK_IBLOCK_CODE']));
+            $rsIBlock = \CIBlock::GetList(array(), array('CODE' => $arFields['LINK_IBLOCK_CODE'],'CHECK_PERMISSIONS'=>'N'));
             if ($arIBlock = $rsIBlock->Fetch()) {
                 $arFields['LINK_IBLOCK_ID'] = $arIBlock['ID'];
             }

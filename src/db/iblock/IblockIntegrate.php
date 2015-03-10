@@ -72,7 +72,7 @@ class IblockIntegrate
         if ( !strlen( $arFields['CODE'] ) ) {
             throw new \Exception('Not found iblock code');
         }
-        $iblockDbRes = \CIBlock::GetList( array(), array('CODE' => $arFields['CODE'] ) );
+        $iblockDbRes = \CIBlock::GetList( array(), array('CODE' => $arFields['CODE'],'CHECK_PERMISSIONS'=>'N' ) );
         if ( $iblockDbRes !== false && $iblockDbRes->SelectedRowsCount() ) {
             throw new \Exception('Iblock with code = "' . $arFields['CODE'] .'" already exist.');
         }
@@ -99,7 +99,7 @@ class IblockIntegrate
      */
     public function Delete($IblockCode)
     {
-        $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode));
+        $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode,'CHECK_PERMISSIONS'=>'N'));
         if ($arIblock = $dbIblock->Fetch()) {
             $iblockElDbRes = \CIBlockElement::GetList(array(), array('IBLOCK_ID' => $arIblock['ID']));
             if ($iblockElDbRes !== false && $iblockElDbRes->SelectedRowsCount()) {
