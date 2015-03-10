@@ -3,28 +3,27 @@
 use ConsoleKit\Colors;
 
 /**
- * .
- * That command displays a list of migration.
- * ======================================================================================
+ * =================================================================================
+ * Вывод списка миграций [BIM LS]
+ * =================================================================================
  *
- * 1) Common list:
- *              Example: php bim ls
+ * - Общей список:
+ * @example php bim ls
  *
- * 2) Displays a list of already Applied on migration:
- *              Example: php bim ls --a
+ * - Список выполненных миграций:
+ * @example php bim ls --a
  *
- * 3) Displays a list of new migrations:
- *              Example: php bim ls --n
+ * - Список отменённых миграций:
+ * @example php bim ls --n
  *
- * 4) Displays a list of migrations for a certain period of time:
- *              Example:  php bim ls --from="29.01.2015 00:01" --to="29.01.2015 23:55"
+ * - Список миграций за определённый период времени:
+ * @example php bim ls --from="29.01.2015 00:01" --to="29.01.2015 23:55"
  *
- * 5) Display list of migrations with tag:
- *              Example: php bim ls --tag=iws-123
+ * - Список миграций по тегу:
+ * @example php bim ls --tag=iws-123
  *
- *
- * Documentation: http://cjp2600.github.io/bim-core/
- * .
+ * Documentation: https://github.com/cjp2600/bim-core
+ * =================================================================================
  */
 class ListCommand extends BaseCommand
 {
