@@ -2,6 +2,7 @@
 namespace Bim\Db\Iblock;
 
 \CModule::IncludeModule("highloadblock");
+\CModule::IncludeModule("iblock");
 use Bitrix\Highloadblock as HL;
 
 /**
