@@ -14,6 +14,7 @@ class HighloadblockGen extends CodeGenerator
 
     public function __construct(){
         \CModule::IncludeModule("highloadblock");
+        \CModule::IncludeModule("iblock");
     }
 
 
