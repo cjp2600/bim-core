@@ -223,7 +223,7 @@ abstract class BaseCommand extends Command {
      * @param array $noStrip
      * @return mixed|string
      */
-    public function camelCase($str, array $noStrip = [])
+    public function camelCase($str, array $noStrip = array())
     {
         // non-alpha and non-numeric characters become spaces
         $str = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $str);
