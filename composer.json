@@ -3,11 +3,13 @@
 	"description": "Bitrix db migration core libs",
 	"keywords": ["bitrix", "db", "migration"],
 	"license": "MIT",
-    "bin": ["bin/bim"],
+    "bin": ["src/bin/bim"],
  	"authors": [
 	  {
 		  "name": "Stanislav Semenov",
-		  "email": "cjp2600@ya.ru"
+		  "email": "icjp2600@gmail.com",
+		  "homepage": "http://8il.ru",
+		  "role": "Developer"
 	  },
 	  {
 		  "name": "Sergey Ansupov",
@@ -42,13 +44,8 @@
 		    "src/cmd"
 		]
 	},
-	"scripts": {
-	  "post-install-cmd": [
-		"php bim init"
-	  ]
-	},
 	"config": {
-	    "bin-dir": "bin",
+	    "bin-dir": "src/bin",
 		"preferred-install": "dist"
 	},
 	"minimum-stability": "dev"
