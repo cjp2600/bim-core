@@ -25,6 +25,11 @@
         	"wp-cli/php-cli-tools":"*",
         	"noodlehaus/config":"*"
 	},
+	"support": {
+	  "email": "icjp2600@gmail.com",
+	  "docs": "https://github.com/cjp2600/bim-core",
+	  "source": "https://github.com/cjp2600/bim-core"
+	},
 	"autoload": {
 		"classmap": [
 		  	"src",
