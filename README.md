@@ -59,23 +59,6 @@ php -r "readfile('https://raw.githubusercontent.com/cjp2600/bim/master/install')
 ```    
 curl -s https://getcomposer.org/installer | php
 ```
-
-- Создать файл bim (без расширения) в корне bitrix проекта с содержимым:
-```php
-#!/usr/bin/php
-<?php
-
-ini_set('max_execution_time', 36000);
-
-define("NO_KEEP_STATISTIC", true);
-define("NO_AGENT_STATISTIC", true);
-define("NOT_CHECK_PERMISSIONS", true);
-$_SERVER["DOCUMENT_ROOT"] = dirname(__FILE__);
-require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
-
-\Bim\Migration::init();
-
-```
 - Добавть инициализацию composer (в файл init.php добавить запись):
 
 ```bash
@@ -100,6 +83,11 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 *.lock
 ```
 
+- Done! :):
+
+``` php
+php vendor/bim/bim info
+```
 
 # 2 <a name="prop"></a>Настройка
 
