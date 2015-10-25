@@ -3,6 +3,7 @@
 	"description": "Bitrix db migration core libs",
 	"keywords": ["bitrix", "db", "migration"],
 	"license": "MIT",
+    "bin": ["bin/bim"],
  	"authors": [
 	  {
 		  "name": "Stanislav Semenov",
@@ -47,6 +48,7 @@
 	  ]
 	},
 	"config": {
+	    "bin-dir": "bin",
 		"preferred-install": "dist"
 	},
 	"minimum-stability": "dev"
