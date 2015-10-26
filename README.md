@@ -86,7 +86,7 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 - Done! :):
 
 ``` php
-php vendor/bim/bim info
+php vendor/bin/bim info
 ```
 
 # 2 <a name="prop"></a>Настройка
