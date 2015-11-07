@@ -18,10 +18,6 @@ class Migration {
     {
         $conf = new Config(__DIR__."/config/commands.json");
         $console = new Console($conf->get("commands"));
-
-        # check migration init
-        Bim\Db\Entity\MigrationsTable::checkMigrationTable();
-
         # run commands
         $console->run();
     }
