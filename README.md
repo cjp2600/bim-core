@@ -397,3 +397,7 @@ php bim down --logging
 php bim info
 ``` 
  
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/cjp2600/bim-core/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
