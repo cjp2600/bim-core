@@ -1,6 +1,7 @@
 <?php
 
 namespace Bim\Db\Lib;
+
 use Bim\Db\Lib\CodeGenerator;
 
 /**
@@ -25,8 +26,8 @@ class IblockGen extends CodeGenerator
     {
         $iblock = new \CIBlock();
         $return = array();
-        $iblock_object = $iblock->GetList(array(), array('CODE' => $IblockCode));
-        if ($item = $iblock_object->Fetch()) {
+        $iblockObject = $iblock->GetList(array(), array('CODE' => $IblockCode));
+        if ($item = $iblockObject->Fetch()) {
             $item['GROUP_ID'] = \CIBlock::GetGroupPermissions($item['ID']);
             $item['FIELDS'] = \CIBlock::GetFields($item['ID']);
             unset($item['ID']);
@@ -37,12 +38,14 @@ class IblockGen extends CodeGenerator
                     unset($arIblockProperty['ID']);
                     unset($arIblockProperty['IBLOCK_ID']);
                     $arIblockProperty['IBLOCK_CODE'] = $item['CODE'];
-                    $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(), array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
+                    $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(),
+                        array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
                     while ($arPropertyValues = $dbPropertyValues->Fetch()) {
                         unset($arPropertyValues['PROPERTY_ID']);
                     }
                     $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
-                    $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add', array($arIblockProperty));
+                    $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add',
+                        array($arIblockProperty));
                 }
                 return implode(PHP_EOL, $return);
             } else {
@@ -59,16 +62,17 @@ class IblockGen extends CodeGenerator
      * @param $params array
      * @return mixed
      */
-    public function generateUpdateCode( $params )
+    public function generateUpdateCode($params)
     {
-        $this->checkParams( $params );
+        $this->checkParams($params);
         $code = false;
-        foreach( $this->ownerItemDbData as $iblockData  ){
+        foreach ($this->ownerItemDbData as $iblockData) {
             $updateFields = $iblockData;
-            unset( $updateFields['ID'] );
-            $updateFields['FIELDS'] = \CIBlock::GetFields( $iblockData['ID'] );
-            $updateFields['GROUP_ID'] = \CIBlock::GetGroupPermissions( $iblockData['ID'] );
-            $code = $code . $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Update', array( $updateFields['CODE'], $updateFields ) ) .PHP_EOL.PHP_EOL;
+            unset($updateFields['ID']);
+            $updateFields['FIELDS'] = \CIBlock::GetFields($iblockData['ID']);
+            $updateFields['GROUP_ID'] = \CIBlock::GetGroupPermissions($iblockData['ID']);
+            $code = $code . $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Update',
+                    array($updateFields['CODE'], $updateFields)) . PHP_EOL . PHP_EOL;
         }
         return $code;
     }
@@ -80,9 +84,9 @@ class IblockGen extends CodeGenerator
      * @return mixed
      * @internal param array $params
      */
-    public function generateDeleteCode( $iblockCode )
+    public function generateDeleteCode($iblockCode)
     {
-        return $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Delete', array( $iblockCode ) );
+        return $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Delete', array($iblockCode));
     }
 
 

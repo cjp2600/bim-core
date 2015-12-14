@@ -1,9 +1,12 @@
 <?php
 
 namespace Bim\Db\Iblock;
+
 \CModule::IncludeModule("iblock");
 
 /**
+ * Класс для работы с Инфоблоками.
+ *
  * Class IblockIntegrate
  *
  * Documentation: http://cjp2600.github.io/bim-core/
@@ -12,31 +15,32 @@ namespace Bim\Db\Iblock;
 class IblockIntegrate
 {
     /**
-     * Add Iblock
-     * @param $arFields
+     * Метод создания инфоблока.
+     *
+     * @param $input
+     * @param bool $isGenerated
      * @return bool
      * @throws \Exception
-     * @internal param bool $isRevert
      */
-    public function Add( $arFields )
+    public static function Add($input,$isGenerated = true)
     {
-        if (isset($arFields['SORT'])) {
-            if (!is_int($arFields['SORT'])) {
-                if (intval($arFields['SORT'])) {
-                    $arFields['SORT'] = intval($arFields['SORT']);
+        if (isset($input['SORT'])) {
+            if (!is_int($input['SORT'])) {
+                if (intval($input['SORT'])) {
+                    $input['SORT'] = intval($input['SORT']);
                 } else {
-                    $arFields['SORT'] = 500;
+                    $input['SORT'] = 500;
                 }
             }
         } else {
-            $arFields['SORT'] = 500;
+            $input['SORT'] = 500;
         }
         # default values
-        $arDefaultValues = array(
+        $defaultValue = array(
             'ACTIVE' => 'Y',
-            'LIST_PAGE_URL' => '#SITE_DIR#/'.$arFields['IBLOCK_TYPE_ID'].'/index.php?ID=#IBLOCK_ID#',
-            'SECTION_PAGE_URL' => '#SITE_DIR#/'.$arFields['IBLOCK_TYPE_ID'].'/list.php?SECTION_ID=#ID#',
-            'DETAIL_PAGE_URL' => '#SITE_DIR#/'.$arFields['IBLOCK_TYPE_ID'].'/detail.php?ID=#ID#',
+            'LIST_PAGE_URL' => '#SITE_DIR#/' . $input['IBLOCK_TYPE_ID'] . '/index.php?ID=#IBLOCK_ID#',
+            'SECTION_PAGE_URL' => '#SITE_DIR#/' . $input['IBLOCK_TYPE_ID'] . '/list.php?SECTION_ID=#ID#',
+            'DETAIL_PAGE_URL' => '#SITE_DIR#/' . $input['IBLOCK_TYPE_ID'] . '/detail.php?ID=#ID#',
             'INDEX_SECTION' => 'Y',
             'INDEX_ELEMENT' => 'Y',
             'PICTURE' => array(
@@ -69,43 +73,45 @@ class IblockIntegrate
             ),
             'VERSION' => 1
         );
-        if ( !strlen( $arFields['CODE'] ) ) {
+        if (!strlen($input['CODE'])) {
             throw new \Exception('Not found iblock code');
         }
-        $iblockDbRes = \CIBlock::GetList( array(), array('CODE' => $arFields['CODE'],'CHECK_PERMISSIONS'=>'N' ) );
-        if ( $iblockDbRes !== false && $iblockDbRes->SelectedRowsCount() ) {
-            throw new \Exception('Iblock with code = "' . $arFields['CODE'] .'" already exist.');
+        $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $input['CODE'], 'CHECK_PERMISSIONS' => 'N'));
+        if ($iblockDbRes !== false && $iblockDbRes->SelectedRowsCount()) {
+            throw new \Exception('Iblock with code = "' . $input['CODE'] . '" already exist.');
         }
-        foreach ($arDefaultValues as $DefaultName => $DefaultValue) {
-            if (!isset($arFields[$DefaultName]) || empty($arFields[$DefaultName])) {
-                $arFields[$DefaultName] = $DefaultValue;
+        foreach ($defaultValue as $defaultName => $defaultValue) {
+            if (!isset($input[$defaultName]) || empty($input[$defaultName])) {
+                $input[$defaultName] = $defaultValue;
             }
         }
-        $CIblock = new \CIBlock();
-        $ID = $CIblock->Add($arFields);
+        $iBlock = new \CIBlock();
+        $ID = $iBlock->Add($input);
         if ($ID) {
-           return $ID;
+            return $ID;
         } else {
-            throw new \Exception($CIblock->LAST_ERROR);
+            throw new \Exception($iBlock->LAST_ERROR);
         }
         return false;
     }
 
     /**
-     * Delete
+     * Метод удаления информационного блока.
+     *
      * @param $IblockCode
+     * @param bool $isGenerated
      * @return bool
      * @throws \Exception
      */
-    public function Delete($IblockCode)
+    public static function Delete($IblockCode,$isGenerated = true)
     {
-        $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode,'CHECK_PERMISSIONS'=>'N'));
-        if ($arIblock = $dbIblock->Fetch()) {
-            $iblockElDbRes = \CIBlockElement::GetList(array(), array('IBLOCK_ID' => $arIblock['ID']));
+        $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode, 'CHECK_PERMISSIONS' => 'N'));
+        if ($item = $dbIblock->Fetch()) {
+            $iblockElDbRes = \CIBlockElement::GetList(array(), array('IBLOCK_ID' => $item['ID']));
             if ($iblockElDbRes !== false && $iblockElDbRes->SelectedRowsCount()) {
-                throw new \Exception('Can not delete iblock id = ' . $arIblock['ID'] . ' have elements');
+                throw new \Exception('Can not delete iblock id = ' . $item['ID'] . ' have elements');
             }
-            if (\CIBlock::Delete($arIblock['ID'])) {
+            if (\CIBlock::Delete($item['ID'])) {
                 return true;
             } else {
                 throw new \Exception('Iblock delete error!');

@@ -13,7 +13,7 @@ class GenCommand extends BaseCommand
 
     const END_LOOP_SYMBOL = "";
 
-    private $gen_obj = null;
+    private $generateObject = null;
     private $isMulti = false;
     private $multiAddReturn = array();
     private $multiDeleteReturn = array();
@@ -30,16 +30,14 @@ class GenCommand extends BaseCommand
     public function execute(array $args, array $options = array())
     {
         if (isset($args[0])) {
-
             #if gen multi command generator
             if (strtolower($args[0]) == "multi") {
                 $this->multiCommands($args, $options);
             } else {
-
                 # single command generator
                 if (strstr($args[0], ':')) {
                     $ex = explode(":", $args[0]);
-                    $this->setGenObj(Bim\Db\Lib\CodeGenerator::buildHandler(ucfirst($ex[0])));
+                    $this->setGenerateObject(Bim\Db\Lib\CodeGenerator::buildHandler(ucfirst($ex[0])));
                     $methodName = ucfirst($ex[0]) . ucfirst($ex[1]);
                 } else {
                     throw new Exception("Improperly formatted command. Example: php bim gen iblock:add");
@@ -50,9 +48,7 @@ class GenCommand extends BaseCommand
                 } else {
                     throw new Exception("Missing command, see help Example: php bim help gen");
                 }
-
             }
-
         } else {
             $this->createOther($args, $options);
         }
@@ -80,7 +76,8 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put block type id - no default/required";
-                $iblocktypeId = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $iblocktypeId = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:',
+                        \ConsoleKit\Colors::YELLOW), '', false);
                 $iblockDbRes = \CIBlockType::GetByID($iblocktypeId);
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
@@ -95,8 +92,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "add";
         $this->_save(
-            $this->gen_obj->generateAddCode($iblocktypeId),
-            $this->gen_obj->generateDeleteCode($iblocktypeId)
+            $this->generateObject->generateAddCode($iblocktypeId),
+            $this->generateObject->generateDeleteCode($iblocktypeId)
             , $desc,
             $autoTag
         );
@@ -117,7 +114,8 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put block type id - no default/required";
-                $iblocktypeId = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $iblocktypeId = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:',
+                        \ConsoleKit\Colors::YELLOW), '', false);
                 $iblockDbRes = \CIBlockType::GetByID($iblocktypeId);
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
@@ -132,8 +130,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "delete";
         $this->_save(
-            $this->gen_obj->generateDeleteCode($iblocktypeId),
-            $this->gen_obj->generateAddCode($iblocktypeId)
+            $this->generateObject->generateDeleteCode($iblocktypeId),
+            $this->generateObject->generateAddCode($iblocktypeId)
             , $desc,
             $autoTag
         );
@@ -164,8 +162,9 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put code information block - no default/required";
-                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code,'CHECK_PERMISSIONS'=>'N'));
+                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -179,8 +178,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "add";
         $this->_save(
-            $this->gen_obj->generateAddCode($code),
-            $this->gen_obj->generateDeleteCode($code)
+            $this->generateObject->generateAddCode($code),
+            $this->generateObject->generateDeleteCode($code)
             , $desc,
             $autoTag
         );
@@ -202,8 +201,9 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put code information block - no default/required";
-                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code,'CHECK_PERMISSIONS'=>'N'));
+                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -217,8 +217,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "delete";
         $this->_save(
-            $this->gen_obj->generateDeleteCode($code),
-            $this->gen_obj->generateAddCode($code)
+            $this->generateObject->generateDeleteCode($code),
+            $this->generateObject->generateAddCode($code)
             , $desc,
             $autoTag
         );
@@ -248,8 +248,9 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put code information block - no default/required";
-                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code,'CHECK_PERMISSIONS'=>'N'));
+                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -263,9 +264,11 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put property code - no default/required";
-                $propertyCode = $dialog->ask($desk . PHP_EOL . $this->color('[PROPERTY_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $propertyCode = $dialog->ask($desk . PHP_EOL . $this->color('[PROPERTY_CODE]:',
+                        \ConsoleKit\Colors::YELLOW), '', false);
                 $IblockProperty = new \CIBlockProperty();
-                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $code, 'CODE' => $propertyCode));
+                $dbIblockProperty = $IblockProperty->GetList(array(),
+                    array('IBLOCK_CODE' => $code, 'CODE' => $propertyCode));
                 if ($arIblockProperty = $dbIblockProperty->Fetch()) {
                     $do = false;
                 } else {
@@ -286,8 +289,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "add";
         $this->_save(
-            $this->gen_obj->generateAddCode($params),
-            $this->gen_obj->generateDeleteCode($params)
+            $this->generateObject->generateAddCode($params),
+            $this->generateObject->generateDeleteCode($params)
             , $desc,
             $autoTag
         );
@@ -310,8 +313,9 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put code information block - no default/required";
-                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code,'CHECK_PERMISSIONS'=>'N'));
+                $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
+                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -325,9 +329,11 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put property code - no default/required";
-                $propertyCode = $dialog->ask($desk . PHP_EOL . $this->color('[PROPERTY_CODE]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $propertyCode = $dialog->ask($desk . PHP_EOL . $this->color('[PROPERTY_CODE]:',
+                        \ConsoleKit\Colors::YELLOW), '', false);
                 $IblockProperty = new \CIBlockProperty();
-                $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $code, 'CODE' => $propertyCode));
+                $dbIblockProperty = $IblockProperty->GetList(array(),
+                    array('IBLOCK_CODE' => $code, 'CODE' => $propertyCode));
                 if ($arIblockProperty = $dbIblockProperty->Fetch()) {
                     $do = false;
                 } else {
@@ -348,8 +354,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "delete";
         $this->_save(
-            $this->gen_obj->generateDeleteCode($params),
-            $this->gen_obj->generateAddCode($params)
+            $this->generateObject->generateDeleteCode($params),
+            $this->generateObject->generateAddCode($params)
             , $desc,
             $autoTag
         );
@@ -378,7 +384,8 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put id Highloadblock - no default/required";
-                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
                 $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById($hlId)->fetch();
                 if ($hlblock) {
                     $do = false;
@@ -393,8 +400,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "add";
         $this->_save(
-            $this->gen_obj->generateAddCode($hlId),
-            $this->gen_obj->generateDeleteCode($hlId)
+            $this->generateObject->generateAddCode($hlId),
+            $this->generateObject->generateDeleteCode($hlId)
             , $desc,
             $autoTag
         );
@@ -415,7 +422,8 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put id Highloadblock - no default/required";
-                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
                 $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById($hlId)->fetch();
                 if ($hlblock) {
                     $do = false;
@@ -430,8 +438,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "delete";
         $this->_save(
-            $this->gen_obj->generateDeleteCode($hlId),
-            $this->gen_obj->generateAddCode($hlId)
+            $this->generateObject->generateDeleteCode($hlId),
+            $this->generateObject->generateAddCode($hlId)
             , $desc,
             $autoTag
         );
@@ -452,7 +460,8 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put id Highloadblock - no default/required";
-                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
                 $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById($hlId)->fetch();
                 if ($hlblock) {
                     $do = false;
@@ -467,7 +476,8 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put id HighloadblockField (UserField) - no default/required";
-                $hlFieldId = $dialog->ask($desk . PHP_EOL . $this->color('[USER_FIELD_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $hlFieldId = $dialog->ask($desk . PHP_EOL . $this->color('[USER_FIELD_ID]:',
+                        \ConsoleKit\Colors::YELLOW), '', false);
                 $userFieldData = \CUserTypeEntity::GetByID($hlFieldId);
                 if ($userFieldData === false || empty($userFieldData)) {
                     $this->error('UserField with id = "' . $hlFieldId . '" not exist.');
@@ -483,8 +493,8 @@ class GenCommand extends BaseCommand
         # set
         $autoTag = "add";
         $this->_save(
-            $this->gen_obj->generateAddCode(array("hlblockId" => $hlId, "hlFieldId" => $hlFieldId)),
-            $this->gen_obj->generateDeleteCode(array("hlblockId" => $hlId, "hlFieldId" => $hlFieldId))
+            $this->generateObject->generateAddCode(array("hlblockId" => $hlId, "hlFieldId" => $hlFieldId)),
+            $this->generateObject->generateDeleteCode(array("hlblockId" => $hlId, "hlFieldId" => $hlFieldId))
             , $desc,
             $autoTag
         );
@@ -505,7 +515,8 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put id Highloadblock - no default/required";
-                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $hlId = $dialog->ask($desk . PHP_EOL . $this->color('[HLBLOCK_ID]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
                 $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById($hlId)->fetch();
                 if ($hlblock) {
                     $do = false;
@@ -520,7 +531,8 @@ class GenCommand extends BaseCommand
             $do = true;
             while ($do) {
                 $desk = "Put id HighloadblockField (UserField) - no default/required";
-                $hlFieldId = $dialog->ask($desk . PHP_EOL . $this->color('[USER_FIELD_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $hlFieldId = $dialog->ask($desk . PHP_EOL . $this->color('[USER_FIELD_ID]:',
+                        \ConsoleKit\Colors::YELLOW), '', false);
                 $userFieldData = \CUserTypeEntity::GetByID($hlFieldId);
                 if ($userFieldData === false || empty($userFieldData)) {
                     $this->error('UserField with id = "' . $hlFieldId . '" not exist.');
@@ -536,8 +548,8 @@ class GenCommand extends BaseCommand
         # set
         $autoTag = "delete";
         $this->_save(
-            $this->gen_obj->generateDeleteCode(array("hlblockId" => $hlId, "hlFieldId" => $hlFieldId)),
-            $this->gen_obj->generateAddCode(array("hlblockId" => $hlId, "hlFieldId" => $hlFieldId))
+            $this->generateObject->generateDeleteCode(array("hlblockId" => $hlId, "hlFieldId" => $hlFieldId)),
+            $this->generateObject->generateAddCode(array("hlblockId" => $hlId, "hlFieldId" => $hlFieldId))
             , $desc,
             $autoTag
         );
@@ -566,7 +578,8 @@ class GenCommand extends BaseCommand
             while ($do) {
                 $desk = "Put id Group - no default/required";
 
-                $groupId = $dialog->ask($desk . PHP_EOL . $this->color('[GROUP_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $groupId = $dialog->ask($desk . PHP_EOL . $this->color('[GROUP_ID]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
 
                 $groupDbRes = \CGroup::GetList($by = 'id', $order = 'desc', array('ID' => $groupId));
                 if ($groupDbRes === false || !$groupDbRes->SelectedRowsCount()) {
@@ -582,8 +595,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "add";
         $this->_save(
-            $this->gen_obj->generateAddCode($groupId),
-            $this->gen_obj->generateDeleteCode($groupId)
+            $this->generateObject->generateAddCode($groupId),
+            $this->generateObject->generateDeleteCode($groupId)
             , $desc,
             $autoTag
         );
@@ -604,7 +617,8 @@ class GenCommand extends BaseCommand
             while ($do) {
                 $desk = "Put id Group - no default/required";
 
-                $groupId = $dialog->ask($desk . PHP_EOL . $this->color('[GROUP_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $groupId = $dialog->ask($desk . PHP_EOL . $this->color('[GROUP_ID]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
 
                 $groupDbRes = \CGroup::GetList($by = 'id', $order = 'desc', array('ID' => $groupId));
                 if ($groupDbRes === false || !$groupDbRes->SelectedRowsCount()) {
@@ -620,8 +634,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "delete";
         $this->_save(
-            $this->gen_obj->generateDeleteCode($groupId),
-            $this->gen_obj->generateAddCode($groupId)
+            $this->generateObject->generateDeleteCode($groupId),
+            $this->generateObject->generateAddCode($groupId)
             , $desc,
             $autoTag
         );
@@ -642,7 +656,8 @@ class GenCommand extends BaseCommand
             while ($do) {
                 $desk = "Put id Site - no default/required";
 
-                $siteId = $dialog->ask($desk . PHP_EOL . $this->color('[SITE_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $siteId = $dialog->ask($desk . PHP_EOL . $this->color('[SITE_ID]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
 
                 $obSite = new \CSite;
                 $dbSite = $obSite->GetList($by = "sort", $order = "desc", array('ID' => $siteId));
@@ -659,8 +674,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "add";
         $this->_save(
-            $this->gen_obj->generateAddCode($siteId),
-            $this->gen_obj->generateDeleteCode($siteId)
+            $this->generateObject->generateAddCode($siteId),
+            $this->generateObject->generateDeleteCode($siteId)
             , $desc,
             $autoTag
         );
@@ -681,7 +696,8 @@ class GenCommand extends BaseCommand
             while ($do) {
                 $desk = "Put id Site - no default/required";
 
-                $siteId = $dialog->ask($desk . PHP_EOL . $this->color('[SITE_ID]:', \ConsoleKit\Colors::YELLOW), '', false);
+                $siteId = $dialog->ask($desk . PHP_EOL . $this->color('[SITE_ID]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
 
                 $obSite = new \CSite;
                 $dbSite = $obSite->GetList($by = "sort", $order = "desc", array('ID' => $siteId));
@@ -698,8 +714,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "delete";
         $this->_save(
-            $this->gen_obj->generateDeleteCode($siteId),
-            $this->gen_obj->generateAddCode($siteId)
+            $this->generateObject->generateDeleteCode($siteId),
+            $this->generateObject->generateAddCode($siteId)
             , $desc,
             $autoTag
         );
@@ -711,9 +727,11 @@ class GenCommand extends BaseCommand
      *
      * MultiCommands !
      *
-     *
+     * @param array $args
+     * @param array $options
+     * @return bool
+     * @throws Exception
      */
-
     public function multiCommands(array $args, array $options = array())
     {
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
@@ -724,13 +742,11 @@ class GenCommand extends BaseCommand
             if (!empty($headers)) {
                 $this->padding(implode(PHP_EOL, $headers));
             }
-
-            $current_command = $this->getMultiCurrentCommand();
-
-            if (is_null($current_command)) {
-
+            $currentCommand = $this->getMultiCurrentCommand();
+            if (is_null($currentCommand)) {
                 $desk = "Put generation commands:";
-                $command = $dialog->ask($desk . " " . $this->color('php bim gen >', \ConsoleKit\Colors::MAGENTA), '', false);
+                $command = $dialog->ask($desk . " " . $this->color('php bim gen >', \ConsoleKit\Colors::MAGENTA), '',
+                    false);
                 if (!empty($command)) {
                     if ($command != self::END_LOOP_SYMBOL) {
                         $this->setMulti(true);
@@ -742,14 +758,14 @@ class GenCommand extends BaseCommand
                 } else {
                     $do = false;
                 }
-
             } else {
-                $ask = $dialog->ask("You want to repeat command (" . $this->color($current_command, \ConsoleKit\Colors::MAGENTA) . ")", 'Y', true);
+                $ask = $dialog->ask("You want to repeat command (" . $this->color($currentCommand,
+                        \ConsoleKit\Colors::MAGENTA) . ")", 'Y', true);
                 if (strtolower($ask) == "y") {
 
                     $this->setMulti(true);
-                    $this->setMultiCurrentCommand($current_command);
-                    $this->execute(array($current_command));
+                    $this->setMultiCurrentCommand($currentCommand);
+                    $this->execute(array($currentCommand));
 
                 } else {
                     $this->setMultiCurrentCommand(null);
@@ -773,20 +789,19 @@ class GenCommand extends BaseCommand
         $down = $this->getMultiDeleteReturn();
 
         if (count($up) == count($down)) {
-
             foreach (array("add", "delete") as $it) {
 
                 $i = 0;
                 foreach ($up[$it] as $row) {
                     # set
-                    $in_desc = $desc . " #" . $it;
-                    $name_migration = $this->getMigrationName() + ($i * 60);
-                    $this->saveTemplate($name_migration,
+                    $tmpDesc = $desc . " #" . $it;
+                    $migrationName = $this->getMigrationName() + ($i * 60);
+                    $this->saveTemplate($migrationName,
                         $this->setTemplate(
-                            $name_migration,
+                            $migrationName,
                             $row,
                             $down[$it][$i],
-                            $in_desc,
+                            $tmpDesc,
                             get_current_user()
                         ), $it);
                     $i++;
@@ -840,7 +855,8 @@ class GenCommand extends BaseCommand
             if (empty($desc)) {
                 $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
                 $desk = "Type Description of migration file. Example: #TASK-124";
-                $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "", false);
+                $desc = $dialog->ask($desk . PHP_EOL . $this->color('Description:', \ConsoleKit\Colors::BLUE), "",
+                    false);
             }
 
             if ($tag) {
@@ -870,17 +886,17 @@ class GenCommand extends BaseCommand
     /**
      * @return null
      */
-    public function getGenObj()
+    public function getGenerateObject()
     {
-        return $this->gen_obj;
+        return $this->generateObject;
     }
 
     /**
-     * @param null $gen_obj
+     * @param null $generateObject
      */
-    public function setGenObj($gen_obj)
+    public function setGenerateObject($generateObject)
     {
-        $this->gen_obj = $gen_obj;
+        $this->generateObject = $generateObject;
     }
 
     /**
