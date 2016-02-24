@@ -26,7 +26,7 @@ class IblockGen extends CodeGenerator
     {
         $iblock = new \CIBlock();
         $return = array();
-        $iblockObject = $iblock->GetList(array(), array('CODE' => $IblockCode));
+        $iblockObject = $iblock->GetList(array(), array('CODE' => $IblockCode, 'CHECK_PERMISSIONS'=>'N'));
         if ($item = $iblockObject->Fetch()) {
             $item['GROUP_ID'] = \CIBlock::GetGroupPermissions($item['ID']);
             $item['FIELDS'] = \CIBlock::GetFields($item['ID']);
