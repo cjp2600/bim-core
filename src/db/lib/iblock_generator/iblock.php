@@ -36,16 +36,18 @@ class IblockGen extends CodeGenerator
                 $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $item['CODE']));
                 while ($arIblockProperty = $dbIblockProperty->Fetch()) {
                     unset($arIblockProperty['ID']);
-                    unset($arIblockProperty['IBLOCK_ID']);
+                    //unset($arIblockProperty['IBLOCK_ID']);
                     $arIblockProperty['IBLOCK_CODE'] = $item['CODE'];
-                    $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(),
+                    $dbPropertyValues = \CIBlockPropertyEnum::GetList(
+                        array(),
                         array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
-                    while ($arPropertyValues = $dbPropertyValues->Fetch()) {
+                    while($arPropertyValues = $dbPropertyValues->Fetch()) {
+                        unset($arPropertyValues['ID']);
                         unset($arPropertyValues['PROPERTY_ID']);
+                        $arIblockProperty['VALUES'][] = $arPropertyValues;
                     }
-                    $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
                     $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add',
-                        array($arIblockProperty));
+                                                        array($arIblockProperty));
                 }
                 return implode(PHP_EOL, $return);
             } else {
