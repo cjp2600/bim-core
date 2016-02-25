@@ -46,6 +46,10 @@ class IblockGen extends CodeGenerator
                         unset($arPropertyValues['PROPERTY_ID']);
                         $arIblockProperty['VALUES'][] = $arPropertyValues;
                     }
+                    if(!is_null($arIblockProperty['LINK_IBLOCK_ID'])) {
+                        $arLinkedIBlock = $iblock->GetList(array(), array('ID' => $arIblockProperty['LINK_IBLOCK_ID'], 'CHECK_PERMISSIONS'=>'N'))->Fetch();
+                        $arIblockProperty['LINK_IBLOCK_CODE'] = $arLinkedIBlock['CODE'];
+                    }
                     $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add',
                                                         array($arIblockProperty));
                 }
