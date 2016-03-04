@@ -29,6 +29,17 @@ class IblockGen extends CodeGenerator
         $iblockObject = $iblock->GetList(array(), array('CODE' => $IblockCode, 'CHECK_PERMISSIONS'=>'N'));
         if ($item = $iblockObject->Fetch()) {
             $item['GROUP_ID'] = \CIBlock::GetGroupPermissions($item['ID']);
+
+            // Перегоняем id-шники групп в имена групп (если заданы в базе)
+            $arGroups = BitrixUserGroupsHelper::getUserGroups();
+            foreach($item['GROUP_ID'] as $groupId => $right){
+                $groupCode = BitrixUserGroupsHelper::getUserGroupCode($groupId, $arGroups);
+                if($groupCode != null && strlen($groupCode) > 0) {
+                    $item['GROUP_ID'][$groupCode] = $item['GROUP_ID'][$groupId];
+                    unset($item['GROUP_ID'][$groupId]);
+                }
+            }
+            
             $item['FIELDS'] = \CIBlock::GetFields($item['ID']);
             unset($item['ID']);
             if ($return[] = $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Add', array($item))) {

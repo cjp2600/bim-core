@@ -46,7 +46,8 @@
 		    "src/db/entity",
 			"src/db/iblock",
 			"src/db/main",
-		    "src/cmd"
+		    "src/cmd",
+			"src/util"
 		]
 	},
 	"config": {

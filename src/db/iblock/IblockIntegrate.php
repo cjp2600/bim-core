@@ -85,6 +85,17 @@ class IblockIntegrate
                 $input[$defaultName] = $defaultValue;
             }
         }
+
+        // Перегоняем имена групп (если были изменены при накатывании миграции) в идентификаторы групп
+        $arGroups = BitrixUserGroupsHelper::getUserGroups();
+        foreach($input['GROUP_ID'] as $groupCode => $right) {
+            $groupId = BitrixUserGroupsHelper::getUserGroupId($groupCode, $arGroups);
+            if($groupId != null && strlen($groupId) > 0) {
+                $input['GROUP_ID'][$groupId] = $input['GROUP_ID'][$groupCode];
+                unset($input['GROUP_ID'][$groupCode]);
+            }
+        }
+
         $iBlock = new \CIBlock();
         $ID = $iBlock->Add($input);
         if ($ID) {
