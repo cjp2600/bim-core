@@ -3,6 +3,7 @@
 namespace Bim\Db\Lib;
 
 use Bim\Db\Lib\CodeGenerator;
+use Bim\Util\BitrixUserGroupsHelper;
 
 /**
  * Class IblockGen

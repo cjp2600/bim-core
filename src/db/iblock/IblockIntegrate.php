@@ -2,6 +2,8 @@
 
 namespace Bim\Db\Iblock;
 
+use Bim\Util\BitrixUserGroupsHelper;
+
 \CModule::IncludeModule("iblock");
 
 /**
