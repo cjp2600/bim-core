@@ -3,6 +3,7 @@
 namespace Bim\Db\Lib;
 
 use Bim\Db\Lib\CodeGenerator;
+use Bim\Util\BitrixUserGroupsHelper;
 
 /**
  * Class IblockGen
@@ -29,6 +30,17 @@ class IblockGen extends CodeGenerator
         $iblockObject = $iblock->GetList(array(), array('CODE' => $IblockCode, 'CHECK_PERMISSIONS'=>'N'));
         if ($item = $iblockObject->Fetch()) {
             $item['GROUP_ID'] = \CIBlock::GetGroupPermissions($item['ID']);
+
+            // Перегоняем id-шники групп в имена групп (если заданы в базе)
+            $arGroups = BitrixUserGroupsHelper::getUserGroups();
+            foreach($item['GROUP_ID'] as $groupId => $right){
+                $groupCode = BitrixUserGroupsHelper::getUserGroupCode($groupId, $arGroups);
+                if($groupCode != null && strlen($groupCode) > 0) {
+                    $item['GROUP_ID'][$groupCode] = $item['GROUP_ID'][$groupId];
+                    unset($item['GROUP_ID'][$groupId]);
+                }
+            }
+            
             $item['FIELDS'] = \CIBlock::GetFields($item['ID']);
             unset($item['ID']);
             if ($return[] = $this->getMethodContent('Bim\Db\Iblock\IblockIntegrate', 'Add', array($item))) {
@@ -36,16 +48,22 @@ class IblockGen extends CodeGenerator
                 $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $item['CODE']));
                 while ($arIblockProperty = $dbIblockProperty->Fetch()) {
                     unset($arIblockProperty['ID']);
-                    unset($arIblockProperty['IBLOCK_ID']);
+                    //unset($arIblockProperty['IBLOCK_ID']);
                     $arIblockProperty['IBLOCK_CODE'] = $item['CODE'];
-                    $dbPropertyValues = \CIBlockPropertyEnum::GetList(array(),
+                    $dbPropertyValues = \CIBlockPropertyEnum::GetList(
+                        array(),
                         array("IBLOCK_ID" => $arIblockProperty['IBLOCK_ID'], "CODE" => $arIblockProperty['CODE']));
-                    while ($arPropertyValues = $dbPropertyValues->Fetch()) {
+                    while($arPropertyValues = $dbPropertyValues->Fetch()) {
+                        unset($arPropertyValues['ID']);
                         unset($arPropertyValues['PROPERTY_ID']);
+                        $arIblockProperty['VALUES'][] = $arPropertyValues;
                     }
-                    $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
+                    if(!is_null($arIblockProperty['LINK_IBLOCK_ID'])) {
+                        $arLinkedIBlock = $iblock->GetList(array(), array('ID' => $arIblockProperty['LINK_IBLOCK_ID'], 'CHECK_PERMISSIONS'=>'N'))->Fetch();
+                        $arIblockProperty['LINK_IBLOCK_CODE'] = $arLinkedIBlock['CODE'];
+                    }
                     $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Add',
-                        array($arIblockProperty));
+                                                        array($arIblockProperty));
                 }
                 return implode(PHP_EOL, $return);
             } else {
