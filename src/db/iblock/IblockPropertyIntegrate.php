@@ -1,20 +1,23 @@
 <?php
 namespace Bim\Db\Iblock;
+
 \CModule::IncludeModule("iblock");
+
 /**
  * Class IblockPropertyIntegrate
  *
  * Documentation: http://cjp2600.github.io/bim-core/
  * @package Bim\Db\Iblock
  */
-class IblockPropertyIntegrate {
+class IblockPropertyIntegrate
+{
     /**
      * Add
      * @param $arFields
      * @return bool
      * @throws \Exception
      */
-	public function Add($arFields)
+    public function Add($arFields)
     {
         if (isset($arFields['SORT'])) {
             if (!is_int($arFields['SORT'])) {
@@ -52,7 +55,8 @@ class IblockPropertyIntegrate {
         );
         if ($arFields['IBLOCK_CODE']) {
             unset($arFields['IBLOCK_ID']);
-            $rsIBlock = \CIBlock::GetList(array(), array('CODE' => $arFields['IBLOCK_CODE'],'CHECK_PERMISSIONS'=>'N'));
+            $rsIBlock = \CIBlock::GetList(array(),
+                array('CODE' => $arFields['IBLOCK_CODE'], 'CHECK_PERMISSIONS' => 'N'));
             if ($arIBlock = $rsIBlock->Fetch()) {
                 $arFields['IBLOCK_ID'] = $arIBlock['ID'];
             } else {
@@ -62,20 +66,23 @@ class IblockPropertyIntegrate {
         if (!strlen($arFields['CODE'])) {
             throw new \Exception(__METHOD__ . ' Not found property code');
         }
-        $iblockPropDbRes = \CIBlockProperty::GetList(array(), array('IBLOCK_ID' => $arFields['IBLOCK_ID'], 'CODE' => $arFields['CODE']));
+        $iblockPropDbRes = \CIBlockProperty::GetList(array(),
+            array('IBLOCK_ID' => $arFields['IBLOCK_ID'], 'CODE' => $arFields['CODE']));
         if ($iblockPropDbRes !== false && $iblockPropDbRes->SelectedRowsCount()) {
             throw new \Exception(__METHOD__ . 'Property with code = "' . $arFields['CODE'] . '" ');
         }
         if ($arFields['LINK_IBLOCK_CODE']) {
             unset($arFields['LINK_IBLOCK_ID']);
-            $rsIBlock = \CIBlock::GetList(array(), array('CODE' => $arFields['LINK_IBLOCK_CODE'],'CHECK_PERMISSIONS'=>'N'));
+            $rsIBlock = \CIBlock::GetList(array(),
+                array('CODE' => $arFields['LINK_IBLOCK_CODE'], 'CHECK_PERMISSIONS' => 'N'));
             if ($arIBlock = $rsIBlock->Fetch()) {
                 $arFields['LINK_IBLOCK_ID'] = $arIBlock['ID'];
             }
         }
         foreach ($arDefaultValues as $DefaultName => $DefaultValue) {
-            if (!isset($arFields[$DefaultName]) || empty($arFields[$DefaultName]))
+            if (!isset($arFields[$DefaultName]) || empty($arFields[$DefaultName])) {
                 $arFields[$DefaultName] = $DefaultValue;
+            }
         }
         $objCIBlockProperty = new \CIBlockProperty();
         unset($arFields['ID']);
@@ -97,7 +104,8 @@ class IblockPropertyIntegrate {
      */
     public function Delete($sIBlockCode, $sPropertyCode)
     {
-        $rsProperty = \CIBlockProperty::GetList(array(), array('IBLOCK_CODE' => $sIBlockCode, 'CODE' => $sPropertyCode));
+        $rsProperty = \CIBlockProperty::GetList(array(),
+            array('IBLOCK_CODE' => $sIBlockCode, 'CODE' => $sPropertyCode));
         if ($arProperty = $rsProperty->Fetch()) {
             if (\CIBlockProperty::Delete($arProperty['ID'])) {
                 return true;

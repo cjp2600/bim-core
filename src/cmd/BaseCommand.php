@@ -3,8 +3,11 @@
 use ConsoleKit\Command,
     ConsoleKit\Colors;
 
-abstract class BaseCommand extends Command {
-
+/**
+ * Class BaseCommand
+ */
+abstract class BaseCommand extends Command
+{
     /**
      * info
      * @param $text
@@ -52,12 +55,12 @@ abstract class BaseCommand extends Command {
      * @param string $type up|down
      * @return mixed|string
      */
-    public function setTemplateMethod($name, $method, $data = array(),$type = "up")
+    public function setTemplateMethod($name, $method, $data = array(), $type = "up")
     {
-        $template = file_get_contents(__DIR__.'/../db/template/'.$name.'/'.$method.'/'.$type.'.txt');
+        $template = file_get_contents(__DIR__ . '/../db/template/' . $name . '/' . $method . '/' . $type . '.txt');
         if (!empty($data)) {
             foreach ($data as $key => $val) {
-                $template = str_replace("#".$key."#", $val, $template);
+                $template = str_replace("#" . $key . "#", $val, $template);
             }
         }
         return $template;
@@ -72,10 +75,16 @@ abstract class BaseCommand extends Command {
      * @param string $author
      * @return mixed|string
      */
-    public function setTemplate($class_name, $up_content, $down_content, $desc_content = "",$author = "")
+    public function setTemplate($class_name, $up_content, $down_content, $desc_content = "", $author = "")
     {
-        $template = file_get_contents(__DIR__.'/../db/template/main.txt');
-        $template = str_replace(array("#CLASS_NAME#", "#UP_CONTENT#", "#DOWN_CONTENT#","#DESC_CONTENT#","#AUTHOR_CONTENT#"), array($class_name, $up_content, $down_content,$desc_content,$author), $template);
+        $template = file_get_contents(__DIR__ . '/../db/template/main.txt');
+        $template = str_replace(array(
+            "#CLASS_NAME#",
+            "#UP_CONTENT#",
+            "#DOWN_CONTENT#",
+            "#DESC_CONTENT#",
+            "#AUTHOR_CONTENT#"
+        ), array($class_name, $up_content, $down_content, $desc_content, $author), $template);
         return $template;
     }
 
@@ -86,17 +95,17 @@ abstract class BaseCommand extends Command {
      * @param bool $needUp
      * @throws Exception
      */
-    public function saveTemplate($filename,$template,$needUp = false)
+    public function saveTemplate($filename, $template, $needUp = false)
     {
         $migration_path = $this->getMigrationPath();
-        if (!file_exists($migration_path)){
+        if (!file_exists($migration_path)) {
             mkdir($migration_path, 0777);
         }
-        if (!is_writable($migration_path)){
-            throw new Exception("No permission to create a migration file in the folder ".$migration_path);
+        if (!is_writable($migration_path)) {
+            throw new Exception("No permission to create a migration file in the folder " . $migration_path);
         }
 
-        $save_file = $migration_path.$filename.'.php';
+        $save_file = $migration_path . $filename . '.php';
         $newFile = fopen($save_file, 'w');
         fwrite($newFile, $template);
         fclose($newFile);
@@ -104,8 +113,8 @@ abstract class BaseCommand extends Command {
         if (file_exists($save_file)) {
 
             #if need up
-            if ($needUp){
-                $this->autoUpMethod($needUp,$save_file,$filename);
+            if ($needUp) {
+                $this->autoUpMethod($needUp, $save_file, $filename);
             }
 
             # output
@@ -113,9 +122,8 @@ abstract class BaseCommand extends Command {
             $this->success($save_file);
 
         } else {
-            throw new Exception("Failed to create the migration file ".$save_file);
+            throw new Exception("Failed to create the migration file " . $save_file);
         }
-
     }
 
     /**
@@ -126,7 +134,7 @@ abstract class BaseCommand extends Command {
      * @throws Exception
      * @throws \Bim\Db\Entity\Exception
      */
-    public function autoUpMethod($needUp,$save_file,$migration)
+    public function autoUpMethod($needUp, $save_file, $migration)
     {
         $time_start = microtime(true);
         $this->info(" -> Start auto applying migration:");
@@ -148,10 +156,12 @@ abstract class BaseCommand extends Command {
                             }
                         }
                     } else {
-                        $this->writeln(Colors::colorize("     - error : " . $migration, Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
+                        $this->writeln(Colors::colorize("     - error : " . $migration,
+                                Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
                     }
                 } catch (Exception $e) {
-                    $this->writeln(Colors::colorize("     - error : " . $migration, Colors::RED) . " " . Colors::colorize("(" . $e->getMessage() . ")", Colors::YELLOW));
+                    $this->writeln(Colors::colorize("     - error : " . $migration,
+                            Colors::RED) . " " . Colors::colorize("(" . $e->getMessage() . ")", Colors::YELLOW));
                 }
             }
         } else {
@@ -168,7 +178,7 @@ abstract class BaseCommand extends Command {
         $time_end = microtime(true);
         $time = $time_end - $time_start;
         $this->writeln('');
-        $this->info(" -> ".round($time, 2)."s");
+        $this->info(" -> " . round($time, 2) . "s");
     }
 
     /**
@@ -178,9 +188,9 @@ abstract class BaseCommand extends Command {
      */
     public function getMigrationPath($full = true)
     {
-        $conf = new \Noodlehaus\Config(__DIR__."/../config/bim.json");
+        $conf = new \Noodlehaus\Config(__DIR__ . "/../config/bim.json");
         $migration_path = $conf->get("migration_path");
-        return ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/".$migration_path."/" : $migration_path;
+        return ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/" . $migration_path . "/" : $migration_path;
     }
 
     /**
@@ -252,8 +262,9 @@ abstract class BaseCommand extends Command {
             if (is_dir($outerDir . "/" . $d)) {
                 $dir_array[$d] = $this->getDirectoryTree($outerDir . "/" . $d, $x);
             } else {
-                if (($x) ? ereg($x . '$', $d) : 1)
+                if (($x) ? ereg($x . '$', $d) : 1) {
                     $dir_array[str_replace("." . $x, "", $d)] = $d;
+                }
             }
         }
 
@@ -295,7 +306,7 @@ abstract class BaseCommand extends Command {
      * @param string $file_name
      * @param string $type
      */
-    public function logging( $input_array = array(), $type = "up", $file_name = 'bim.log' )
+    public function logging($input_array = array(), $type = "up", $file_name = 'bim.log')
     {
         $conf = new \Noodlehaus\Config(__DIR__ . "/../config/bim.json");
         $logging_path = $conf->get("logging_path");
@@ -309,7 +320,7 @@ abstract class BaseCommand extends Command {
             mkdir($log_path, 0777, true);
         }
         file_put_contents($log_path . '/' . $file_name, $return_message, FILE_APPEND);
-        $this->writeln("Put info to log file > ".Colors::colorize($log_path . '/' . $file_name,Colors::GREEN));
+        $this->writeln("Put info to log file > " . Colors::colorize($log_path . '/' . $file_name, Colors::GREEN));
     }
 
     /**
@@ -333,21 +344,150 @@ abstract class BaseCommand extends Command {
             "safe_chars" => "#_-[]()"
         );
         $russian = array(
-            'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф',
-            'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й',
-            'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я');
+            'А',
+            'Б',
+            'В',
+            'Г',
+            'Д',
+            'Е',
+            'Ё',
+            'Ж',
+            'З',
+            'И',
+            'Й',
+            'К',
+            'Л',
+            'М',
+            'Н',
+            'О',
+            'П',
+            'Р',
+            'С',
+            'Т',
+            'У',
+            'Ф',
+            'Х',
+            'Ц',
+            'Ч',
+            'Ш',
+            'Щ',
+            'Ъ',
+            'Ы',
+            'Ь',
+            'Э',
+            'Ю',
+            'Я',
+            'а',
+            'б',
+            'в',
+            'г',
+            'д',
+            'е',
+            'ё',
+            'ж',
+            'з',
+            'и',
+            'й',
+            'к',
+            'л',
+            'м',
+            'н',
+            'о',
+            'п',
+            'р',
+            'с',
+            'т',
+            'у',
+            'ф',
+            'х',
+            'ц',
+            'ч',
+            'ш',
+            'щ',
+            'ъ',
+            'ы',
+            'ь',
+            'э',
+            'ю',
+            'я'
+        );
         $latin = array(
-            'A', 'B', 'V', 'G', 'D', 'E', 'E', 'Gh', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F',
-            'H', 'C', 'Ch', 'Sh', 'Sch', 'Y', 'Y', 'Y', 'E', 'Yu', 'Ya', 'a', 'b', 'v', 'g', 'd', 'e', 'e', 'gh', 'z', 'i',
-            'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'ch', 'sh', 'sch', 'y', 'y', 'y', 'e',
-            'yu', 'ya');
+            'A',
+            'B',
+            'V',
+            'G',
+            'D',
+            'E',
+            'E',
+            'Gh',
+            'Z',
+            'I',
+            'Y',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'R',
+            'S',
+            'T',
+            'U',
+            'F',
+            'H',
+            'C',
+            'Ch',
+            'Sh',
+            'Sch',
+            'Y',
+            'Y',
+            'Y',
+            'E',
+            'Yu',
+            'Ya',
+            'a',
+            'b',
+            'v',
+            'g',
+            'd',
+            'e',
+            'e',
+            'gh',
+            'z',
+            'i',
+            'y',
+            'k',
+            'l',
+            'm',
+            'n',
+            'o',
+            'p',
+            'r',
+            's',
+            't',
+            'u',
+            'f',
+            'h',
+            'c',
+            'ch',
+            'sh',
+            'sch',
+            'y',
+            'y',
+            'y',
+            'e',
+            'yu',
+            'ya'
+        );
         $str = str_replace($russian, $latin, $str);
         $len = strlen($str);
         $str_new = '';
         $last_chr_new = '';
         for ($i = 0; $i < $len; $i++) {
             $chr = substr($str, $i, 1);
-            if (preg_match("/[a-zA-Z0-9]/" . BX_UTF_PCRE_MODIFIER, $chr) || strpos($params["safe_chars"], $chr) !== false) {
+            if (preg_match("/[a-zA-Z0-9]/" . BX_UTF_PCRE_MODIFIER, $chr) || strpos($params["safe_chars"],
+                    $chr) !== false
+            ) {
                 $chr_new = $chr;
             } elseif (preg_match("/\\s/" . BX_UTF_PCRE_MODIFIER, $chr)) {
                 if (
@@ -395,9 +535,9 @@ abstract class BaseCommand extends Command {
     {
         $hashtags = array();
         preg_match_all("/#([\w-]+)/i", $text, $matches);
-        if( !empty($matches[0]) ){
-            foreach( $matches[0] as $hashtag ){
-                $hashtag = strtolower( str_replace('#', '', $hashtag) );
+        if (!empty($matches[0])) {
+            foreach ($matches[0] as $hashtag) {
+                $hashtag = strtolower(str_replace('#', '', $hashtag));
                 $hashtags[] = $hashtag;
             }
         }
@@ -414,7 +554,7 @@ abstract class BaseCommand extends Command {
      */
     public function color_tg($text)
     {
-        return preg_replace("/#([\w-]+)/i", Colors::colorize("$0",Colors::BLUE), $text);
+        return preg_replace("/#([\w-]+)/i", Colors::colorize("$0", Colors::BLUE), $text);
     }
 
     /**
@@ -422,7 +562,7 @@ abstract class BaseCommand extends Command {
      * @param $text
      * @return string
      */
-    public function color($text,$color)
+    public function color($text, $color)
     {
         return Colors::colorize($text, $color);
     }
