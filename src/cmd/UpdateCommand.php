@@ -55,9 +55,19 @@ class UpdateCommand extends BaseCommand
                 $class_name = "Migration" . $id;
 
                 if ($is_new) {
-                    $return_array_new[$id] = array($class_name, "" . $this->getMigrationPath() . $row . "", $name, $data['tags']);
+                    $return_array_new[$id] = array(
+                        $class_name,
+                        "" . $this->getMigrationPath() . $row . "",
+                        $name,
+                        $data['tags']
+                    );
                 } else {
-                    $return_array_apply[$id] = array($class_name, "" . $this->getMigrationPath() . $row . "", $name, $data['tags']);
+                    $return_array_apply[$id] = array(
+                        $class_name,
+                        "" . $this->getMigrationPath() . $row . "",
+                        $name,
+                        $data['tags']
+                    );
                 }
             }
 
@@ -70,9 +80,11 @@ class UpdateCommand extends BaseCommand
                     $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
                     $f_id = $dialog->ask('Type migration id:', $f_id);
                 }
-            } else if (isset($args[0])) {
-                if (is_string($args[0])) {
-                    $f_id = $args[0];
+            } else {
+                if (isset($args[0])) {
+                    if (is_string($args[0])) {
+                        $f_id = $args[0];
+                    }
                 }
             }
             #check tag list
@@ -139,13 +151,14 @@ class UpdateCommand extends BaseCommand
                                 } else {
                                     # rollback transaction
                                     $DB->Rollback();
-                                    $logging_output[] = "error : " . $mig[2] ." - Add in migration table error";
+                                    $logging_output[] = "error : " . $mig[2] . " - Add in migration table error";
                                     throw new Exception("add in migration table error");
                                 }
                             }
                         } else {
-                            $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
-                            $logging_output[] = "error : " . $mig[2] ." - Method Up return false";
+                            $this->writeln(Colors::colorize("     - error : " . $mig[2],
+                                    Colors::RED) . " " . Colors::colorize("(Method Up return false)", Colors::YELLOW));
+                            $logging_output[] = "error : " . $mig[2] . " - Method Up return false";
                         }
                     } catch (Exception $e) {
                         if ((isset($options['debug']))) {
@@ -155,8 +168,10 @@ class UpdateCommand extends BaseCommand
                         }
                         # rollback transaction
                         $DB->Rollback();
-                        $this->writeln(Colors::colorize("     - error : " . $mig[2], Colors::RED) . " " . Colors::colorize("( " . $debug . "" . $e->getMessage() . ")", Colors::YELLOW));
-                        $logging_output[] = "error : " . $mig[2] ."( " . $debug . "" . $e->getMessage() . " )";
+                        $this->writeln(Colors::colorize("     - error : " . $mig[2],
+                                Colors::RED) . " " . Colors::colorize("( " . $debug . "" . $e->getMessage() . ")",
+                                Colors::YELLOW));
+                        $logging_output[] = "error : " . $mig[2] . "( " . $debug . "" . $e->getMessage() . " )";
                     }
                 }
             }
@@ -164,7 +179,7 @@ class UpdateCommand extends BaseCommand
             $time = $time_end - $time_start;
             $this->writeln('');
             $this->info(" -> " . round($time, 2) . "s");
-            $logging_output[] = "End time - ".round($time, 2)."s";
+            $logging_output[] = "End time - " . round($time, 2) . "s";
             if ($logging) {
                 $this->logging($logging_output);
             }

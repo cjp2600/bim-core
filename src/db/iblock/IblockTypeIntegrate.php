@@ -1,6 +1,7 @@
 <?php
 
 namespace Bim\Db\Iblock;
+
 \CModule::IncludeModule("iblock");
 
 /**
@@ -26,37 +27,32 @@ class IblockTypeIntegrate
         if (!isset($arFields['IN_RSS']) || empty($arFields['IN_RSS'])) {
             $arFields['IN_RSS'] = 'N';
         }
-        if (isset($arFields['SORT']))
-        {
-            if (!is_int($arFields['SORT']))
-            {
+        if (isset($arFields['SORT'])) {
+            if (!is_int($arFields['SORT'])) {
                 if (intval($arFields['SORT'])) {
                     $arFields['SORT'] = intval($arFields['SORT']);
                 } else {
                     $arFields['SORT'] = 500;
                 }
             }
-        }
-        else {
+        } else {
             $arFields['SORT'] = 500;
         }
-        if(!isset($arFields['LANG']) || empty($arFields['LANG']))
-        {
+        if (!isset($arFields['LANG']) || empty($arFields['LANG'])) {
             $langDefaults = array(
                 'ru' => array(
-                    'NAME'          => 'Название',
-                    'SECTION_NAME'  => 'Разделы',
-                    'ELEMENT_NAME'  => 'Элементы',
+                    'NAME' => 'Название',
+                    'SECTION_NAME' => 'Разделы',
+                    'ELEMENT_NAME' => 'Элементы',
                 ),
                 'en' => array(
-                    'NAME'          => 'Common',
-                    'SECTION_NAME'  => 'Sections',
-                    'ELEMENT_NAME'  => 'Elements',
+                    'NAME' => 'Common',
+                    'SECTION_NAME' => 'Sections',
+                    'ELEMENT_NAME' => 'Elements',
                 ),
             );
-            $l = \CLanguage::GetList($lby="sort", $lorder="asc");
-            while($arIBTLang = $l->GetNext())
-            {
+            $l = \CLanguage::GetList($lby = "sort", $lorder = "asc");
+            while ($arIBTLang = $l->GetNext()) {
                 if (array_key_exists($arIBTLang["LID"], $langDefaults)) {
                     $arFields["LANG"][$arIBTLang["LID"]] = $langDefaults[$arIBTLang["LID"]];
                 }

@@ -17,13 +17,13 @@ class GroupGen extends CodeGenerator
      * @throws \Exception
      * @internal param array $params
      */
-    public function generateAddCode( $groupId )
+    public function generateAddCode($groupId)
     {
-        $this->checkParams( $groupId );
-        if ( $groupData = $this->ownerItemDbData ) {
-            unset( $groupData['ID'] );
+        $this->checkParams($groupId);
+        if ($groupData = $this->ownerItemDbData) {
+            unset($groupData['ID']);
             $addFields = $groupData;
-           return $this->getMethodContent('Bim\Db\Main\GroupIntegrate', 'Add', array($addFields));
+            return $this->getMethodContent('Bim\Db\Main\GroupIntegrate', 'Add', array($addFields));
         }
         return true;
     }
@@ -34,7 +34,7 @@ class GroupGen extends CodeGenerator
      * @param array $params
      * @return mixed|void
      */
-    public function generateUpdateCode( $params )
+    public function generateUpdateCode($params)
     {
         // Update generate
     }
@@ -47,13 +47,13 @@ class GroupGen extends CodeGenerator
      * @throws \Exception
      * @internal param array $params
      */
-    public function generateDeleteCode( $groupId )
+    public function generateDeleteCode($groupId)
     {
-        $this->checkParams( $groupId );
+        $this->checkParams($groupId);
 
-        if ( $groupData = $this->ownerItemDbData ) {
-            unset( $groupData['ID'] );
-            return  $this->getMethodContent('Bim\Db\Main\GroupIntegrate', 'Delete', array( $groupData['STRING_ID'] ));
+        if ($groupData = $this->ownerItemDbData) {
+            unset($groupData['ID']);
+            return $this->getMethodContent('Bim\Db\Main\GroupIntegrate', 'Delete', array($groupData['STRING_ID']));
         }
         return false;
     }
@@ -65,15 +65,15 @@ class GroupGen extends CodeGenerator
      * @throws \Exception
      * @internal param array $params
      */
-    public function checkParams( $groupId )
+    public function checkParams($groupId)
     {
-        if (!isset( $groupId ) || empty( $groupId )) {
+        if (!isset($groupId) || empty($groupId)) {
             throw new \Exception('empty groupId param');
         }
         $this->ownerItemDbData = array();
         $groupDbRes = \CGroup::GetList($by = 'id', $order = 'desc', array('ID' => $groupId));
         if ($groupDbRes === false || !$groupDbRes->SelectedRowsCount()) {
-            throw new \Exception('Group with id = ' . $groupId .' not exists');
+            throw new \Exception('Group with id = ' . $groupId . ' not exists');
         }
         $groupData = $groupDbRes->Fetch();
         if (!strlen($groupData['STRING_ID'])) {
@@ -84,4 +84,5 @@ class GroupGen extends CodeGenerator
 
 
 }
+
 ?>
