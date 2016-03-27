@@ -16,90 +16,90 @@ abstract class CodeGenerator
      * @return CurrencyRatesGen|PostingGen|RubricGen
      * @throws \Exception
      */
-    public static function  buildHandler( $type )
+    public static function buildHandler($type)
     {
-        switch( $type ){
+        switch ($type) {
             // модуль iblock
             case 'IblockType':
                 return new IblockTypeGen();
-            break;
+                break;
 
             case 'Iblock':
                 return new IblockGen();
-            break;
+                break;
 
             case 'IblockProperty':
                 return new IblockPropertyGen();
-            break;
+                break;
 
             case 'Hlblock':
                 return new HighloadblockGen();
-            break;
+                break;
 
             case 'HlblockField':
                 return new HighloadblockFieldGen();
-            break;
+                break;
 
             // модуль - main
             case 'EventType':
                 return new EventTypeGen();
-            break;
+                break;
 
             case 'EventMessage':
                 return new EventMessageGen();
-            break;
+                break;
 
             case 'Group':
                 return new GroupGen();
-            break;
+                break;
 
             case 'Language':
                 return new LanguageGen();
-            break;
+                break;
 
             case 'Site':
                 return new SiteGen();
-            break;
+                break;
 
             case 'UserField':
                 return new UserFieldGen();
-            break;
+                break;
 
             case 'UserFieldEnum':
                 return new UserFieldEnumGen();
-            break;
+                break;
             // модуль - form
             case 'Form':
                 return new FormGen();
-            break;
+                break;
 
             case 'FormAnswer':
                 return new FormAnswerGen();
-            break;
+                break;
 
             case 'FormField':
                 return new FormFieldGen();
-            break;
+                break;
             // модуль - catalog
             case 'Catalog':
                 return new CatalogGen();
-            break;
+                break;
 
             case 'CatalogStore':
                 return new CatalogStoreGen();
-            break;
+                break;
 
             case 'CatalogDiscount':
                 return new CatalogDiscountGen();
-            break;
+                break;
 
             case 'CatalogGroup':
                 return new CatalogGroupGen();
-            break;
+                break;
 
             case 'Extra':
                 return new ExtraGen();
-            break;
+                break;
 
             case 'CatalogVat':
                 return new CatalogVatGen();
@@ -202,7 +202,7 @@ abstract class CodeGenerator
                 return new PostingGen();
                 break;
             default:
-                throw new \Exception( 'Передан неизвестный type' );
+                throw new \Exception('Передан неизвестный type');
 
         }
 
@@ -232,28 +232,28 @@ abstract class CodeGenerator
      * @param $params array
      * @return mixed
      */
-    abstract public function generateAddCode( $params );
+    abstract public function generateAddCode($params);
 
     /**
      * абстрактный метод для генерации кода обновления
      * @param $params array
      * @return mixed
      */
-    abstract public function generateUpdateCode( $params );
+    abstract public function generateUpdateCode($params);
 
     /**
      * абстрактный метод для генерации кода удаления
      * @param $params array
      * @return mixed
      */
-    abstract public function generateDeleteCode( $params );
+    abstract public function generateDeleteCode($params);
 
     /**
      * абстрактный метод проверки передаваемых параметров
      * @param $params array
      * @return mixed
      */
-    abstract public function checkParams( $params  );
+    abstract public function checkParams($params);
 }
 
 ?>

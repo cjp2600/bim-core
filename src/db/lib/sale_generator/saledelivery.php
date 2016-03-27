@@ -10,43 +10,49 @@ class SaleDeliveryGen extends CodeGenerator
 {
 
 
-    public function __construct(){
+    public function __construct()
+    {
         \CModule::IncludeModule('sale');
     }
+
     /**
      * метод для генерации кода добавления новой службы доставки
      * @param $params array
      * @return mixed
      */
-    public function generateAddCode( $params ){
-        $this->checkParams( $params );
+    public function generateAddCode($params)
+    {
+        $this->checkParams($params);
 
-        $code = '<?php'.PHP_EOL.'/*  Добавляем новую службу доставки */'.PHP_EOL.PHP_EOL;
-        foreach( $this->ownerItemDbData as $deliveryData  ){
+        $code = '<?php' . PHP_EOL . '/*  Добавляем новую службу доставки */' . PHP_EOL . PHP_EOL;
+        foreach ($this->ownerItemDbData as $deliveryData) {
             $addFields = $deliveryData;
-            unset( $addFields['ID'] );
+            unset($addFields['ID']);
 
-            $code = $code . $this->buildCode('SaleDeliveryIntegrate', 'Add', array( $addFields ) ) .PHP_EOL.PHP_EOL;
+            $code = $code . $this->buildCode('SaleDeliveryIntegrate', 'Add', array($addFields)) . PHP_EOL . PHP_EOL;
         }
 
 
         return $code;
 
     }
+
     /**
      * метод для генерации кода обновления службы доставки
      * @param $params array
      * @return mixed
      */
-    public function generateUpdateCode( $params ){
-        $this->checkParams( $params );
+    public function generateUpdateCode($params)
+    {
+        $this->checkParams($params);
 
-        $code = '<?php'.PHP_EOL.'/*  Обновляем службу доставки */'.PHP_EOL.PHP_EOL;
-        foreach( $this->ownerItemDbData as $deliveryData  ){
+        $code = '<?php' . PHP_EOL . '/*  Обновляем службу доставки */' . PHP_EOL . PHP_EOL;
+        foreach ($this->ownerItemDbData as $deliveryData) {
             $updateFields = $deliveryData;
-            unset( $updateFields['ID'] );
+            unset($updateFields['ID']);
 
-            $code = $code . $this->buildCode('SaleDeliveryIntegrate', 'Update', array( $updateFields['NAME'], $updateFields ) ) .PHP_EOL.PHP_EOL;
+            $code = $code . $this->buildCode('SaleDeliveryIntegrate', 'Update',
+                    array($updateFields['NAME'], $updateFields)) . PHP_EOL . PHP_EOL;
         }
 
 
@@ -59,12 +65,13 @@ class SaleDeliveryGen extends CodeGenerator
      * @param $params array
      * @return mixed
      */
-    public function generateDeleteCode( $params ){
-        $this->checkParams( $params );
+    public function generateDeleteCode($params)
+    {
+        $this->checkParams($params);
 
-        $code = '<?php'.PHP_EOL.'/*  Удаляем  службу доставки   */'.PHP_EOL.PHP_EOL;
-        foreach( $this->ownerItemDbData as $deliveryData  ){
-            $code = $code . $this->buildCode('SaleDeliveryIntegrate', 'Delete', array( $deliveryData['NAME'] ) );
+        $code = '<?php' . PHP_EOL . '/*  Удаляем  службу доставки   */' . PHP_EOL . PHP_EOL;
+        foreach ($this->ownerItemDbData as $deliveryData) {
+            $code = $code . $this->buildCode('SaleDeliveryIntegrate', 'Delete', array($deliveryData['NAME']));
         }
 
         return $code;
@@ -72,31 +79,30 @@ class SaleDeliveryGen extends CodeGenerator
     }
 
 
-
-
     /**
      * метод проверки передаваемых параметров
      * @param $params array(
-                deliveryId => id службы доставки
+     * deliveryId => id службы доставки
      * )
      * @return mixed
      */
-    public function checkParams( $params  ) {
+    public function checkParams($params)
+    {
 
-        if ( !isset( $params['deliveryId'] ) || empty( $params['deliveryId'] ) ) {
-            throw new \Exception( 'В параметрах не найден deliveryId' );
+        if (!isset($params['deliveryId']) || empty($params['deliveryId'])) {
+            throw new \Exception('В параметрах не найден deliveryId');
         }
 
-        foreach( $params['deliveryId'] as $deliveryId ) {
-            $deliveryDbRes = \CSaleDelivery::GetList( array(), array('ID' => $deliveryId) );
-            if ( $deliveryDbRes === false || !$deliveryDbRes->SelectedRowsCount() ) {
-                throw new \Exception( 'В системе не найдена служба доставки с id = ' . $deliveryId );
+        foreach ($params['deliveryId'] as $deliveryId) {
+            $deliveryDbRes = \CSaleDelivery::GetList(array(), array('ID' => $deliveryId));
+            if ($deliveryDbRes === false || !$deliveryDbRes->SelectedRowsCount()) {
+                throw new \Exception('В системе не найдена служба доставки с id = ' . $deliveryId);
             }
 
             $deliveryData = $deliveryDbRes->Fetch();
-            $locationDbRes = CSaleDelivery::GetLocationList(array('DELIVERY_ID' => $deliveryId ));
-            while( $locationData = $locationDbRes->Fetch() ) {
-                unset( $locationData['DELIVERY_ID'] );
+            $locationDbRes = CSaleDelivery::GetLocationList(array('DELIVERY_ID' => $deliveryId));
+            while ($locationData = $locationDbRes->Fetch()) {
+                unset($locationData['DELIVERY_ID']);
                 $deliveryData['LOCATIONS'][] = $locationData;
             }
 
@@ -104,11 +110,7 @@ class SaleDeliveryGen extends CodeGenerator
         }
 
 
-
-
-
     }
-
 
 
 }

@@ -65,7 +65,7 @@ class ListCommand extends BaseCommand
 
             #filter
             $is_filter = false;
-            $this->prepareFilter($list,$filter_from,$filter_to,$filer_tag,$options,$is_filter);
+            $this->prepareFilter($list, $filter_from, $filter_to, $filer_tag, $options, $is_filter);
 
             foreach ($list as $id => $data) {
                 $count++;
@@ -113,13 +113,15 @@ class ListCommand extends BaseCommand
 
             if ($filter_new) {
                 $table->setRows($return_array_new);
-            } else if ($filter_apply) {
-                $table->setRows($return_array_apply);
             } else {
-                $table->setRows(array_merge($return_array_apply, $return_array_new));
+                if ($filter_apply) {
+                    $table->setRows($return_array_apply);
+                } else {
+                    $table->setRows(array_merge($return_array_apply, $return_array_new));
+                }
             }
 
-            $displayArray=$table->getDisplayLines();
+            $displayArray = $table->getDisplayLines();
             if (!empty($displayArray)) {
                 $table->display();
             }
@@ -148,23 +150,28 @@ class ListCommand extends BaseCommand
      * @param $options
      * @param $is_filter
      */
-    public function prepareFilter(&$list,$filter_from,$filter_to,$filer_tag,$options,&$is_filter)
+    public function prepareFilter(&$list, $filter_from, $filter_to, $filer_tag, $options, &$is_filter)
     {
         if ($filter_from || $filter_to) {
-            $this->padding("Filter to the list:" . $this->color(PHP_EOL . "from: " . $options['from'] . PHP_EOL . "to: " . $options['to'], Colors::YELLOW));
+            $this->padding("Filter to the list:" . $this->color(PHP_EOL . "from: " . $options['from'] . PHP_EOL . "to: " . $options['to'],
+                    Colors::YELLOW));
             $newArrayList = array();
             foreach ($list as $id => $data) {
                 if ($filter_from && $filter_to) {
                     if ($id >= $filter_from && $id <= $filter_to) {
                         $newArrayList[$id] = $data;
                     }
-                } else if ($filter_from && !$filter_to) {
-                    if ($id >= $filter_from) {
-                        $newArrayList[$id] = $data;
-                    }
-                } else if (!$filter_from && $filter_to) {
-                    if ($id <= $filter_to) {
-                        $newArrayList[$id] = $data;
+                } else {
+                    if ($filter_from && !$filter_to) {
+                        if ($id >= $filter_from) {
+                            $newArrayList[$id] = $data;
+                        }
+                    } else {
+                        if (!$filter_from && $filter_to) {
+                            if ($id <= $filter_to) {
+                                $newArrayList[$id] = $data;
+                            }
+                        }
                     }
                 }
             }

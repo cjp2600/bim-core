@@ -1,6 +1,7 @@
 <?php
 
 namespace Bim\Db\Main;
+
 \CModule::IncludeModule("main");
 
 /**
@@ -19,30 +20,30 @@ class GroupIntegrate
      * @throws \Exception
      * @internal param bool $isRevert
      */
-	 public function Add($fields)
-     {
-         unset($fields['ID']);
-         if (empty($fields['STRING_ID'])) {
-             return array('type' => 'error', 'error_text' => 'Field STRING_ID is required.');
-         }
-         if (!isset($fields['ACTIVE']) || empty($fields['ACTIVE'])) {
-             $fields['ACTIVE'] = "N";
-         }
-         if (!isset($fields['C_SORT']) || empty($fields['C_SORT'])) {
-             $fields['C_SORT'] = 100;
-         }
-         $groupDbRes = \CGroup::GetList($by = 'sort', $sort = 'asc', array('STRING_ID' => $fields['STRING_ID']));
-         if ($groupDbRes !== false && $groupDbRes->SelectedRowsCount()) {
-             throw new \Exception('Group with STRING_ID = "' . $fields['STRING_ID'] . '" already exist.');
-         }
-         $group = new \CGroup;
-         $ID = $group->Add($fields);
-         if ($ID) {
-             return $ID;
-         } else {
-             throw new \Exception($group->LAST_ERROR);
-         }
-	 }
+    public function Add($fields)
+    {
+        unset($fields['ID']);
+        if (empty($fields['STRING_ID'])) {
+            return array('type' => 'error', 'error_text' => 'Field STRING_ID is required.');
+        }
+        if (!isset($fields['ACTIVE']) || empty($fields['ACTIVE'])) {
+            $fields['ACTIVE'] = "N";
+        }
+        if (!isset($fields['C_SORT']) || empty($fields['C_SORT'])) {
+            $fields['C_SORT'] = 100;
+        }
+        $groupDbRes = \CGroup::GetList($by = 'sort', $sort = 'asc', array('STRING_ID' => $fields['STRING_ID']));
+        if ($groupDbRes !== false && $groupDbRes->SelectedRowsCount()) {
+            throw new \Exception('Group with STRING_ID = "' . $fields['STRING_ID'] . '" already exist.');
+        }
+        $group = new \CGroup;
+        $ID = $group->Add($fields);
+        if ($ID) {
+            return $ID;
+        } else {
+            throw new \Exception($group->LAST_ERROR);
+        }
+    }
 
 
     /**
@@ -51,10 +52,10 @@ class GroupIntegrate
      * @param $fields
      * @return bool
      */
-	public function Update($CODE, $fields)
+    public function Update($CODE, $fields)
     {
         return true;
-	}
+    }
 
 
     /**

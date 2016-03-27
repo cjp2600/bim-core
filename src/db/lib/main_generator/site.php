@@ -1,6 +1,7 @@
 <?php
 
 namespace Bim\Db\Lib;
+
 use Bim\Db\Lib\CodeGenerator;
 
 /**
@@ -28,7 +29,7 @@ class SiteGen extends CodeGenerator
      * @param $params
      * @return mixed|void
      */
-    public function generateUpdateCode( $params )
+    public function generateUpdateCode($params)
     {
         // Update
     }
@@ -39,12 +40,12 @@ class SiteGen extends CodeGenerator
      * @return mixed
      * @throws Exception
      */
-    public function generateDeleteCode( $siteId )
+    public function generateDeleteCode($siteId)
     {
-        $this->checkParams( $siteId );
+        $this->checkParams($siteId);
 
         $siteData = $this->ownerItemDbData;
-        return $this->getMethodContent('Bim\Db\Main\SiteIntegrate', 'Delete', array( $siteData['LID'] ));
+        return $this->getMethodContent('Bim\Db\Main\SiteIntegrate', 'Delete', array($siteData['LID']));
     }
 
 
@@ -54,20 +55,19 @@ class SiteGen extends CodeGenerator
      * @return mixed|void
      * @throws \Exception
      */
-    public function checkParams( $siteId  )
+    public function checkParams($siteId)
     {
-        if ( !isset( $siteId ) || empty( $siteId ) ) {
-            throw new \Exception( 'В параметрах не найден siteId' );
+        if (!isset($siteId) || empty($siteId)) {
+            throw new \Exception('В параметрах не найден siteId');
         }
         $this->ownerItemDbData = array();
-        $siteDbRes = \CSite::GetList( $by="lid", $order="desc", array('LID' => $siteId )  );
-        if ( $siteDbRes === false || !$siteDbRes->SelectedRowsCount() ) {
-            throw new \Exception( 'Не найден сайт с id = ' . $siteId );
+        $siteDbRes = \CSite::GetList($by = "lid", $order = "desc", array('LID' => $siteId));
+        if ($siteDbRes === false || !$siteDbRes->SelectedRowsCount()) {
+            throw new \Exception('Не найден сайт с id = ' . $siteId);
         }
         $siteData = $siteDbRes->Fetch();
         $this->ownerItemDbData = $siteData;
     }
-
 
 
 }

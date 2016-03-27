@@ -1,10 +1,10 @@
 {
   "commands": {
-    "up"  : "UpdateCommand",
-    "down"  : "DownCommand",
-    "ls"  : "ListCommand",
-    "gen" : "GenCommand",
-    "init" : "InitCommand",
-    "info" : "InfoCommand"
+    "up": "UpdateCommand",
+    "down": "DownCommand",
+    "ls": "ListCommand",
+    "gen": "GenCommand",
+    "init": "InitCommand",
+    "info": "InfoCommand"
   }
 }

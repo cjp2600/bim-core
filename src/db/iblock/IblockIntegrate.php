@@ -24,7 +24,7 @@ class IblockIntegrate
      * @return bool
      * @throws \Exception
      */
-    public static function Add($input,$isGenerated = true)
+    public static function Add($input, $isGenerated = true)
     {
         if (isset($input['SORT'])) {
             if (!is_int($input['SORT'])) {
@@ -90,9 +90,9 @@ class IblockIntegrate
 
         // Перегоняем имена групп (если были изменены при накатывании миграции) в идентификаторы групп
         $arGroups = BitrixUserGroupsHelper::getUserGroups();
-        foreach($input['GROUP_ID'] as $groupCode => $right) {
+        foreach ($input['GROUP_ID'] as $groupCode => $right) {
             $groupId = BitrixUserGroupsHelper::getUserGroupId($groupCode, $arGroups);
-            if($groupId != null && strlen($groupId) > 0) {
+            if ($groupId != null && strlen($groupId) > 0) {
                 $input['GROUP_ID'][$groupId] = $input['GROUP_ID'][$groupCode];
                 unset($input['GROUP_ID'][$groupCode]);
             }
@@ -116,7 +116,7 @@ class IblockIntegrate
      * @return bool
      * @throws \Exception
      */
-    public static function Delete($IblockCode,$isGenerated = true)
+    public static function Delete($IblockCode, $isGenerated = true)
     {
         $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode, 'CHECK_PERMISSIONS' => 'N'));
         if ($item = $dbIblock->Fetch()) {

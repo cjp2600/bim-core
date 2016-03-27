@@ -18,7 +18,7 @@ class MigrationsTable
      */
     public static function getTableName()
     {
-        $conf = new \Noodlehaus\Config(__DIR__."/../../config/bim.json");
+        $conf = new \Noodlehaus\Config(__DIR__ . "/../../config/bim.json");
         return $conf->get("migration_table");
     }
 
@@ -54,10 +54,10 @@ class MigrationsTable
     {
         global $DB;
         if (!self::isExistsInTable($id)) {
-            $DB->Add(self::getTableName(),array(
+            $DB->Add(self::getTableName(), array(
                 "id" => $id
             ));
-            if (self::isExistsInTable($id)){
+            if (self::isExistsInTable($id)) {
                 return true;
             }
         }
@@ -89,7 +89,7 @@ class MigrationsTable
     public static function checkMigrationTable()
     {
         global $DB;
-        if ( !$DB->Query("SELECT 'id' FROM " . self::getTableName(), true) ) {
+        if (!$DB->Query("SELECT 'id' FROM " . self::getTableName(), true)) {
             throw new \Exception("Migration table not found, run init command. Example: php bim init");
         }
     }
@@ -103,12 +103,12 @@ class MigrationsTable
     {
         global $DB;
         $errors = false;
-        if ( !$DB->Query("SELECT 'id' FROM " . self::getTableName(), true) ) {
-            $errors = $DB->RunSQLBatch(__DIR__.'/../install/install.sql');
+        if (!$DB->Query("SELECT 'id' FROM " . self::getTableName(), true)) {
+            $errors = $DB->RunSQLBatch(__DIR__ . '/../install/install.sql');
         } else {
             return false;
         }
-        if ($errors !== false ) {
+        if ($errors !== false) {
             throw new \Exception(implode("", $errors));
             return false;
         }

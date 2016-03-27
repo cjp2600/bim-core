@@ -41,7 +41,7 @@ class HighloadblockFieldGen extends CodeGenerator
                 if (!empty($hlFieldData['SETTINGS']['IBLOCK_ID'])) {
                     $iblockId = $hlFieldData['SETTINGS']['IBLOCK_ID'];
                     unset($hlFieldData['SETTINGS']['IBLOCK_ID']);
-                    $rsIBlock = \CIBlock::GetList(array(), array('ID' => $iblockId,'CHECK_PERMISSIONS'=>'N'));
+                    $rsIBlock = \CIBlock::GetList(array(), array('ID' => $iblockId, 'CHECK_PERMISSIONS' => 'N'));
                     if ($arIBlock = $rsIBlock->Fetch()) {
                         $hlFieldData['SETTINGS']['IBLOCK_CODE'] = $arIBlock['CODE'];
                     } else {
@@ -50,7 +50,8 @@ class HighloadblockFieldGen extends CodeGenerator
                 }
             }
 
-            $return = $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Add', array($hlblockData['NAME'], $hlFieldData));
+            $return = $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Add',
+                array($hlblockData['NAME'], $hlFieldData));
         }
         return $return;
     }
@@ -62,7 +63,7 @@ class HighloadblockFieldGen extends CodeGenerator
      * @return string
      * @throws \Exception
      */
-    public function generateUpdateCode( $params )
+    public function generateUpdateCode($params)
     {
         // UPDATE
     }
@@ -80,7 +81,8 @@ class HighloadblockFieldGen extends CodeGenerator
         $return = "";
         $hlblockData = $this->ownerItemDbData['hlblockData'];
         if ($hlFieldData = $this->ownerItemDbData['hlFieldData']) {
-            $return = $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Delete', array($hlblockData['NAME'], $hlFieldData['FIELD_NAME']));
+            $return = $this->getMethodContent('Bim\Db\Iblock\HighloadblockFieldIntegrate', 'Delete',
+                array($hlblockData['NAME'], $hlFieldData['FIELD_NAME']));
         }
         return $return;
     }
@@ -116,4 +118,5 @@ class HighloadblockFieldGen extends CodeGenerator
 
 
 }
+
 ?>

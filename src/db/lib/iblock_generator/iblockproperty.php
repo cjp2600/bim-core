@@ -10,7 +10,8 @@ use Bim\Db\Lib\CodeGenerator;
 class IblockPropertyGen extends CodeGenerator
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         \CModule::IncludeModule('iblock');
     }
 
@@ -19,15 +20,17 @@ class IblockPropertyGen extends CodeGenerator
      * @param array $params
      * @return bool|string
      */
-    public function generateAddCode( $params )
+    public function generateAddCode($params)
     {
         $IblockCode = $params['iblockCode'];
         $PropertyCode = $params['propertyCode'];
         $IblockProperty = new \CIBlockProperty();
-        $dbIblockProperty = $IblockProperty->GetList(array(), array('IBLOCK_CODE' => $IblockCode, 'CODE' => $PropertyCode));
+        $dbIblockProperty = $IblockProperty->GetList(array(),
+            array('IBLOCK_CODE' => $IblockCode, 'CODE' => $PropertyCode));
         if ($arIblockProperty = $dbIblockProperty->Fetch()) {
             if ($arIblockProperty['PROPERTY_TYPE'] == 'L') {
-                $arIblockProperty['VALUES'] = $this->getEnumItemList($arIblockProperty['IBLOCK_ID'], $arIblockProperty['ID']);
+                $arIblockProperty['VALUES'] = $this->getEnumItemList($arIblockProperty['IBLOCK_ID'],
+                    $arIblockProperty['ID']);
             }
             if (isset($arIblockProperty['LINK_IBLOCK_ID'])) {
                 $res = \CIBlock::GetByID($arIblockProperty['LINK_IBLOCK_ID']);
@@ -47,7 +50,7 @@ class IblockPropertyGen extends CodeGenerator
     }
 
 
-    public function generateUpdateCode( $params )
+    public function generateUpdateCode($params)
     {
         //UPDATE
     }
@@ -57,9 +60,10 @@ class IblockPropertyGen extends CodeGenerator
      * @param $params array
      * @return mixed
      */
-    public function generateDeleteCode( $params )
+    public function generateDeleteCode($params)
     {
-        return $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Delete', array( $params['iblockCode'], $params['propertyCode'] ));
+        return $this->getMethodContent('Bim\Db\Iblock\IblockPropertyIntegrate', 'Delete',
+            array($params['iblockCode'], $params['propertyCode']));
     }
 
     /**
@@ -68,14 +72,15 @@ class IblockPropertyGen extends CodeGenerator
      * @param $iblockPropId
      * @return array
      */
-    private function getEnumItemList( $iblockId, $iblockPropId )
+    private function getEnumItemList($iblockId, $iblockPropId)
     {
         $result = array();
-        $propEnumDbRes = \CIBlockPropertyEnum::GetList(array('SORT' => 'ASC'), array('IBLOCK_ID' => $iblockId, 'PROPERTY_ID' => $iblockPropId ));
-        if ( $propEnumDbRes !== false && $propEnumDbRes->SelectedRowsCount() ) {
+        $propEnumDbRes = \CIBlockPropertyEnum::GetList(array('SORT' => 'ASC'),
+            array('IBLOCK_ID' => $iblockId, 'PROPERTY_ID' => $iblockPropId));
+        if ($propEnumDbRes !== false && $propEnumDbRes->SelectedRowsCount()) {
             $index = 0;
-            while( $propEnum =  $propEnumDbRes->Fetch() ) {
-                $result[ $index ] = array(
+            while ($propEnum = $propEnumDbRes->Fetch()) {
+                $result[$index] = array(
                     'ID' => $index,
                     'VALUE' => $propEnum['VALUE'],
                     'XML_ID' => $propEnum['XML_ID'],
@@ -93,12 +98,13 @@ class IblockPropertyGen extends CodeGenerator
      * @param $iblockId
      * @return bool
      */
-    private function getIblockCode( $iblockId ) {
-        $iblockDbRes = \CIBlock::GetByID( $iblockId );
+    private function getIblockCode($iblockId)
+    {
+        $iblockDbRes = \CIBlock::GetByID($iblockId);
 
-        if ( $iblockDbRes !== false && $iblockDbRes->SelectedRowsCount() ) {
+        if ($iblockDbRes !== false && $iblockDbRes->SelectedRowsCount()) {
             $iblockData = $iblockDbRes->Fetch();
-            if ( strlen( $iblockData['CODE'] ) ) {
+            if (strlen($iblockData['CODE'])) {
                 return $iblockData['CODE'];
             }
         }
@@ -111,7 +117,7 @@ class IblockPropertyGen extends CodeGenerator
      * @return mixed|void
      * @throws \Exception
      */
-    public function checkParams( $params  )
+    public function checkParams($params)
     {
         if (!isset($params['iblockId']) || !strlen($params['iblockId'])) {
             throw new \Exception('В параметрах не найден iblockId');

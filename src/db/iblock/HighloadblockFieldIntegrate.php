@@ -12,7 +12,8 @@ use Bitrix\Highloadblock as HL;
  * Documentation: http://cjp2600.github.io/bim-core/
  * @package Bim\Db\Iblock
  */
-class HighloadblockFieldIntegrate {
+class HighloadblockFieldIntegrate
+{
 
     /**
      * Add
@@ -47,9 +48,10 @@ class HighloadblockFieldIntegrate {
         }
 
         #if
-        if ( ($fields['USER_TYPE_ID'] == "iblock_element" || $fields['USER_TYPE_ID'] == "iblock_section") && (isset($fields['SETTINGS']['IBLOCK_CODE']))) {
+        if (($fields['USER_TYPE_ID'] == "iblock_element" || $fields['USER_TYPE_ID'] == "iblock_section") && (isset($fields['SETTINGS']['IBLOCK_CODE']))) {
             unset($fields['SETTINGS']['IBLOCK_CODE']);
-            $rsIBlock = \CIBlock::GetList(array(), array('CODE' => $fields['SETTINGS']['IBLOCK_CODE'],'CHECK_PERMISSIONS'=>'N'));
+            $rsIBlock = \CIBlock::GetList(array(),
+                array('CODE' => $fields['SETTINGS']['IBLOCK_CODE'], 'CHECK_PERMISSIONS' => 'N'));
             if ($arIBlock = $rsIBlock->Fetch()) {
                 $fields['SETTINGS']['IBLOCK_ID'] = $arIBlock['ID'];
             } else {
@@ -94,7 +96,7 @@ class HighloadblockFieldIntegrate {
         $entity = HL\HighloadBlockTable::compileEntity($hlBlockRow);
         $entityDataClass = $entity->getDataClass();
 
-        $obList = $entityDataClass::getList(array("select"=>array("ID")));
+        $obList = $entityDataClass::getList(array("select" => array("ID")));
         if ($obList->getSelectedRowsCount() > 0) {
             throw new \Exception('Unable to remove a highloadBlock[ ' . $entityName . ' ], because it has elements');
         }
