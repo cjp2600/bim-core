@@ -2,7 +2,10 @@
 
 namespace Bim\Db\Iblock;
 
-use Bim\Util\BitrixUserGroupsHelper;
+use Bim\Exception\BimException;
+use Bim\Util\Helper;
+use CIBlock;
+use CIBlockElement;
 
 \CModule::IncludeModule("iblock");
 
@@ -20,12 +23,12 @@ class IblockIntegrate
      * Метод создания инфоблока.
      *
      * @param $input
-     * @param bool $isGenerated
      * @return bool
      * @throws \Exception
      */
-    public static function Add($input, $isGenerated = true)
+    public static function Add($input)
     {
+        $iBlock = new CIBlock();
         if (isset($input['SORT'])) {
             if (!is_int($input['SORT'])) {
                 if (intval($input['SORT'])) {
@@ -76,11 +79,11 @@ class IblockIntegrate
             'VERSION' => 1
         );
         if (!strlen($input['CODE'])) {
-            throw new \Exception('Not found iblock code');
+            throw new BimException('Not found iblock code');
         }
-        $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $input['CODE'], 'CHECK_PERMISSIONS' => 'N'));
+        $iblockDbRes = $iBlock->GetList(array(), array('CODE' => $input['CODE'], 'CHECK_PERMISSIONS' => 'N'));
         if ($iblockDbRes !== false && $iblockDbRes->SelectedRowsCount()) {
-            throw new \Exception('Iblock with code = "' . $input['CODE'] . '" already exist.');
+            throw new BimException('Iblock with code = "' . $input['CODE'] . '" already exist.');
         }
         foreach ($defaultValue as $defaultName => $defaultValue) {
             if (!isset($input[$defaultName]) || empty($input[$defaultName])) {
@@ -89,50 +92,48 @@ class IblockIntegrate
         }
 
         // Перегоняем имена групп (если были изменены при накатывании миграции) в идентификаторы групп
-        $arGroups = BitrixUserGroupsHelper::getUserGroups();
+        $arGroups = Helper::getUserGroups();
         foreach ($input['GROUP_ID'] as $groupCode => $right) {
-            $groupId = BitrixUserGroupsHelper::getUserGroupId($groupCode, $arGroups);
+            $groupId = Helper::getUserGroupId($groupCode, $arGroups);
             if ($groupId != null && strlen($groupId) > 0) {
                 $input['GROUP_ID'][$groupId] = $input['GROUP_ID'][$groupCode];
                 unset($input['GROUP_ID'][$groupCode]);
             }
         }
 
-        $iBlock = new \CIBlock();
         $ID = $iBlock->Add($input);
         if ($ID) {
             return $ID;
         } else {
-            throw new \Exception($iBlock->LAST_ERROR);
+            throw new BimException($iBlock->LAST_ERROR);
         }
-        return false;
     }
 
     /**
      * Метод удаления информационного блока.
      *
      * @param $IblockCode
-     * @param bool $isGenerated
      * @return bool
      * @throws \Exception
      */
-    public static function Delete($IblockCode, $isGenerated = true)
+    public static function Delete($IblockCode)
     {
-        $dbIblock = \CIBlock::GetList(array(), array('CODE' => $IblockCode, 'CHECK_PERMISSIONS' => 'N'));
+        $iBlock = new CIBlock();
+        $iBlockElement = new CIBlockElement();
+        $dbIblock = $iBlock->GetList(array(), array('CODE' => $IblockCode, 'CHECK_PERMISSIONS' => 'N'));
         if ($item = $dbIblock->Fetch()) {
-            $iblockElDbRes = \CIBlockElement::GetList(array(), array('IBLOCK_ID' => $item['ID']));
+            $iblockElDbRes = $iBlockElement->GetList(array(), array('IBLOCK_ID' => $item['ID']));
             if ($iblockElDbRes !== false && $iblockElDbRes->SelectedRowsCount()) {
-                throw new \Exception('Can not delete iblock id = ' . $item['ID'] . ' have elements');
+                throw new BimException('Can not delete iblock id = ' . $item['ID'] . ' have elements');
             }
             if (\CIBlock::Delete($item['ID'])) {
                 return true;
             } else {
-                throw new \Exception('Iblock delete error!');
+                throw new BimException('Iblock delete error!');
             }
         } else {
-            throw new \Exception('Not find iblock with code ' . $IblockCode);
+            throw new BimException('Not find iblock with code ' . $IblockCode);
         }
-        return false;
     }
 
 }

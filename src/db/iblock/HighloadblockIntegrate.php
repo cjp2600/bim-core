@@ -3,6 +3,7 @@ namespace Bim\Db\Iblock;
 
 \CModule::IncludeModule("highloadblock");
 \CModule::IncludeModule("iblock");
+use Bim\Exception\BimException;
 use Bitrix\Highloadblock as HL;
 
 /**
@@ -20,13 +21,13 @@ class HighloadblockIntegrate
      * @return bool
      * @throws \Exception
      */
-    public function Add($entityName, $tableName)
+    public static function Add($entityName, $tableName)
     {
         if (empty($entityName)) {
-            throw new \Exception('entityName is empty');
+            throw new BimException('entityName is empty');
         }
         if (empty($tableName)) {
-            throw new \Exception('tableName is empty');
+            throw new BimException('tableName is empty');
         }
         $addFields = array(
             'NAME' => trim($entityName),
@@ -46,17 +47,18 @@ class HighloadblockIntegrate
      * @return bool
      * @throws \Exception
      */
-    public function Delete($entityName)
+    public static function Delete($entityName)
     {
+        $userType = new \CUserTypeEntity();
         if (!strlen($entityName)) {
-            throw new \Exception('Incorrect entityName param value');
+            throw new BimException('Incorrect entityName param value');
         }
         $filter = array('NAME' => $entityName);
         $hlBlockDbRes = HL\HighloadBlockTable::getList(array(
             "filter" => $filter
         ));
         if (!$hlBlockDbRes->getSelectedRowsCount()) {
-            throw new \Exception('Not found highloadBlock with entityName = ' . $entityName);
+            throw new BimException('Not found highloadBlock with entityName = ' . $entityName);
         }
         $hlBlockRow = $hlBlockDbRes->fetch();
         $entity = HL\HighloadBlockTable::compileEntity($hlBlockRow);
@@ -64,11 +66,11 @@ class HighloadblockIntegrate
 
         $obList = $entityDataClass::getList();
         if ($obList->getSelectedRowsCount() > 0) {
-            throw new \Exception('Unable to remove a highloadBlock[' . $entityName . '], because it has elements');
+            throw new BimException('Unable to remove a highloadBlock[' . $entityName . '], because it has elements');
         }
 
         # delete all Fields
-        $obHl = \CUserTypeEntity::GetList(array(), array("ENTITY_ID" => "HLBLOCK_" . $hlBlockRow['ID']));
+        $obHl = $userType->GetList(array(), array("ENTITY_ID" => "HLBLOCK_" . $hlBlockRow['ID']));
         while ($arHl = $obHl->Fetch()) {
 
             $obUF = new \CUserTypeEntity();
@@ -78,7 +80,7 @@ class HighloadblockIntegrate
 
         $delResult = HL\HighloadBlockTable::delete($hlBlockRow['ID']);
         if (!$delResult->isSuccess()) {
-            throw new \Exception(implode(", ", $delResult->getErrorMessages()));
+            throw new BimException(implode(", ", $delResult->getErrorMessages()));
         }
         return true;
     }

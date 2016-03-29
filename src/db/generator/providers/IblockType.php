@@ -1,30 +1,43 @@
 <?php
 
-namespace Bim\Db\Lib;
+namespace Bim\Db\Generator\Providers;
 
-use Bim\Db\Lib\CodeGenerator;
+use Bim\Db\Generator\Code;
+use Bim\Exception\BimException;
+use Bim\Util\Helper;
+
 
 /**
  * Class IblockTypeGen
- * @package Bim\Db\Lib
+ * @package Bim\Db\Generator\Providers
  */
-class IblockTypeGen extends CodeGenerator
+class IblockType extends Code
 {
-
+    /**
+     * IblockType constructor.
+     */
     public function __construct()
     {
+        # Требует обязательного подключения модуля
+        # Iblock
+
         \CModule::IncludeModule('iblock');
     }
 
 
     /**
+     * Генерация создания
+     *
      * generateAddCode
      * @param array $IblockTypeId
      * @return bool|string
      */
     public function generateAddCode($IblockTypeId)
     {
+        $iBlock = new \CIBlock();
         $CIblockType = new \CIBlockType();
+        $lang = new \CLanguage();
+
         $return = array();
         $dbIblockType = $CIblockType->GetByID($IblockTypeId);
         if ($arIblockType = $dbIblockType->GetNext()) {
@@ -41,10 +54,13 @@ class IblockTypeGen extends CodeGenerator
                         $arIblockProperty['VALUES'][$arPropertyValues['ID']] = $arPropertyValues;
                     }
 
-                    unset($arIblockProperty['ID']);
-                    unset($arIblockProperty['~ID']);
-                    unset($arIblockProperty['IBLOCK_ID']);
-                    unset($arIblockProperty['~IBLOCK_ID']);
+                    Helper::unsetFields(array(
+                        'ID',
+                        '~ID',
+                        'IBLOCK_ID',
+                        '~IBLOCK_ID'
+                    ), $arIblockProperty);
+
                     $arIblockProperty['IBLOCK_CODE'] = $arIblock['CODE'];
 
                     foreach ($arIblockProperty as $k => $v) {
@@ -53,7 +69,7 @@ class IblockTypeGen extends CodeGenerator
                         }
                     }
                     if (isset($arIblockProperty['LINK_IBLOCK_ID'])) {
-                        $res = \CIBlock::GetList(array(),
+                        $res = $iBlock->GetList(array(),
                             array("ID" => $arIblockProperty['LINK_IBLOCK_ID'], 'CHECK_PERMISSIONS' => 'N'));
                         if ($ar_res = $res->GetNext()) {
                             unset($arIblockProperty['LINK_IBLOCK_ID']);
@@ -75,9 +91,9 @@ class IblockTypeGen extends CodeGenerator
                     unset($arIblockType[$k]);
                 }
             }
-            $rsLang = \CLanguage::GetList($by = "lid", $order = "desc");
+            $rsLang = $lang->GetList($by = "lid", $order = "desc");
             while ($arLang = $rsLang->Fetch()) {
-                $arTypeLang = \CIblockType::GetByIDLang($IblockTypeId, $arLang['LID']);
+                $arTypeLang = $CIblockType->GetByIDLang($IblockTypeId, $arLang['LID']);
                 $arIblockType["LANG"][$arLang['LID']] = array(
                     'NAME' => $arTypeLang['NAME'],
                     'SECTION_NAME' => $arTypeLang['SECTION_NAME'],
@@ -86,14 +102,16 @@ class IblockTypeGen extends CodeGenerator
             }
             $return[] = $this->getMethodContent('Bim\Db\Iblock\IblockTypeIntegrate', 'Add', array($arIblockType));
             $return = array_reverse($return);
+
             return implode(PHP_EOL, $return);
         } else {
             return false;
         }
     }
 
-
     /**
+     *  Генерация кода обновления
+     *
      * generateUpdateCode
      * @param array $params
      * @return mixed|void
@@ -103,8 +121,9 @@ class IblockTypeGen extends CodeGenerator
         // UPDATE ..
     }
 
-
     /**
+     * метод для генерации кода удаления
+     *
      * generateDeleteCode
      * @param array $IblockTypeId
      * @return string
@@ -114,7 +133,6 @@ class IblockTypeGen extends CodeGenerator
         return $this->getMethodContent('Bim\Db\Iblock\IblockTypeIntegrate', 'Delete', array($IblockTypeId));
     }
 
-
     /**
      * getLangData
      * @param $iblockTypeId
@@ -122,10 +140,13 @@ class IblockTypeGen extends CodeGenerator
      */
     private function getLangData($iblockTypeId)
     {
+        $CIblockType = new \CIBlockType();
+        $lang = new \CLanguage();
+
         $result = array();
-        $langDbRes = CLanguage::GetList($by = "lid", $order = "desc", Array());
+        $langDbRes = $lang->GetList($by = "lid", $order = "desc", Array());
         while ($langData = $langDbRes->Fetch()) {
-            $typeLangItemTmp = CIBlockType::GetByIDLang($iblockTypeId, $langData['LID']);
+            $typeLangItemTmp = $CIblockType->GetByIDLang($iblockTypeId, $langData['LID']);
             $typeLangItem = array();
             foreach ($typeLangItemTmp as $key => $value) {
                 if (strstr($key, '~')) {
@@ -139,8 +160,9 @@ class IblockTypeGen extends CodeGenerator
         return $result;
     }
 
-
     /**
+     * Абстрактный метод проверки передаваемых параметров
+     *
      * checkParams
      * @param array $params
      * @return mixed|void
@@ -148,17 +170,15 @@ class IblockTypeGen extends CodeGenerator
      */
     public function checkParams($params)
     {
+        $CIblockType = new \CIBlockType();
         if (!isset($params['iblockTypeId']) || !strlen($params['iblockTypeId'])) {
-            throw new \Exception('В параметрах не найден iblockTypeId');
+            throw new BimException('В параметрах не найден iblockTypeId');
         }
-        $iblockTypeDbRes = CIBlockType::GetByID($params['iblockTypeId']);
+        $iblockTypeDbRes = $CIblockType->GetByID($params['iblockTypeId']);
         if ($iblockTypeDbRes === false || !$iblockTypeDbRes->SelectedRowsCount()) {
-            throw new \Exception('В системе не найден тип инфоблока с id = ' . $params['iblockTypeId']);
+            throw new BimException('В системе не найден тип инфоблока с id = ' . $params['iblockTypeId']);
         }
         $this->ownerItemDbData = $iblockTypeDbRes->Fetch();
     }
-
-
+    
 }
-
-?>
