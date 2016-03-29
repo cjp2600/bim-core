@@ -14,7 +14,6 @@ use Bitrix\Highloadblock as HL;
  */
 class HighloadblockFieldIntegrate
 {
-
     /**
      * Add
      * @param $entityName
@@ -22,7 +21,7 @@ class HighloadblockFieldIntegrate
      * @return mixed
      * @throws \Exception
      */
-    function Add($entityName, $fields)
+    public static function Add($entityName, $fields)
     {
         if (empty($entityName) || empty($fields)) {
             throw new \Exception('entityName or fields is empty');
@@ -74,7 +73,7 @@ class HighloadblockFieldIntegrate
      * @return mixed
      * @throws \Exception
      */
-    function Delete($entityName, $fieldName)
+    public static function Delete($entityName, $fieldName)
     {
         if (empty($entityName)) {
             throw new \Exception('entityName is required');
@@ -122,7 +121,7 @@ class HighloadblockFieldIntegrate
      * @return bool|string
      * @throws \Exception
      */
-    static public function _getEntityId($entityName)
+    public static function _getEntityId($entityName)
     {
         if (!strlen($entityName)) {
             return false;

@@ -2,6 +2,8 @@
 
 namespace Bim\Db\Main;
 
+use Bim\Exception\BimException;
+
 \CModule::IncludeModule("main");
 
 /**
@@ -10,20 +12,18 @@ namespace Bim\Db\Main;
  */
 class SiteIntegrate
 {
-
     /**
      * Add
      * @param $fields
      * @return array
      * @throws \Exception
-     * @internal param bool $isRevert
      */
-    public function Add($fields)
+    public static function Add($fields)
     {
         $arReqFields = array('LID', 'FORMAT_DATE', 'FORMAT_DATETIME', 'CHARSET', 'DIR');
         foreach ($arReqFields as $key) {
             if (empty($fields[$key])) {
-                throw new \Exception('Field ' . $key . ' is empty.');
+                throw new BimException('Field ' . $key . ' is empty.');
             }
         }
         if (isset($fields['FORMAT_NAME']) and empty($fields['FORMAT_NAME'])) {
@@ -41,7 +41,7 @@ class SiteIntegrate
         if ($ID) {
             return $ID;
         } else {
-            throw new \Exception($obSite->LAST_ERROR);
+            throw new BimException($obSite->LAST_ERROR);
         }
     }
 
@@ -50,7 +50,7 @@ class SiteIntegrate
      * @param $ID
      * @param $fields
      */
-    public function Update($ID, $fields)
+    public static function Update($ID, $fields)
     {
         // Update
     }
@@ -61,7 +61,7 @@ class SiteIntegrate
      * @return mixed
      * @throws \Exception
      */
-    public function Delete($ID)
+    public static function Delete($ID)
     {
         $obSite = new \CSite;
         $dbSite = $obSite->GetList($by = "sort", $order = "desc", array('ID' => $ID));
@@ -70,7 +70,7 @@ class SiteIntegrate
             if ($res) {
                 return $ID;
             } else {
-                throw new \Exception($obSite->LAST_ERROR);
+                throw new BimException($obSite->LAST_ERROR);
             }
         }
     }

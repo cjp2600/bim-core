@@ -1,4 +1,6 @@
 <?php
+use Bim\Db\Generator\Code;
+
 
 /**
  * =================================================================================
@@ -13,7 +15,11 @@ class GenCommand extends BaseCommand
 
     const END_LOOP_SYMBOL = "";
 
+    /**
+     * @var Code
+     */
     private $generateObject = null;
+
     private $isMulti = false;
     private $multiAddReturn = array();
     private $multiDeleteReturn = array();
@@ -37,7 +43,7 @@ class GenCommand extends BaseCommand
                 # single command generator
                 if (strstr($args[0], ':')) {
                     $ex = explode(":", $args[0]);
-                    $this->setGenerateObject(Bim\Db\Lib\CodeGenerator::buildHandler(ucfirst($ex[0])));
+                    $this->setGenerateObject(Bim\Db\Generator\Code::buildHandler(ucfirst($ex[0])));
                     $methodName = ucfirst($ex[0]) . ucfirst($ex[1]);
                 } else {
                     throw new Exception("Improperly formatted command. Example: php bim gen iblock:add");
@@ -67,22 +73,22 @@ class GenCommand extends BaseCommand
      * @param array $args
      * @param array $options
      */
-    public function genIblocktypeAdd(array $args, array $options = array())
+    public function genIblockTypeAdd(array $args, array $options = array())
     {
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
-        $iblocktypeId = (isset($options['typeId'])) ? $options['typeId'] : false;
+        $iblockTypeId = (isset($options['typeId'])) ? $options['typeId'] : false;
 
-        if (!$iblocktypeId) {
+        if (!$iblockTypeId) {
             $do = true;
             while ($do) {
                 $desk = "Put block type id - no default/required";
-                $iblocktypeId = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:',
+                $iblockTypeId = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:',
                         \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlockType::GetByID($iblocktypeId);
+                $iblockDbRes = \CIBlockType::GetByID($iblockTypeId);
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
-                    $this->error('Iblock with id = "' . $iblocktypeId . '" not exist.');
+                    $this->error('Iblock with id = "' . $iblockTypeId . '" not exist.');
                 }
             }
         }
@@ -92,9 +98,9 @@ class GenCommand extends BaseCommand
 
         $autoTag = "add";
         $this->_save(
-            $this->generateObject->generateAddCode($iblocktypeId),
-            $this->generateObject->generateDeleteCode($iblocktypeId)
-            , $desc,
+            $this->generateObject->generateAddCode($iblockTypeId),
+            $this->generateObject->generateDeleteCode($iblockTypeId),
+            $desc,
             $autoTag
         );
 
@@ -108,19 +114,19 @@ class GenCommand extends BaseCommand
     public function genIblocktypeDelete(array $args, array $options = array())
     {
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
-        $iblocktypeId = (isset($options['typeId'])) ? $options['typeId'] : false;
+        $iblockTypeId = (isset($options['typeId'])) ? $options['typeId'] : false;
 
-        if (!$iblocktypeId) {
+        if (!$iblockTypeId) {
             $do = true;
             while ($do) {
                 $desk = "Put block type id - no default/required";
-                $iblocktypeId = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:',
+                $iblockTypeId = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_TYPE_ID]:',
                         \ConsoleKit\Colors::YELLOW), '', false);
-                $iblockDbRes = \CIBlockType::GetByID($iblocktypeId);
+                $iblockDbRes = \CIBlockType::GetByID($iblockTypeId);
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
-                    $this->error('Iblock with id = "' . $iblocktypeId . '" not exist.');
+                    $this->error('Iblock with id = "' . $iblockTypeId . '" not exist.');
                 }
             }
         }
@@ -130,8 +136,8 @@ class GenCommand extends BaseCommand
 
         $autoTag = "delete";
         $this->_save(
-            $this->generateObject->generateDeleteCode($iblocktypeId),
-            $this->generateObject->generateAddCode($iblocktypeId)
+            $this->generateObject->generateDeleteCode($iblockTypeId),
+            $this->generateObject->generateAddCode($iblockTypeId)
             , $desc,
             $autoTag
         );
@@ -193,7 +199,7 @@ class GenCommand extends BaseCommand
      */
     public function genIblockDelete(array $args, array $options = array())
     {
-
+        $iBlock = new \CIBlock();
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
         $code = (isset($options['code'])) ? $options['code'] : false;
 
@@ -203,7 +209,7 @@ class GenCommand extends BaseCommand
                 $desk = "Put code information block - no default/required";
                 $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '',
                     false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
+                $iblockDbRes = $iBlock->GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -241,6 +247,7 @@ class GenCommand extends BaseCommand
      */
     public function genIblockPropertyAdd(array $args, array $options = array())
     {
+        $iBlock = new \CIBlock();
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
         $code = (isset($options['code'])) ? $options['code'] : false;
 
@@ -250,7 +257,7 @@ class GenCommand extends BaseCommand
                 $desk = "Put code information block - no default/required";
                 $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '',
                     false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
+                $iblockDbRes = $iBlock->GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -306,6 +313,7 @@ class GenCommand extends BaseCommand
      */
     public function genIblockPropertyDelete(array $args, array $options = array())
     {
+        $iBlock = new \CIBlock();
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
         $code = (isset($options['code'])) ? $options['code'] : false;
 
@@ -315,7 +323,7 @@ class GenCommand extends BaseCommand
                 $desk = "Put code information block - no default/required";
                 $code = $dialog->ask($desk . PHP_EOL . $this->color('[IBLOCK_CODE]:', \ConsoleKit\Colors::YELLOW), '',
                     false);
-                $iblockDbRes = \CIBlock::GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
+                $iblockDbRes = $iBlock->GetList(array(), array('CODE' => $code, 'CHECK_PERMISSIONS' => 'N'));
                 if ($iblockDbRes->SelectedRowsCount()) {
                     $do = false;
                 } else {
@@ -570,6 +578,7 @@ class GenCommand extends BaseCommand
      */
     public function genGroupAdd(array $args, array $options = array())
     {
+        $group = new \CGroup();
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
         $groupId = (isset($options['id'])) ? $options['id'] : false;
 
@@ -581,7 +590,7 @@ class GenCommand extends BaseCommand
                 $groupId = $dialog->ask($desk . PHP_EOL . $this->color('[GROUP_ID]:', \ConsoleKit\Colors::YELLOW), '',
                     false);
 
-                $groupDbRes = \CGroup::GetList($by = 'id', $order = 'desc', array('ID' => $groupId));
+                $groupDbRes = $group->GetList($by = 'id', $order = 'desc', array('ID' => $groupId));
                 if ($groupDbRes === false || !$groupDbRes->SelectedRowsCount()) {
                     $this->error('Group with id = "' . $groupId . '" not exist.');
                 } else {
@@ -609,6 +618,7 @@ class GenCommand extends BaseCommand
      */
     public function genGroupDelete(array $args, array $options = array())
     {
+        $group = new \CGroup();
         $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
         $groupId = (isset($options['id'])) ? $options['id'] : false;
 
@@ -620,7 +630,7 @@ class GenCommand extends BaseCommand
                 $groupId = $dialog->ask($desk . PHP_EOL . $this->color('[GROUP_ID]:', \ConsoleKit\Colors::YELLOW), '',
                     false);
 
-                $groupDbRes = \CGroup::GetList($by = 'id', $order = 'desc', array('ID' => $groupId));
+                $groupDbRes = $group->GetList($by = 'id', $order = 'desc', array('ID' => $groupId));
                 if ($groupDbRes === false || !$groupDbRes->SelectedRowsCount()) {
                     $this->error('Group with id = "' . $groupId . '" not exist.');
                 } else {
@@ -680,6 +690,51 @@ class GenCommand extends BaseCommand
             $autoTag
         );
     }
+
+    /**
+     *
+     * Language
+     *
+     */
+
+    /**
+     * genSiteAdd
+     * @param array $args
+     * @param array $options
+     */
+    public function genLanguageAdd(array $args, array $options = array())
+    {
+        $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+        $langId = (isset($options['id'])) ? $options['id'] : false;
+
+        if (!$langId) {
+            $do = true;
+            while ($do) {
+                $desk = "Put id Lang - no default/required";
+                $langId = $dialog->ask($desk . PHP_EOL . $this->color('[LANG_ID]:', \ConsoleKit\Colors::YELLOW), '',
+                    false);
+                $langQuery =  new \CLanguage();
+                $lang = $langQuery->GetList($by = "lid", $order = "desc", array('LID' => $langId));
+                if ($lang === false || !$lang->SelectedRowsCount()) {
+                    $this->error('Language with id = "' . $langId . '" not exist.');
+                } else {
+                    $do = false;
+                }
+            }
+        }
+        # get description options
+        $desc = (isset($options['d'])) ? $options['d'] : "";
+
+        $autoTag = "add";
+        $this->_save(
+            $this->generateObject->generateAddCode($langId),
+            $this->generateObject->generateDeleteCode($langId)
+            , $desc,
+            $autoTag
+        );
+    }
+
+
 
     /**
      * genSiteDelete

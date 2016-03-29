@@ -2,6 +2,8 @@
 
 namespace Bim\Db\Iblock;
 
+use Bim\Exception\BimException;
+
 \CModule::IncludeModule("iblock");
 
 /**
@@ -17,9 +19,8 @@ class IblockTypeIntegrate
      * @param $arFields
      * @return bool
      * @throws \Exception
-     * @internal param bool $isRevert
      */
-    public function Add($arFields)
+    public static function Add($arFields)
     {
         if (!isset($arFields['SECTIONS']) || empty($arFields['SECTIONS'])) {
             $arFields['SECTIONS'] = 'Y';
@@ -62,9 +63,8 @@ class IblockTypeIntegrate
         if ($CIblockType->Add($arFields)) {
             return true;
         } else {
-            throw new \Exception($CIblockType->LAST_ERROR);
+            throw new BimException($CIblockType->LAST_ERROR);
         }
-        return false;
     }
 
     /**
@@ -73,18 +73,19 @@ class IblockTypeIntegrate
      * @return bool
      * @throws \Exception
      */
-    public function Delete($IblockTypeCode)
+    public static function Delete($IblockTypeCode)
     {
         $Iblock = new \CIBlock();
+        $iblockEl = new \CIBlockElement();
         $dbIblock = $Iblock->GetList(array(), array('TYPE' => $IblockTypeCode));
         while ($dbRow = $dbIblock->Fetch()) {
-            $iblockElDbRes = \CIBlockElement::GetList(array(), array('IBLOCK_ID' => $dbRow['ID']));
+            $iblockElDbRes = $iblockEl->GetList(array(), array('IBLOCK_ID' => $dbRow['ID']));
             if ($iblockElDbRes !== false && $iblockElDbRes->SelectedRowsCount()) {
-                throw new \Exception('Can not delete iblock type: iblock id =' . $dbRow['ID'] . ' have elements');
+                throw new BimException('Can not delete iblock type: iblock id =' . $dbRow['ID'] . ' have elements');
             }
         }
         if (!\CIBlockType::Delete($IblockTypeCode)) {
-            throw new \Exception('Delete iblock type error!');
+            throw new BimException('Delete iblock type error!');
         }
         return true;
     }

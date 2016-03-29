@@ -2,6 +2,8 @@
 
 namespace Bim\Db\Main;
 
+use Bim\Exception\BimException;
+
 \CModule::IncludeModule("main");
 
 /**
@@ -18,10 +20,10 @@ class GroupIntegrate
      * @param $fields
      * @return array
      * @throws \Exception
-     * @internal param bool $isRevert
      */
-    public function Add($fields)
+    public static function Add($fields)
     {
+        $group = new \CGroup();
         unset($fields['ID']);
         if (empty($fields['STRING_ID'])) {
             return array('type' => 'error', 'error_text' => 'Field STRING_ID is required.');
@@ -32,16 +34,16 @@ class GroupIntegrate
         if (!isset($fields['C_SORT']) || empty($fields['C_SORT'])) {
             $fields['C_SORT'] = 100;
         }
-        $groupDbRes = \CGroup::GetList($by = 'sort', $sort = 'asc', array('STRING_ID' => $fields['STRING_ID']));
+        $groupDbRes = $group->GetList($by = 'sort', $sort = 'asc', array('STRING_ID' => $fields['STRING_ID']));
         if ($groupDbRes !== false && $groupDbRes->SelectedRowsCount()) {
-            throw new \Exception('Group with STRING_ID = "' . $fields['STRING_ID'] . '" already exist.');
+            throw new BimException('Group with STRING_ID = "' . $fields['STRING_ID'] . '" already exist.');
         }
         $group = new \CGroup;
         $ID = $group->Add($fields);
         if ($ID) {
             return $ID;
         } else {
-            throw new \Exception($group->LAST_ERROR);
+            throw new BimException($group->LAST_ERROR);
         }
     }
 
@@ -63,36 +65,38 @@ class GroupIntegrate
      * @param $CODE
      * @return array
      * @throws \Exception
-     * @internal param bool $isRevert
      */
-    public function Delete($CODE)
+    public static function Delete($CODE)
     {
-        $group = new \CGroup;
+        $group = new \CGroup();
+        $user = new \CUser();
         if (!empty($CODE)) {
-            $dbGroup = $group->GetList(($by = "ID"), ($order = "asc"), array('STRING_ID' => $CODE));
+            $by = "ID";
+            $order = "asc";
+            $dbGroup = $group->GetList($by, $order, array('STRING_ID' => $CODE));
             if ($arGroup = $dbGroup->Fetch()) {
                 $arReturn = $arGroup;
             }
         } else {
-            throw new \Exception('Empty group code');
+            throw new BimException('Empty group code');
         }
 
         if (intval($arReturn['ID']) > 0) {
-            $arUsers = \CGroup::GetGroupUser($arReturn['ID']);
+            $arUsers = $group->GetGroupUser($arReturn['ID']);
             foreach ($arUsers as $UserID) {
-                $arGroup = \CUser::GetUserGroup($UserID);
+                $arGroup = $user->GetUserGroup($UserID);
                 $arGroup[] = "3";
-                \CUser::SetUserGroup($UserID, $arGroup);
+                $user->SetUserGroup($UserID, $arGroup);
             }
             $res = $group->Delete($arReturn['ID']);
 
             if (is_object($res)) {
                 return $arReturn['ID'];
             } else {
-                throw new \Exception($group->LAST_ERROR);
+                throw new BimException($group->LAST_ERROR);
             }
         } else {
-            throw new \Exception('Group not found');
+            throw new BimException('Group not found');
         }
     }
 

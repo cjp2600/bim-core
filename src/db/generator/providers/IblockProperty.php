@@ -1,17 +1,24 @@
 <?php
 
-namespace Bim\Db\Lib;
-use Bim\Db\Lib\CodeGenerator;
+namespace Bim\Db\Generator\Providers;
+use Bim\Db\Generator\Code;
+use Bim\Exception\BimException;
 
 /**
  * Class IblockPropertyGen
- * @package Bim\Db\Lib
+ * @package Bim\Db\Generator\Providers
  */
-class IblockPropertyGen extends CodeGenerator
+class IblockProperty extends Code
 {
 
+    /**
+     * IblockPropertyGen constructor.
+     */
     public function __construct()
     {
+        # Требует обязательного подключения модуля
+        # Iblock
+
         \CModule::IncludeModule('iblock');
     }
 
@@ -22,6 +29,7 @@ class IblockPropertyGen extends CodeGenerator
      */
     public function generateAddCode($params)
     {
+        $iBlock = new \CIBlock();
         $IblockCode = $params['iblockCode'];
         $PropertyCode = $params['propertyCode'];
         $IblockProperty = new \CIBlockProperty();
@@ -33,7 +41,7 @@ class IblockPropertyGen extends CodeGenerator
                     $arIblockProperty['ID']);
             }
             if (isset($arIblockProperty['LINK_IBLOCK_ID'])) {
-                $res = \CIBlock::GetByID($arIblockProperty['LINK_IBLOCK_ID']);
+                $res = $iBlock->GetByID($arIblockProperty['LINK_IBLOCK_ID']);
                 if ($ar_res = $res->GetNext()) {
                     unset($arIblockProperty['LINK_IBLOCK_ID']);
                     $arIblockProperty['LINK_IBLOCK_CODE'] = $ar_res['CODE'];
@@ -100,7 +108,8 @@ class IblockPropertyGen extends CodeGenerator
      */
     private function getIblockCode($iblockId)
     {
-        $iblockDbRes = \CIBlock::GetByID($iblockId);
+        $iBlock = new \CIBlock();
+        $iblockDbRes = $iBlock->GetByID($iblockId);
 
         if ($iblockDbRes !== false && $iblockDbRes->SelectedRowsCount()) {
             $iblockData = $iblockDbRes->Fetch();
@@ -119,32 +128,34 @@ class IblockPropertyGen extends CodeGenerator
      */
     public function checkParams($params)
     {
+        $iBlock = new \CIBlock();
+
         if (!isset($params['iblockId']) || !strlen($params['iblockId'])) {
-            throw new \Exception('В параметрах не найден iblockId');
+            throw new BimException('В параметрах не найден iblockId');
         }
 
         if (!isset($params['propertyId']) || empty($params['propertyId'])) {
-            throw new \Exception('В параметрах не найден propertyId');
+            throw new BimException('В параметрах не найден propertyId');
         }
 
-        $iblockDbRes = \CIBlock::GetByID($params['iblockId']);
+        $iblockDbRes = $iBlock->GetByID($params['iblockId']);
         if ($iblockDbRes === false || !$iblockDbRes->SelectedRowsCount()) {
-            throw new \Exception('Не найден инфоблок с iblockId = ' . $params['iblockId']);
+            throw new BimException('Не найден инфоблок с iblockId = ' . $params['iblockId']);
         }
         $iblockData = $iblockDbRes->Fetch();
         if (!strlen($iblockData['CODE'])) {
-            throw new \Exception('В инфоблоке не указан символьный код');
+            throw new BimException('В инфоблоке не указан символьный код');
         }
         $this->ownerItemDbData['iblockData'] = $iblockData;
         $this->ownerItemDbData['propertyData'] = array();
         foreach ($params['propertyId'] as $propertyId) {
             $propertyDbRes = \CIBlockProperty::GetByID($propertyId);
             if ($propertyDbRes === false || !$propertyDbRes->SelectedRowsCount()) {
-                throw new \Exception('Не найдено св-во с id = ' . $propertyId);
+                throw new BimException('Не найдено св-во с id = ' . $propertyId);
             }
             $propertyData = $propertyDbRes->Fetch();
             if (!strlen($propertyData['CODE'])) {
-                throw new \Exception('В свойстве c id =' . $propertyData['ID'] . ' не указан символьный код.');
+                throw new BimException('В свойстве c id =' . $propertyData['ID'] . ' не указан символьный код.');
             }
             $this->ownerItemDbData['propertyData'][] = $propertyData;
         }
