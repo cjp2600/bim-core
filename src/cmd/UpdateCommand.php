@@ -43,6 +43,9 @@ class UpdateCommand extends BaseCommand
         $logging = (isset($options['logging'])) ? true : false;
         $logging_output = array();
 
+        # setUserMigration Path
+        $this->migrationPath = (isset($options['migration_path'])) ? $options['migration_path'] : null;
+
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
         ksort($list); # по возрастанию
         if (!empty($list)) {
@@ -183,6 +186,8 @@ class UpdateCommand extends BaseCommand
             if ($logging) {
                 $this->logging($logging_output);
             }
+        } else {
+            $this->info('Empty migration');
         }
     }
 

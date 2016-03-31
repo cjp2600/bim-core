@@ -41,6 +41,9 @@ class DownCommand extends BaseCommand
         $logging = (isset($options['logging'])) ? true : false;
         $logging_output = array();
 
+        # setUserMigration Path
+        $this->migrationPath = (isset($options['migration_path'])) ? $options['migration_path'] : null;
+
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
         krsort($list); #по убыванию
         if (!empty($list)) {
@@ -193,6 +196,8 @@ class DownCommand extends BaseCommand
             if ($logging) {
                 $this->logging($logging_output, "down");
             }
+        }  else {
+            $this->info('Empty migration');
         }
     }
 }

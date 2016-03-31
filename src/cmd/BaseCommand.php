@@ -5,6 +5,12 @@ use ConsoleKit\Command,
 
 abstract class BaseCommand extends Command
 {
+    /**
+     * Пользовательская директория хранения миграций
+     *
+     * @var null
+     */
+    protected $migrationPath = null;
 
     /**
      * info
@@ -181,15 +187,31 @@ abstract class BaseCommand extends Command
     }
 
     /**
+     * Получение папк хранения миграций
+     *
      * getMigrationPath
      * @param bool $full
      * @return mixed|string
+     * @throws \Bim\Exception\BimException
      */
     public function getMigrationPath($full = true)
     {
-        $conf = new \Noodlehaus\Config(__DIR__ . "/../config/bim.json");
-        $migration_path = $conf->get("migration_path");
-        return ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/" . $migration_path . "/" : $migration_path;
+        if (!is_null($this->migrationPath)) {
+            if (substr($this->migrationPath, -1) != "/") {
+                $this->migrationPath = $this->migrationPath."/";
+            }
+            $path = $this->migrationPath;
+        } else {
+            $conf = new \Noodlehaus\Config(__DIR__ . "/../config/bim.json");
+            $migration_path = $conf->get("migration_path");
+            $path = ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/" . $migration_path . "/" : $migration_path;
+        }
+
+        if (!file_exists($path)){
+            throw new \Bim\Exception\BimException("Дирректория хранения миграций '".$path."' не найдена");
+        }
+
+        return $path;
     }
 
     /**
@@ -269,7 +291,12 @@ abstract class BaseCommand extends Command
 
         $return = array();
         foreach ($dir_array as $key => $val) {
-            # include migration file.
+
+            if(!preg_match('/^.*\.('.$x.')$/i', $val)) {
+                continue;
+            }
+
+                # include migration file.
             include_once "" . $this->getMigrationPath() . $val . "";
             $class_name = "Migration" . $key;
             # check instance of Revision interface.

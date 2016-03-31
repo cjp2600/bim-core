@@ -29,6 +29,9 @@ class ListCommand extends BaseCommand
 {
     public function execute(array $args, array $options = array())
     {
+        # setUserMigration Path
+        $this->migrationPath = (isset($options['migration_path'])) ? $options['migration_path'] : null;
+        
         $list = $this->getDirectoryTree($this->getMigrationPath(), "php");
 
         # get filename
@@ -137,7 +140,7 @@ class ListCommand extends BaseCommand
             $this->padding(implode(PHP_EOL, $return));
 
         } else {
-            $this->info('Empty list');
+            $this->info('Empty migration');
         }
     }
 
