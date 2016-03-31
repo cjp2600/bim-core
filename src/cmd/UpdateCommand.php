@@ -30,6 +30,13 @@ use ConsoleKit\Colors;
  * - Логирование:
  * @example php bim up --logging
  *
+ * Опции:
+ *
+ *  --from : дата создания миграции "От"
+ *  --to : дата создания миграции "До"
+ *  --migration_path  : Опциональное указания директории хранения миграций
+ *  --logging : Логирование вывода
+ *
  * Documentation: https://github.com/cjp2600/bim-core
  * =================================================================================
  */
@@ -38,7 +45,7 @@ class UpdateCommand extends BaseCommand
     public function execute(array $args, array $options = array())
     {
         global $DB;
-
+        
         # get logging options
         $logging = (isset($options['logging'])) ? true : false;
         $logging_output = array();
@@ -76,7 +83,9 @@ class UpdateCommand extends BaseCommand
 
             # filer
             $f_id = false;
+            $is_filter = false;
             if ((isset($options['id']))) {
+                $is_filter = true;
                 if (is_string($options['id'])) {
                     $f_id = $options['id'];
                 } else {
@@ -85,6 +94,7 @@ class UpdateCommand extends BaseCommand
                 }
             } else {
                 if (isset($args[0])) {
+                    $is_filter = true;
                     if (is_string($args[0])) {
                         $f_id = $args[0];
                     }
@@ -108,6 +118,7 @@ class UpdateCommand extends BaseCommand
             }
             # check to tag list
             if ($filer_tag) {
+                $is_filter = true;
                 $this->padding("up migration for tag : " . $filer_tag);
                 $newArrayList = array();
                 foreach ($return_array_new as $id => $mig) {
@@ -123,6 +134,11 @@ class UpdateCommand extends BaseCommand
                     $return_array_new = array();
                 }
             }
+
+            if (!$is_filter) {
+                $this->askDoOperation((isset($options['force'])));
+            }
+
 
             if (empty($return_array_new)) {
                 $logging_output[] = "New migrations list is empty.";

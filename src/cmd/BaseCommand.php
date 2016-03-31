@@ -198,7 +198,7 @@ abstract class BaseCommand extends Command
     {
         if (!is_null($this->migrationPath)) {
             if (substr($this->migrationPath, -1) != "/") {
-                $this->migrationPath = $this->migrationPath."/";
+                $this->migrationPath = $this->migrationPath . "/";
             }
             $path = $this->migrationPath;
         } else {
@@ -207,8 +207,8 @@ abstract class BaseCommand extends Command
             $path = ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/" . $migration_path . "/" : $migration_path;
         }
 
-        if (!file_exists($path)){
-            throw new \Bim\Exception\BimException("Дирректория хранения миграций '".$path."' не найдена");
+        if (!file_exists($path)) {
+            throw new \Bim\Exception\BimException("Дирректория хранения миграций '" . $path . "' не найдена");
         }
 
         return $path;
@@ -292,11 +292,11 @@ abstract class BaseCommand extends Command
         $return = array();
         foreach ($dir_array as $key => $val) {
 
-            if(!preg_match('/^.*\.('.$x.')$/i', $val)) {
+            if (!preg_match('/^.*\.(' . $x . ')$/i', $val)) {
                 continue;
             }
 
-                # include migration file.
+            # include migration file.
             include_once "" . $this->getMigrationPath() . $val . "";
             $class_name = "Migration" . $key;
             # check instance of Revision interface.
@@ -604,5 +604,26 @@ abstract class BaseCommand extends Command
         return Bim\Db\Entity\MigrationsTable::isExistsInTable($migration_id);
     }
 
+    /**
+     * @param bool $force
+     * @param string $text
+     * @param array $variants
+     */
+    public function askDoOperation($force = false, $text = "Apply it's not The applied migration?",$variants = ['yes','no'])
+    {
+        if (!$force) {
+            $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
+            $this->writeln("");
+            $desk = $this->color($text,
+                \ConsoleKit\Colors::WHITE);
+            $askResponse = $dialog->ask("   " . $desk  . " " .  $this->color('['.implode("|",$variants).']:',
+                    \ConsoleKit\Colors::YELLOW), '',
+                false);
+
+            if (strtolower($askResponse) != strtolower($variants[0])) {
+                die();
+            }
+        }
+    }
 
 }

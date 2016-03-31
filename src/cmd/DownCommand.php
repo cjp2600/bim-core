@@ -127,11 +127,7 @@ class DownCommand extends BaseCommand
             }
 
             if (!$is_filter) {
-                $dialog = new \ConsoleKit\Widgets\Dialog($this->console);
-                $type = $dialog->ask('Are you sure you want to remove all applied migration (yes/no)?:', 'yes');
-                if (strtolower($type) == "no" || strtolower($type) == "n") {
-                    return true;
-                }
+                $this->askDoOperation((isset($options['force'])),"Are you sure you want to remove all applied migration");
             }
 
             if (empty($return_array_apply)) {
