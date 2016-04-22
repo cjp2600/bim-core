@@ -10,7 +10,7 @@ use CUserTypeEntity;
 
 /**
  * Class HlblockField
- * @package Bim\Db\Generators
+ * @package Bim\Db\Generator
  */
 class HlblockField extends Code
 {
