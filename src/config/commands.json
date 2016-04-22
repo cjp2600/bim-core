@@ -5,6 +5,7 @@
     "ls": "ListCommand",
     "gen": "GenCommand",
     "init": "InitCommand",
-    "info": "InfoCommand"
+    "info": "InfoCommand",
+    "export": "ExportCommand"
   }
 }

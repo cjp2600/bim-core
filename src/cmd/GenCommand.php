@@ -46,13 +46,13 @@ class GenCommand extends BaseCommand
                     $this->setGenerateObject(Bim\Db\Generator\Code::buildHandler(ucfirst($ex[0])));
                     $methodName = ucfirst($ex[0]) . ucfirst($ex[1]);
                 } else {
-                    throw new Exception("Improperly formatted command. Example: php bim gen iblock:add");
+                    throw new \Bim\Exception\BimException("Improperly formatted command. Example: php bim gen iblock:add");
                 }
                 $method = "gen" . $methodName;
                 if (method_exists($this, $method)) {
                     $this->{$method}($args, $options);
                 } else {
-                    throw new Exception("Missing command, see help Example: php bim help gen");
+                    throw new \Bim\Exception\BimException("Missing command, see help Example: php bim help gen");
                 }
             }
         } else {

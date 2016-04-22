@@ -23,7 +23,9 @@
 	"require": {
 			"maximebf/consolekit": ">=1.0.0",
         	"wp-cli/php-cli-tools":"*",
-        	"noodlehaus/config":"*"
+        	"noodlehaus/config":"*",
+			"alchemy/zippy": ">=0.3.5",
+			"dg/mysql-dump" : ">=v1.3.0"
 	},
 	"support": {
 	  "email": "icjp2600@gmail.com",
@@ -41,6 +43,7 @@
 			"src/db/main",
 		    "src/cmd",
 			"src/Util",
+			"src/Export",
 			"src/Exception"
 		]
 	},

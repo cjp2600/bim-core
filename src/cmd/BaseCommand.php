@@ -208,7 +208,7 @@ abstract class BaseCommand extends Command
         }
 
         if (!file_exists($path)) {
-            throw new \Bim\Exception\BimException("Дирректория хранения миграций '" . $path . "' не найдена");
+            mkdir($path, 0777);
         }
 
         return $path;
