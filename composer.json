@@ -34,8 +34,8 @@
 		"classmap": [
 		  	"src",
 		    "src/db",
-		    "src/db/generators",
-		    "src/db/generators/providers",
+		    "src/db/generator",
+		    "src/db/generator/providers",
 		    "src/db/entity",
 			"src/db/iblock",
 			"src/db/main",
