@@ -4,9 +4,14 @@ namespace Bim\Export;
 use Alchemy\Zippy\Exception\RuntimeException;
 use Alchemy\Zippy\Zippy;
 use Bim\Exception\BimException;
+use ConsoleKit\Colors;
 use MySQLDump;
 use mysqli;
 
+/**
+ * Class Session
+ * @package Bim\Export
+ */
 class Session extends \BaseCommand
 {
     const EXPORT_FOLDER = 'export';
@@ -15,7 +20,6 @@ class Session extends \BaseCommand
     private $sessionExportPathName = null;
     private $sessionExportFileName = null;
     private $sessionDBtFileName = null;
-
 
     private $sessionExportId = null;
     private $dataResponse = array();
@@ -74,8 +78,7 @@ class Session extends \BaseCommand
 
         $this->setSessionExportPathName($sessionPath);
         $this->setSessionExportFileName(self::EXPORT_FILE_PREFIX . $this->getSessionExportId() . ".tar.gz");
-        $this->setSessionDBtFileName($this->getSessionExportPathName() . '/' . 'db_' . self::EXPORT_FILE_PREFIX . $this->getSessionExportId() . '.sql.gz');
-
+        $this->setSessionDBtFileName($this->getSessionExportPathName() . '/' . 'db_' . self::EXPORT_FILE_PREFIX . $this->getSessionExportId() . '.sql');
     }
 
     /**
@@ -119,23 +122,26 @@ class Session extends \BaseCommand
     }
 
     /**
+     * packCore
+     *
      * @return \Alchemy\Zippy\Archive\ArchiveInterface
      * @throws BimException
      */
     public function packCore()
     {
         try {
+            $this->dumpMysql();
+
             $zippy = Zippy::load();
             $archive = $zippy->create($this->getFullPath(), $this->getBitrixCore(), true);
 
             $this->dataResponse[] = $this->color(strtoupper("completed"),
-                    \ConsoleKit\Colors::GREEN) . " : " . $this->getFullPath();
+                    Colors::GREEN) . " : " . $this->getFullPath();
 
             $this->saveInfoToJson();
-            $this->dumpMysql();
 
             $this->dataResponse[] = $this->color(strtoupper("completed"),
-                    \ConsoleKit\Colors::GREEN) . " : " . $this->getSessionDBtFileName();
+                    Colors::GREEN) . " : " . $this->getSessionDBtFileName();
 
             return $archive;
         } catch (RuntimeException $e) {
@@ -144,19 +150,27 @@ class Session extends \BaseCommand
         }
     }
 
+    /**
+     * dumpMysql
+     */
     public function dumpMysql()
     {
-        $DBHost = $DBLogin = $DBPassword = $DBName = "";
-        include $_SERVER["DOCUMENT_ROOT"] . '/bitrix/php_interface/dbconn.php';
-        $charset = 'utf8';
-        if (!BX_UTF) {
-            $charset = 'cp1251';
+        require_once($_SERVER["DOCUMENT_ROOT"] . "/vendor/cjp2600/bim-core/src/Export/Dump/dump.php");
+
+        if (!defined("START_EXEC_TIME")) {
+            define("START_EXEC_TIME", microtime(true));
         }
-        $dump = new MySQLDump(new mysqli($DBHost, $DBLogin, $DBPassword, $DBName), $charset);
-        $dump->save($this->getSessionDBtFileName());
+        define('NO_TIME', true);
+
+        IntOption("dump_base_skip_stat",1);
+        IntOption("dump_base_skip_search",1);
+        IntOption("dump_base_skip_log",1);
+
+        makeLocalDump($this->getSessionDBtFileName());
     }
 
     /**
+     * getBitrixCore
      * @return array
      */
     public function getBitrixCore()
@@ -173,6 +187,9 @@ class Session extends \BaseCommand
         return $folder;
     }
 
+    /**
+     * saveInfoToJson
+     */
     private function saveInfoToJson()
     {
         $data = [];
@@ -190,9 +207,7 @@ class Session extends \BaseCommand
         );
         $data['items'][] = $dataItem;
         file_put_contents($exportJson, json_encode($data));
-
     }
-
 
     private function clearExport()
     {
@@ -230,9 +245,17 @@ class Session extends \BaseCommand
         return implode("\n", $this->dataResponse);
     }
 
-    public function upExport($args, $json)
+    /**
+     * getSqlBatchByExport
+     *
+     * @param $args
+     * @param $json
+     * @return array|bool
+     * @throws BimException
+     */
+    public function getSqlBatchByExport($args, $json)
     {
-        global $DB, $APPLICATION;
+        global $DB;
 
         if (!isset($args[1])) {
             throw new BimException("number 0f export not fount. Example: pgp vendor/bin/bim export install 1");
@@ -246,46 +269,16 @@ class Session extends \BaseCommand
         if (isset($json['items'][$num])) {
             $dump = $json['items'][$num]['db_file'];
 
-            $this->getSQL($dump);
+            if (!file_exists($dump) || !is_file($dump)) {
+                throw new BimException("File " . $dump . " is not found.");
+            }
 
+            $contents = file_get_contents($dump);
+            $sqlBatch = $DB->ParseSqlBatch($contents, false);
 
-//            #sql
-//            $errors = false;
-//            $errors = $DB->RunSQLBatch($out_file_name,true);
-//
-//            if($errors !== false)
-//            {
-//                throw new BimException(implode("\n", $errors));
-//            }
-//
-//            print_r($out_file_name . " ++1"); die();
+            return $sqlBatch;
         }
-    }
-
-    private function getSQL($dump)
-    {
-        $buffer_size = 4096;
-        $out_file_name = str_replace('.gz', '', $dump);
-        $file = gzopen($dump, 'rb');
-        $out_file = fopen($out_file_name, 'wb');
-        while (!gzeof($file)) {
-            fwrite($out_file, gzread($file, $buffer_size));
-        }
-        fclose($out_file);
-        gzclose($file);
-
-        if (!file_exists($out_file_name) || !is_file($out_file_name)) {
-            throw new BimException("!File $out_file_name is not found.");
-        }
-
-        $arErr = array();
-        $contents = file_get_contents($out_file_name);
-        $contents = str_replace("-- --------------------------------------------------------", "", $contents);
-        $contents = trim($contents);
-        $contents = explode(";", $contents);
-        print_r($contents);
-        die();
-
+        return false;
     }
 
 }

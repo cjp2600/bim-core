@@ -1,56 +1,61 @@
 {
-	"name": "cjp2600/bim-core",
-	"description": "Bitrix db migration core libs",
-	"keywords": ["bitrix", "db", "migration"],
-	"license": "MIT",
-    "bin": ["src/bin/bim"],
- 	"authors": [
-	  {
-		  "name": "Stanislav Semenov",
-		  "email": "icjp2600@gmail.com",
-		  "homepage": "http://8il.ru",
-		  "role": "Developer"
-	  },
-	  {
-		  "name": "Sergey Ansupov",
-		  "email": "sanstupov@indigo-trg.com"
-	  },
-	  {
-		  "name": "Andrey Verevkin",
-		  "email": "averevkin@indigo-trg.com"
-	  }
-	],
-	"require": {
-			"maximebf/consolekit": ">=1.0.0",
-        	"wp-cli/php-cli-tools":"*",
-        	"noodlehaus/config":"*",
-			"alchemy/zippy": ">=0.3.5",
-			"dg/mysql-dump" : ">=v1.3.0"
-	},
-	"support": {
-	  "email": "icjp2600@gmail.com",
-	  "docs": "https://github.com/cjp2600/bim-core",
-	  "source": "https://github.com/cjp2600/bim-core"
-	},
-	"autoload": {
-		"classmap": [
-		  	"src",
-		    "src/db",
-		    "src/db/generator",
-		    "src/db/generator/providers",
-		    "src/db/entity",
-			"src/db/iblock",
-			"src/db/main",
-		    "src/cmd",
-			"src/Util",
-			"src/Export",
-			"src/Exception"
-		]
-	},
-	"config": {
-	    "bin-dir": "src/bin",
-		"preferred-install": "dist"
-	},
-	"minimum-stability": "dev"
+  "name": "cjp2600/bim-core",
+  "description": "Bitrix db migration core libs",
+  "keywords": [
+    "bitrix",
+    "db",
+    "migration"
+  ],
+  "license": "MIT",
+  "bin": [
+    "src/bin/bim"
+  ],
+  "authors": [
+    {
+      "name": "Stanislav Semenov",
+      "email": "icjp2600@gmail.com",
+      "homepage": "http://8il.ru",
+      "role": "Developer"
+    },
+    {
+      "name": "Sergey Ansupov",
+      "email": "sanstupov@indigo-trg.com"
+    },
+    {
+      "name": "Andrey Verevkin",
+      "email": "averevkin@indigo-trg.com"
+    }
+  ],
+  "require": {
+    "maximebf/consolekit": ">=1.0.0",
+    "wp-cli/php-cli-tools": "*",
+    "noodlehaus/config": "*",
+    "alchemy/zippy": ">=0.3.5"
+  },
+  "support": {
+    "email": "icjp2600@gmail.com",
+    "docs": "https://github.com/cjp2600/bim-core",
+    "source": "https://github.com/cjp2600/bim-core"
+  },
+  "autoload": {
+    "classmap": [
+      "src",
+      "src/db",
+      "src/db/generator",
+      "src/db/generator/providers",
+      "src/db/entity",
+      "src/db/iblock",
+      "src/db/main",
+      "src/cmd",
+      "src/Util",
+      "src/Export",
+      "src/Exception"
+    ]
+  },
+  "config": {
+    "bin-dir": "src/bin",
+    "preferred-install": "dist"
+  },
+  "minimum-stability": "dev"
 }
 

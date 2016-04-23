@@ -69,11 +69,9 @@ class ExportCommand extends BaseCommand
             file_put_contents($exportJson, json_encode($data));
         }
 
-
         if ($return === true) {
             return $data;
         }
-
 
         if (!empty($data)) {
             if (isset($data['items'])) {
@@ -95,10 +93,23 @@ class ExportCommand extends BaseCommand
 
     public function Install($args)
     {
-
-
+        global $DB;
+        $this->padding("up export databases (Revision № ".$args[1].") ...");
         $session = new \Bim\Export\Session();
-        $session->upExport($args, $this->Ls(true));
+        $sqlBatch = $session->getSqlBatchByExport($args, $this->Ls(true));
+
+        $i = 0;
+        if ($sqlBatch) {
+            foreach ($sqlBatch as $i => $bath) {
+                $err_mess = "Line: ";
+                $res = $DB->Query($bath, false, $err_mess.__LINE__);
+                fwrite(\STDOUT, "   SQL QUERY: ".$i." \r");
+            }
+        }
+        fwrite(\STDOUT, "   SQL QUERY: ".$i." - ".$this->color(strtoupper("completed"),\ConsoleKit\Colors::GREEN)." \n");
+
+
+        $this->padding("up export core (Revision № ".$args[1].") ...");
 
     }
 
