@@ -283,7 +283,7 @@ abstract class BaseCommand extends Command
             if (is_dir($outerDir . "/" . $d)) {
                 $dir_array[$d] = $this->getDirectoryTree($outerDir . "/" . $d, $x);
             } else {
-                if (($x) ? ereg($x . '$', $d) : 1) {
+                if (($x) ? preg_match('/'.$x . '$/', $d) : 1) {
                     $dir_array[str_replace("." . $x, "", $d)] = $d;
                 }
             }
