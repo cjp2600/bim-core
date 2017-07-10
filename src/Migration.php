@@ -2,7 +2,8 @@
 namespace Bim;
 
 use ConsoleKit\Console;
-use Noodlehaus\Config;
+use Bim\Util\Config;
+
 
 /**
  * Bitrix Migration (BIM)
