@@ -1,7 +1,10 @@
 <?php
 
+
 use ConsoleKit\Command,
     ConsoleKit\Colors;
+
+use Bim\Util\Config;
 
 abstract class BaseCommand extends Command
 {
@@ -202,7 +205,7 @@ abstract class BaseCommand extends Command
             }
             $path = $this->migrationPath;
         } else {
-            $conf = new \Noodlehaus\Config(__DIR__ . "/../config/bim.json");
+            $conf = new Config(__DIR__ . "/../config/bim.json");
             $migration_path = $conf->get("migration_path");
             $path = ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/" . $migration_path . "/" : $migration_path;
         }
@@ -334,7 +337,7 @@ abstract class BaseCommand extends Command
      */
     public function logging($input_array = array(), $type = "up", $file_name = 'bim.log')
     {
-        $conf = new \Noodlehaus\Config(__DIR__ . "/../config/bim.json");
+        $conf = new Config(__DIR__ . "/../config/bim.json");
         $logging_path = $conf->get("logging_path");
         $return_message = " >> php bim " . $type . " \n";
         $return_message .= date('d.m.Y H:i:s') . "\n";

@@ -4,6 +4,8 @@ namespace Bim\Db\Entity;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Localization\Loc;
 
+use Bim\Util\Config;
+
 /**
  * Class MigrationsTable
  *
@@ -18,7 +20,7 @@ class MigrationsTable
      */
     public static function getTableName()
     {
-        $conf = new \Noodlehaus\Config(__DIR__ . "/../../config/bim.json");
+        $conf = new Config(__DIR__ . "/../../config/bim.json");
         return $conf->get("migration_table");
     }
 
