@@ -80,7 +80,6 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 
 ```
 /vendor
-*.lock
 ```
 
 - Done! :):
