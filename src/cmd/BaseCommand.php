@@ -205,8 +205,12 @@ abstract class BaseCommand extends Command
             }
             $path = $this->migrationPath;
         } else {
-            $conf = new Config(__DIR__ . "/../config/bim.json");
-            $migration_path = $conf->get("migration_path");
+        	if (defined('MIGRATION_PATH')) {
+				$migration_path = MIGRATION_PATH;
+			} else {
+				$conf = new Config(__DIR__ . "/../config/bim.json");
+				$migration_path = $conf->get("migration_path");
+			}
             $path = ($full) ? $_SERVER["DOCUMENT_ROOT"] . "/" . $migration_path . "/" : $migration_path;
         }
 
