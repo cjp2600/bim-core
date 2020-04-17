@@ -1,6 +1,7 @@
 {
-  "name": "youshimitsu/bim-core",
+  "name": "cjp2600/bim-core",
   "description": "Bitrix db migration core libs",
+  "version": "1.1.5",
   "keywords": [
     "bitrix",
     "db",
