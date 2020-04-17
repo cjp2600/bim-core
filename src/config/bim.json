@@ -1,5 +1,5 @@
 {
-  "migration_path": "migrations",
+  "migration_path": "../migrations",
   "logging_path": "_log/bim",
   "migration_table": "bim_migrations"
 }
